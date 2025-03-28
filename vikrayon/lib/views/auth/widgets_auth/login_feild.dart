@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:vikrayon/utils/colors.dart';
+
+class LoginFeild extends StatefulWidget {
+  final String hintText;
+  final TextEditingController controller;
+  final TextInputType? keyboardType;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final bool obscureText;
+  final String? Function(String?)? validator;
+  final TextStyle? hintStyle;
+  const LoginFeild(
+      {super.key,
+      required this.hintText,
+      required this.controller,
+      required this.keyboardType,
+      required this.suffixIcon,
+      required this.prefixIcon,
+      required this.obscureText,
+      required this.validator,
+      required this.hintStyle});
+
+  @override
+  State<LoginFeild> createState() => _LoginFeildState();
+}
+
+class _LoginFeildState extends State<LoginFeild> {
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxWidth: 250,
+        maxHeight: 50,
+      ),
+      child: TextFormField(
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscureText: widget.obscureText,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Authcolors.borederColor,
+              width: 3,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Authcolors.gradient2,
+              width: 3,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.redAccent,
+              width: 3,
+            ),
+          ),
+          hintText: widget.hintText,
+          hintStyle: widget.hintStyle,
+          suffixIcon: widget.suffixIcon,
+          prefixIcon: widget.prefixIcon,
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 3,
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        validator: widget.validator,
+        style: widget.hintStyle,
+      ),
+    );
+  }
+}
