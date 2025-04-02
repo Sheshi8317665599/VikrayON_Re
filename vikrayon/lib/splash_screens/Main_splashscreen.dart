@@ -29,7 +29,7 @@ class _MainSplashscreenState extends State<MainSplashscreen> {
         Get.off(() => MainScreen());
       });
     } else {
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 2), () { 
         Get.off(()=> const SignupScreen());
       });
     }

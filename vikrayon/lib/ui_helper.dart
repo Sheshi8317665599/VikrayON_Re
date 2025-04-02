@@ -103,6 +103,81 @@ class UiHelper {
   static List<String> vonieImages = [
     "assets/icons/vonc_io_main-removebg-preview edited.png",
   ];
+
+  // feilds name in main screen 
+  static List<String> fieldsName = [
+    "Recently Viewed",
+    "Trending Offers",
+    "Best Sellers",
+    "Popular Items",
+  ];
+
+  // foods main screen banners
+
+  static List<String> foodMainBanners = [];
+
+  // foods category icons
+
+  static List<String> foodCategoryIcons = [];
+  // foods category names
+
+  static List<String> foodCategoryNames = [];
+  // foods category colors
+
+  static List<Color> foodCategoryColors = [
+    Color(0xff5ce1e6),
+
+  ];
+//
+
+  // livingenerals main screen banners
+  static List<String> livingGeneralsMainBanners = [
+    "assets/img/living_generals/rv 1.png",
+    "assets/img/living_generals/re 2.png",
+    "aassets/img/living_generals/re 3.png",
+    "assets/img/living_generals/RE-4.png",
+  ];
+
+  // livingenerals category icons
+  static List<String> livingGeneralsCategoryIcons = [
+    "assets/img/living_generals/fruits_icon-removebg-preview.png",
+    "assets/img/living_generals/vegetables_icon-removebg-preview.png",
+    "assets/img/living_generals/meat_ivon-removebg-preview.png",
+    "assets/img/living_generals/grains_icon_img-removebg-preview.png",
+  ];
+
+  // livingenerals category names
+  static List<String> livingGeneralsCategoryNames = [
+    "Fruits",
+    "Vegetables",
+    "Meat",
+    "Grains",
+  ];
+
+  // livingenerals category colors
+  static List<Color> livingGeneralsCategoryColors = [
+    Color(0xff4ce305),
+  ];
+
+
+
+//
+
+  // fashion main screen banners
+  static List<String> fashionMainBanners = [];
+
+  // fashion category icons
+  static List<String> fashionCategoryIcons = [];
+
+  // fashion category names
+  static List<String> fashionCategoryNames = [];
+
+  // fashion category colors
+  static List<Color> fashionCategoryColors = [
+    Color(0xffe3a705),
+  ];
+
+//
 }
 // // RxInt of main banner index
 
@@ -155,13 +230,13 @@ Widget getMainBanner(int index) {
 Widget getCategoryIcon(int index) {
   switch (index) {
     case 0:
-      return FoodsScreens();
+      return FoodMainScreen();
     case 1:
-      return LivingGenerals();
+      return LivingGeneralsMainScreen();
     case 2:
-      return FashionScreens();
+      return FashionMainScreen();
     case 3:
-      return CervicesCartScreen();
+      return CervcesFavouriteScreen();
     default:
       return MainScreen();
   }

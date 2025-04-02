@@ -10,7 +10,7 @@ class AppColors {
       Color(0xff5271ff); // bottom navigation bar color of MS
 
   static const Color bottomNavigationBarColorFS =
-      Color(0xff5271ff); // bottom navigation bar color of FS
+      Color(0xff5ce1e6); // bottom navigation bar color of FS
 
   static const Color bottomNavigationBarColorLgS =
       Color(0xff4ce305); // bottom navigation bar color of LgS
@@ -68,7 +68,12 @@ class AppColors {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter); // Detail screen color of LgS
 
-  static const LinearGradient detailsScreenColorCvs = LinearGradient(
+  static const LinearGradient detailsScreenColorFhs = LinearGradient(
+      colors: [Color(0xffffffff), Color(0xffe3a705)],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
+
+  static const LinearGradient detailsScreenColorCvS = LinearGradient(
       colors: [Color(0xffffffff), Color(0xff737373)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter); // Detail screen color of CvS

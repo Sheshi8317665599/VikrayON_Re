@@ -1,72 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:vikrayon/app_notification_Screen.dart';
+import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
+import 'package:vikrayon/widgets/app_bar_feild.dart';
 
 class CategoryFeild extends StatefulWidget {
-  final List itemCount;
-  final VoidCallback onTap;
-  final List mbImages;
-  // categories felid
-  final String titleCT;
-  final List imageci;
-  final List itemCountci;
-  final VoidCallback onTapci;
-  //final List imageci2;
-  final List colorCi;
-  final List cNames;
-  final VoidCallback onpressedciVie;
-  final List imageciVie;
-  // food offers
-  final List fname;
-  final List itemCountFo;
-  final VoidCallback onTapFo; // i have to use 2 times in the code
-  final List imageFo;
-  // Living Generals offers
-  final List lgname;
-  final List itemCountlg;
-  final VoidCallback onTaplg; // i have to use 2 times in the code
-  final List imagelg;
-  // fashion offers
-  final List fsname;
-  final List itemCountfs;
-  final VoidCallback onTapfs; // i have to use 2 times in the code
-  final List imagefs;
-  // cevices offers
-  final List coname;
-  final List itemCountco;
-  final VoidCallback onTapco; // i have to use 2 times in the code
-  final List imageco;
   const CategoryFeild({
     Key? key,
-    required this.itemCount,
-    required this.onTap,
-    required this.mbImages,
-    required this.titleCT,
-    required this.imageci,
-    required this.itemCountci,
-    required this.onTapci,
-    // required this.imageci2,
-    required this.colorCi,
-    required this.cNames,
-    required this.onpressedciVie,
-    required this.imageciVie,
-    required this.fname,
-    required this.itemCountFo,
-    required this.onTapFo,
-    required this.imageFo,
-    required this.lgname,
-    required this.itemCountlg,
-    required this.onTaplg,
-    required this.imagelg,
-    required this.fsname,
-    required this.itemCountfs,
-    required this.onTapfs,
-    required this.imagefs,
-    required this.coname,
-    required this.itemCountco,
-    required this.onTapco,
-    required this.imageco,
   }) : super(key: key);
 
   @override
@@ -86,6 +27,16 @@ class _CategoryFeildState extends State<CategoryFeild> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: AppBarms(
+            onPressedNotification: () => AppNotificationScreen(),
+            onPressedSearchbar: () {},
+            onPressedwathasapp: () {},
+            imageLogo: 'assets/icons/vikray_logo.png',
+            gradientcolourAppbar: AppColors.appBarColorFS,
+            colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -93,10 +44,11 @@ class _CategoryFeildState extends State<CategoryFeild> {
               height: height * 0.18,
               child: CarouselSlider(
                   items: List.generate(
-                    widget.itemCount.length,
+                    UiHelper.mainBanners.length,
                     (index) {
                       return InkWell(
-                        onTap: widget.onTap,
+                        onTap: () => getMainBanner(index),
+                        // widget.onTap,
                         //     () {
                         //   Navigator.push(
                         //     context,
@@ -109,7 +61,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                 borderRadius: BorderRadius.circular(30),
                                 image: DecorationImage(
                                   image: AssetImage(
-                                    widget.mbImages[index],
+                                    // widget.mbImages[index],
+                                    UiHelper.mainBanners[index],
                                   ),
                                   fit: BoxFit.cover,
                                 ))),
@@ -139,7 +92,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                 Container(
                   margin: const EdgeInsets.only(left: 10),
                   child: Text(
-                    widget.titleCT,
+                    "Categories",
+                    // widget.titleCT,
                     style: const TextStyle(
                       color: Authcolors.whiteColor,
                       fontSize: 15,
@@ -184,7 +138,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                           children: [
                             GridView.builder(
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: widget.itemCountci.length,
+                              itemCount: UiHelper.categoryIcons.length,
+                              //widget.itemCountci.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: _crossAxisCount,
@@ -196,7 +151,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: InkWell(
-                                        onTap: widget.onTapci,
+                                        onTap: () => getCategoryIcon(index),
+                                        //widget.onTapci,
                                         // () {
                                         //   Navigator.push(
                                         //     context,
@@ -211,16 +167,18 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                             height: height * 0.75,
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                  image: AssetImage(
-                                                      widget.imageci[index]),
+                                                  image: AssetImage(UiHelper
+                                                      .categoryIcons[index]),
                                                   fit: BoxFit.fill,
                                                 ),
                                                 borderRadius:
                                                     BorderRadius.circular(30),
                                                 border: Border.all(
-                                                  width: 3,
-                                                  color: widget.colorCi[index],
-                                                )),
+                                                    width: 3,
+                                                    color: UiHelper
+                                                        .categoryColors[index]
+                                                    //widget.colorCi[index],
+                                                    )),
                                           ),
                                         ),
                                       ),
@@ -230,7 +188,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Text(
-                                          widget.cNames[index],
+                                          UiHelper.fieldsName[index],
+                                          // widget.cNames[index],
                                           style: const TextStyle(
                                             color: Authcolors.whiteColor,
                                             fontSize: 15,
@@ -255,8 +214,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                         radius: 50,
                                         child: IconButton(
                                             icon: Image.asset(
-                                                widget.imageciVie[0]),
-                                            onPressed: widget.onpressedciVie),
+                                                UiHelper.vonieImages[0]),
+                                            onPressed: () => getVonieImage(0)),
                                       ),
                                     )))
                           ],
@@ -264,23 +223,23 @@ class _CategoryFeildState extends State<CategoryFeild> {
                       : Stack(
                           children: [
                             ListView.builder(
-                              itemCount: widget.itemCountci.length,
+                              itemCount: UiHelper.categoryIcons.length,
                               itemBuilder: (context, index) {
                                 return Stack(children: [
                                   Stack(
                                     children: [
                                       InkWell(
-                                        onTap:
-                                            //widget.onTapci,
-                                            () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  widget.itemCountci[index],
-                                            ),
-                                          );
-                                        },
+                                        onTap: () => getCategoryIcon(index),
+                                        // widget.onTapci,
+                                        //     () {
+                                        //   Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           widget.itemCountci[index],
+                                        //     ),
+                                        //   );
+                                        // },
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
                                           child: Container(
@@ -289,8 +248,9 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                                 vertical: 10),
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: AssetImage(
-                                                    widget.imageci[index]),
+                                                image: AssetImage(UiHelper
+                                                    .categoryIcons[index]),
+                                                // widget.imageci[index]),
                                                 fit: BoxFit.fill,
                                               ),
                                               borderRadius:
@@ -304,7 +264,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                   Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Text(
-                                      widget.cNames[index],
+                                      UiHelper.fieldsName[index],
+                                      //widget.cNames[index],
                                       style: const TextStyle(
                                         color: Authcolors.whiteColor,
                                         fontSize: 15,
@@ -317,14 +278,16 @@ class _CategoryFeildState extends State<CategoryFeild> {
                             ),
                             Align(
                               alignment: Alignment.topRight,
-                              child: InkWell(
-                                onTap: widget.onpressedciVie,
-                                child: CircleAvatar(
-                                  backgroundColor: AppColors.transperent,
-                                  radius: 40,
-                                  child: IconButton(
-                                      icon: Image.asset(widget.imageciVie[0]),
-                                      onPressed: widget.onpressedciVie),
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.transperent,
+                                radius: 40,
+                                child: IconButton(
+                                  icon: Image.asset(
+                                    UiHelper.vonieImages[0],
+                                    // widget.imageciVie[0]
+                                  ),
+                                  onPressed: () => getVonieImage(0),
+                                  //widget.onpressedciVie
                                 ),
                               ),
                             ),
@@ -341,7 +304,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  widget.cNames[0],
+                  UiHelper.fieldsName[0],
+                  // widget.cNames[0],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -357,9 +321,10 @@ class _CategoryFeildState extends State<CategoryFeild> {
                 children: [
                   Row(
                     children: List.generate(
-                      widget.imageFo.length,
+                      UiHelper.foodImages.length,
                       (index) => InkWell(
-                        onTap: widget.onTapFo,
+                        onTap: () => getFoodImage(index),
+                        //widget.onTapFo,
                         // () {
                         //   Navigator.push(
                         //     context,
@@ -374,7 +339,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.imageFo[index]),
+                              image: AssetImage(//widget.imageFo[index]
+                                  UiHelper.foodImages[index]),
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(30),
@@ -386,7 +352,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: widget.onTapFo,
+                      onPressed: () => getFoodImage(0),
+                      // widget.onTapFo,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
@@ -404,7 +371,7 @@ class _CategoryFeildState extends State<CategoryFeild> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  widget.cNames[1],
+                  UiHelper.fieldsName[1],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -420,9 +387,11 @@ class _CategoryFeildState extends State<CategoryFeild> {
                 children: [
                   Row(
                     children: List.generate(
-                      widget.imagelg.length,
+                      UiHelper.livingEssentailsImages.length,
+                      // widget.imagelg.length,
                       (index) => InkWell(
-                        onTap: widget.onTaplg,
+                        onTap: () => getLivinggeneralsImage(index),
+                        // widget.onTaplg,
                         // () {
                         //   Navigator.push(
                         //     context,
@@ -437,7 +406,10 @@ class _CategoryFeildState extends State<CategoryFeild> {
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.imagelg[index]),
+                              image: AssetImage(
+                                UiHelper.livingEssentailsImages[index],
+                                //widget.imagelg[index]
+                              ),
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(30),
@@ -449,7 +421,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: widget.onTaplg,
+                      onPressed: () => getLivinggeneralsImage(0),
+                      // widget.onTaplg,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
@@ -467,7 +440,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  widget.cNames[2],
+                  UiHelper.fieldsName[2],
+                  //widget.cNames[2],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -483,9 +457,11 @@ class _CategoryFeildState extends State<CategoryFeild> {
                 children: [
                   Row(
                     children: List.generate(
-                      widget.imagefs.length,
+                      UiHelper.fashionImages.length,
+                      // widget.imagefs.length,
                       (index) => InkWell(
-                        onTap: widget.onTapfs,
+                        onTap: () => getFashionImage(index),
+                        // widget.onTapfs,
                         //  () {
                         //   Navigator.push(
                         //     context,
@@ -500,7 +476,10 @@ class _CategoryFeildState extends State<CategoryFeild> {
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.imagefs[index]),
+                              image: AssetImage(
+                                UiHelper.foodImages[index],
+                                //widget.imagefs[index]
+                              ),
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(30),
@@ -512,7 +491,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: widget.onTapfs,
+                      onPressed: () => getFashionImage(0),
+                      // widget.onTapfs,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
@@ -530,7 +510,8 @@ class _CategoryFeildState extends State<CategoryFeild> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  widget.cNames[3],
+                  UiHelper.fieldsName[3],
+                  //widget.cNames[3],
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -546,9 +527,11 @@ class _CategoryFeildState extends State<CategoryFeild> {
                 children: [
                   Row(
                     children: List.generate(
-                      widget.imageco.length,
+                      UiHelper.cervcesImages.length,
+                      // widget.imageco.length,
                       (index) => InkWell(
-                        onTap: widget.onTapco,
+                        onTap: () => getCervcesImage(index),
+                        //widget.onTapco,
                         // () {
                         //   Navigator.push(
                         //     context,
@@ -563,7 +546,10 @@ class _CategoryFeildState extends State<CategoryFeild> {
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(widget.imageco[index]),
+                              image: AssetImage(
+                                UiHelper.cervcesImages[index],
+                                //  widget.imageco[index]
+                              ),
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(30),
@@ -575,7 +561,9 @@ class _CategoryFeildState extends State<CategoryFeild> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: IconButton(
-                      onPressed: widget.onTapco,
+                      onPressed: () => getCervcesImage(0),
+
+                      ///widget.onTapco,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
                         color: Colors.white,
