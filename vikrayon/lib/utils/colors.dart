@@ -51,6 +51,40 @@ class AppColors {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter); // App bar Color of CvS
 
+// Product Screen Colors
+
+  // product gradient colour of foods
+
+  static const LinearGradient productscreencolourfsp = LinearGradient(
+      colors: [Color(0xffffffff), Color(0xff5ce1e6)],
+      stops: [0.5, 0.8],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
+
+  // product gradient colour of living generals
+
+  static const LinearGradient productscreencolourlgsp = LinearGradient(
+    colors: [Color(0xffffffff), Color(0xff4ce305)],
+    stops: [0.5, 0.8],
+    // begin: Alignment.bottomRight,
+    // end: Alignment.topL);
+  );
+  // product gradient colour of fashions
+
+  static const LinearGradient productscreencolourfhsp = LinearGradient(
+      colors: [Color(0xffffffff), Color(0xffe3a705)],
+      stops: [0.5, 0.8],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
+
+  // product gradient colour of
+
+  static const LinearGradient productscreencolourcvsp = LinearGradient(
+      colors: [Color(0xffffffff), Color(0xff737373)],
+      stops: [0.5, 0.8],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
+
   // Details Screen Colors
 
   static const LinearGradient detailsScreenColorVoI = LinearGradient(
@@ -77,6 +111,14 @@ class AppColors {
       colors: [Color(0xffffffff), Color(0xff737373)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter); // Detail screen color of CvS
+
+  // colors
+
+  static const Color colorms = Color(0xff3533cd); // color 1
+  static const Color colorfs = Color(0xff5ce1e6); // color 2
+  static const Color colorlgs = Color(0xff4ce305); // color 3
+  static const Color colorfhs = Color(0xffe3a705); // color 4
+  static const Color colorcvs = Color(0xff737373); // color 5
 }
 
 class Authcolors {

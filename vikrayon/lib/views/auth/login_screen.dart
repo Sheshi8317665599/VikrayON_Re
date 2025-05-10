@@ -15,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthController authController = Get.find<AuthController>();
   final LoginControler loginControler = Get.put(LoginControler());
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/icons/vikray_logo.png",
+                      "assets/icons/VikrayON_Text_Logo.png",
                       height: height * 0.1,
                       width: width * 0.8,
                     ),
@@ -82,7 +83,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value!.isEmpty ||
                       !RegExp(r"^[a-zA-Z0-9.!#$%&'*|+-/=?^_`{|}~]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+")
                           .hasMatch(value)) {
-                    return "Enter a valid email";
+                   Get.snackbar(
+                      "Error",
+                      "Please enter a valid email address",
+                      backgroundColor: Authcolors.whiteColor,
+                      colorText: Authcolors.backgrounColor,
+                      duration: Duration(seconds: 2),
+                    );
+                    return "Please enter a valid email address";
                   }
                   return null;
                 },

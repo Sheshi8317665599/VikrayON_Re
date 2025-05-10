@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vikrayon/app_notification_Screen.dart';
 import 'package:vikrayon/utils/colors.dart';
 
 class AppBarms extends StatefulWidget {
@@ -37,7 +39,7 @@ class _AppBarmsState extends State<AppBarms> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image(image: AssetImage(widget.imageLogo), height: 60, width: 60),
+          Image(image: AssetImage(widget.imageLogo), height: 32, width: 50),
           const SizedBox(width: 2),
           Expanded(
             child: Container(
@@ -48,22 +50,22 @@ class _AppBarmsState extends State<AppBarms> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: SearchBar(
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                elevation: MaterialStateProperty.all(0),
-                side: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                elevation: WidgetStateProperty.all(0),
+                side: WidgetStateProperty.all(
                     BorderSide(color: widget.colorsearchBorder, width: 2)),
                 leading: Icon(
                   Icons.search,
                   color: Authcolors.whiteColor,
-                  size: 18,
+                  size: 20,
                 ),
                 hintText: "Search",
-                hintStyle: MaterialStateProperty.all(const TextStyle(
-                    color: Authcolors.whiteColor, fontSize: 12)),
-                textStyle: MaterialStateProperty.all(
-                  const TextStyle(
+                hintStyle: WidgetStateProperty.all(
+                    TextStyle(color: Authcolors.whiteColor, fontSize: 12.sp)),
+                textStyle: WidgetStateProperty.all(
+                  TextStyle(
                     color: Authcolors.whiteColor,
-                    fontSize: 15,
+                    fontSize: 15.sp,
                   ),
                 ),
               ),
@@ -82,13 +84,13 @@ class _AppBarmsState extends State<AppBarms> {
           InkWell(
             onTap: widget.onPressedwathasapp,
             child: SizedBox(
-              height: 22,
-              width: 22,
+              height: 20,
+              width: 20,
               child: Image.asset(
                 "assets/icons/vonc wathsapp logo crop.png",
-                height: 22,
-                width: 22,
-                fit: BoxFit.cover,
+                height: 20,
+                width: 20,
+                fit: BoxFit.fill,
               ),
             ),
           ),
@@ -99,20 +101,23 @@ class _AppBarmsState extends State<AppBarms> {
 }
 
 class AppBarsbs extends StatefulWidget {
-  final VoidCallback? onPressedNotification;
+  final VoidCallback? onPressedfavourite;
+  final VoidCallback? onPressedCartPge;
   final VoidCallback? onPressedSearchbar;
   final VoidCallback? onPressedwathasapp;
   final String imageLogo;
   final LinearGradient? gradientcolourAppbar;
   final Color colorsearchBorder;
-  const AppBarsbs(
-      {super.key,
-      required this.onPressedNotification,
-      required this.onPressedSearchbar,
-      required this.onPressedwathasapp,
-      required this.imageLogo,
-      required this.gradientcolourAppbar,
-      required this.colorsearchBorder});
+  const AppBarsbs({
+    super.key,
+    required this.onPressedfavourite,
+    required this.onPressedCartPge,
+    required this.onPressedSearchbar,
+    required this.onPressedwathasapp,
+    required this.imageLogo,
+    required this.gradientcolourAppbar,
+    required this.colorsearchBorder, required AppNotificationScreen Function() onPressedNotification,
+  });
 
   @override
   State<AppBarsbs> createState() => _AppBarsbsState();
@@ -134,41 +139,52 @@ class _AppBarsbsState extends State<AppBarsbs> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image(image: AssetImage(widget.imageLogo), height: 50, width: 50),
+          Image(image: AssetImage(widget.imageLogo), height: 70, width: 70),
           const SizedBox(width: 2),
-          Container(
-            height: height * 0.035,
-            width: width * 0.55,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade900.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: SearchBar(
-              backgroundColor: MaterialStateProperty.all(Colors.transparent),
-              elevation: MaterialStateProperty.all(0),
-              side: MaterialStateProperty.all(
-                  BorderSide(color: widget.colorsearchBorder, width: 2)),
-              leading: Icon(
-                Icons.search,
-                color: Authcolors.whiteColor,
-                size: 18,
+          Expanded(
+            child: Container(
+              height: height * 0.045,
+              width: width * 0.55,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade900.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(30),
               ),
-              hintText: "Search",
-              hintStyle: MaterialStateProperty.all(
-                  const TextStyle(color: Authcolors.whiteColor, fontSize: 12)),
-              textStyle: MaterialStateProperty.all(
-                const TextStyle(
+              child: SearchBar(
+                backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                elevation: WidgetStateProperty.all(0),
+                side: WidgetStateProperty.all(
+                    BorderSide(color: widget.colorsearchBorder, width: 2)),
+                leading: Icon(
+                  Icons.search,
                   color: Authcolors.whiteColor,
-                  fontSize: 15,
+                  size: 18,
+                ),
+                hintText: "Search",
+                hintStyle: WidgetStateProperty.all(
+                    TextStyle(color: Authcolors.whiteColor, fontSize: 12.sp)),
+                textStyle: WidgetStateProperty.all(
+                  TextStyle(
+                    color: Authcolors.whiteColor,
+                    fontSize: 15.sp,
+                  ),
                 ),
               ),
             ),
           ),
           const SizedBox(width: 2),
           InkWell(
-            onTap: widget.onPressedNotification,
+            onTap: widget.onPressedfavourite,
             child: const Icon(
-              Icons.notifications_none,
+              Icons.favorite_outline,
+              size: 30,
+              color: Authcolors.whiteColor,
+            ),
+          ),
+          const SizedBox(width: 2),
+          InkWell(
+            onTap: widget.onPressedCartPge,
+            child: const Icon(
+              Icons.shopping_cart_outlined,
               size: 30,
               color: Authcolors.whiteColor,
             ),
@@ -177,19 +193,18 @@ class _AppBarsbsState extends State<AppBarsbs> {
           InkWell(
             onTap: widget.onPressedwathasapp,
             child: SizedBox(
-              height: 22,
-              width: 22,
+              height: 20,
+              width: 20,
               child: Image.asset(
                 "assets/icons/vonc wathsapp logo crop.png",
-                height: 22,
-                width: 22,
-                fit: BoxFit.cover,
+                height: 20,
+                width: 20,
+                fit: BoxFit.fill,
               ),
             ),
           ),
         ],
       ),
-      //bottom: PreferredSize(preferredSize: const Size.fromHeight(50), child: teardrop(context)),
     );
   }
 }

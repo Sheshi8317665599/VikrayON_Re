@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
 
@@ -48,7 +49,7 @@ class _LivingGeneralsMainScreenState extends State<LivingGeneralsMainScreen> {
         children: lgs_screens,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        height: 50,
+        height: 50.sp,
         backgroundColor: Authcolors.backgrounColor,
         color: AppColors.bottomNavigationBarColorLgS,
         index: index,

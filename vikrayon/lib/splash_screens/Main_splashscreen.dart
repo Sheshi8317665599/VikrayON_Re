@@ -6,7 +6,6 @@ import 'package:vikrayon/main_screen.dart';
 import 'package:vikrayon/utils/colors.dart';
 import 'package:vikrayon/views/auth/signup_screen.dart';
 
-
 class MainSplashscreen extends StatefulWidget {
   const MainSplashscreen({super.key});
 
@@ -29,21 +28,28 @@ class _MainSplashscreenState extends State<MainSplashscreen> {
         Get.off(() => MainScreen());
       });
     } else {
-      Timer(const Duration(seconds: 2), () { 
-        Get.off(()=> const SignupScreen());
+      Timer(const Duration(seconds: 2), () {
+        Get.off(() => const SignupScreen());
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       body: SingleChildScrollView(
         child: Column(
           children: [
             Center(
-              child: Image.asset('assets/gifs/VOnC ss.gif'),
+              child: Image.asset(
+                'assets/gifs/VOnC ss.gif',
+                height: screenheight,
+                width: screenwidth,
+                fit: BoxFit.contain,
+              ),
             ),
           ],
         ),

@@ -33,7 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/icons/Vikraya_l_2.png",
+                      "assets/icons/VikrayON_Text_Logo.png",
                       height: height * 0.1,
                       width: width * 0.8,
                     ),

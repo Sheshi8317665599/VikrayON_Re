@@ -13,7 +13,7 @@ class BootombarFeild extends StatefulWidget {
   final void Function(int) onItemTapped;
 
   const BootombarFeild({
-    Key? key,
+    super.key,
     required this.backgroundColor,
     required this.backgroundColorbn,
     required this.currentIndex,
@@ -21,7 +21,7 @@ class BootombarFeild extends StatefulWidget {
     required this.bnitems,
     required this.onItemTapped,
     required this.bnviewcolour,
-  }) : super(key: key);
+  });
 
   @override
   State<BootombarFeild> createState() => _BootomBarFeildState();

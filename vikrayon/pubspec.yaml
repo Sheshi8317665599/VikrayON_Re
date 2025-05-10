@@ -52,6 +52,11 @@ dependencies:
   path_provider: ^2.1.5
   badges: ^3.1.2
   shared_preferences: ^2.5.2
+  shimmer: ^3.0.0
+  device_preview: ^1.2.0
+  flutter_native_splash: ^2.4.6
+  dio: ^5.8.0+1
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
@@ -115,3 +120,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+

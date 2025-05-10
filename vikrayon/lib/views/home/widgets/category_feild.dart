@@ -1,583 +1,1230 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vikrayon/app_notification_Screen.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
+import 'package:vikrayon/views/main/cervices_main_screen.dart';
+import 'package:vikrayon/views/main/living_generals_main_screen.dart';
 import 'package:vikrayon/widgets/app_bar_feild.dart';
+import 'package:vikrayon/widgets/shimmer/shimmer_placeholder.dart';
 
-class CategoryFeild extends StatefulWidget {
-  const CategoryFeild({
-    Key? key,
-  }) : super(key: key);
+// class CategoryFeild extends StatefulWidget {
+//   const CategoryFeild({
+//     super.key,
+//   });
 
-  @override
-  State<CategoryFeild> createState() => _CategoryFeildState();
-}
+//   @override
+//   State<CategoryFeild> createState() => _CategoryFeildState();
+// }
 
-class _CategoryFeildState extends State<CategoryFeild> {
-  int _crossAxisCount = 2;
+// class _CategoryFeildState extends State<CategoryFeild> {
+//   int _crossAxisCount = 2;
 
-  double _aspectRatio = 1.5;
+//   double _aspectRatio = 1.5;
 
-  ViewType _viewType = ViewType.grid;
+//   ViewType _viewType = ViewType.grid;
 
-  @override
-  Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50),
-        child: AppBarms(
-            onPressedNotification: () => AppNotificationScreen(),
-            onPressedSearchbar: () {},
-            onPressedwathasapp: () {},
-            imageLogo: 'assets/icons/vikray_logo.png',
-            gradientcolourAppbar: AppColors.appBarColorFS,
-            colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: height * 0.18,
-              child: CarouselSlider(
-                  items: List.generate(
-                    UiHelper.mainBanners.length,
-                    (index) {
-                      return InkWell(
-                        onTap: () => getMainBanner(index),
-                        // widget.onTap,
-                        //     () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => widget.onTap),
-                        //   );
-                        // },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    // widget.mbImages[index],
-                                    UiHelper.mainBanners[index],
-                                  ),
-                                  fit: BoxFit.cover,
-                                ))),
-                      );
-                    },
-                  ),
-                  options: CarouselOptions(
-                    height: height * 0.75,
-                    aspectRatio: _aspectRatio,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    scrollDirection: Axis.horizontal,
-                  )),
-            ),
-            const SizedBox(height: 1),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    "Categories",
-                    // widget.titleCT,
-                    style: const TextStyle(
-                      color: Authcolors.whiteColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      if (_viewType == ViewType.list) {
-                        _crossAxisCount = 2;
-                        _aspectRatio = 1.5;
-                        _viewType = ViewType.grid;
-                      } else {
-                        _crossAxisCount = 1;
-                        _aspectRatio = 5;
-                        _viewType = ViewType.list;
-                      }
-                    });
-                  },
-                  icon: _viewType == ViewType.grid
-                      ? SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: Image.asset(
-                            "assets/icons/cateogrie_icon-removebg-preview.png",
-                            fit: BoxFit.fill,
-                          ))
-                      : const Icon(Icons.list,
-                          color: Authcolors.whiteColor, size: 40),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              height: height * 0.3,
-              child: Stack(
-                children: [
-                  _viewType == ViewType.grid
-                      ? Stack(
-                          children: [
-                            GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: UiHelper.categoryIcons.length,
-                              //widget.itemCountci.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: _crossAxisCount,
-                                childAspectRatio: _aspectRatio,
-                              ),
-                              itemBuilder: (context, index) {
-                                return Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: InkWell(
-                                        onTap: () => getCategoryIcon(index),
-                                        //widget.onTapci,
-                                        // () {
-                                        //   Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //       builder: (context) =>
-                                        //           widget.itemCountci[index],
-                                        //     ),
-                                        //   );
-                                        // },
-                                        child: Center(
-                                          child: Container(
-                                            height: height * 0.75,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(UiHelper
-                                                      .categoryIcons[index]),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                border: Border.all(
-                                                    width: 3,
-                                                    color: UiHelper
-                                                        .categoryColors[index]
-                                                    //widget.colorCi[index],
-                                                    )),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Text(
-                                          UiHelper.fieldsName[index],
-                                          // widget.cNames[index],
-                                          style: const TextStyle(
-                                            color: Authcolors.whiteColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            Center(
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: CircleAvatar(
-                                        backgroundColor: AppColors.transperent,
-                                        radius: 50,
-                                        child: IconButton(
-                                            icon: Image.asset(
-                                                UiHelper.vonieImages[0]),
-                                            onPressed: () => getVonieImage(0)),
-                                      ),
-                                    )))
-                          ],
-                        )
-                      : Stack(
-                          children: [
-                            ListView.builder(
-                              itemCount: UiHelper.categoryIcons.length,
-                              itemBuilder: (context, index) {
-                                return Stack(children: [
-                                  Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () => getCategoryIcon(index),
-                                        // widget.onTapci,
-                                        //     () {
-                                        //   Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //       builder: (context) =>
-                                        //           widget.itemCountci[index],
-                                        //     ),
-                                        //   );
-                                        // },
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: Container(
-                                            height: height * 0.90,
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: AssetImage(UiHelper
-                                                    .categoryIcons[index]),
-                                                // widget.imageci[index]),
-                                                fit: BoxFit.fill,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Text(
-                                      UiHelper.fieldsName[index],
-                                      //widget.cNames[index],
-                                      style: const TextStyle(
-                                        color: Authcolors.whiteColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ]);
-                              },
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: CircleAvatar(
-                                backgroundColor: AppColors.transperent,
-                                radius: 40,
-                                child: IconButton(
-                                  icon: Image.asset(
-                                    UiHelper.vonieImages[0],
-                                    // widget.imageciVie[0]
-                                  ),
-                                  onPressed: () => getVonieImage(0),
-                                  //widget.onpressedciVie
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                ],
-              ),
-            ),
-            // foods offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  UiHelper.fieldsName[0],
-                  // widget.cNames[0],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      UiHelper.foodImages.length,
-                      (index) => InkWell(
-                        onTap: () => getFoodImage(index),
-                        //widget.onTapFo,
-                        // () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => widget.itemCountFo[index],
-                        //     ),
-                        //   );
-                        // },
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(//widget.imageFo[index]
-                                  UiHelper.foodImages[index]),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => getFoodImage(0),
-                      // widget.onTapFo,
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Livin generals offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  UiHelper.fieldsName[1],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      UiHelper.livingEssentailsImages.length,
-                      // widget.imagelg.length,
-                      (index) => InkWell(
-                        onTap: () => getLivinggeneralsImage(index),
-                        // widget.onTaplg,
-                        // () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => widget.itemCountlg[index],
-                        //     ),
-                        //   );
-                        // },
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                UiHelper.livingEssentailsImages[index],
-                                //widget.imagelg[index]
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => getLivinggeneralsImage(0),
-                      // widget.onTaplg,
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // fashion offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  UiHelper.fieldsName[2],
-                  //widget.cNames[2],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      UiHelper.fashionImages.length,
-                      // widget.imagefs.length,
-                      (index) => InkWell(
-                        onTap: () => getFashionImage(index),
-                        // widget.onTapfs,
-                        //  () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => widget.itemCountfs[index],
-                        //     ),
-                        //   );
-                        // },
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                UiHelper.foodImages[index],
-                                //widget.imagefs[index]
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => getFashionImage(0),
-                      // widget.onTapfs,
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Cervces offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  UiHelper.fieldsName[3],
-                  //widget.cNames[3],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      UiHelper.cervcesImages.length,
-                      // widget.imageco.length,
-                      (index) => InkWell(
-                        onTap: () => getCervcesImage(index),
-                        //widget.onTapco,
-                        // () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => widget.itemCountco[index],
-                        //     ),
-                        //   );
-                        // },
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                UiHelper.cervcesImages[index],
-                                //  widget.imageco[index]
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => getCervcesImage(0),
+//   bool _isLoading = true;
 
-                      ///widget.onTapco,
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   void initState() {
+//     super.initState();
+//     _loadData();
+//   }
+
+//   Future<void> _loadData() async {
+//     // simulate network delay
+//     await Future.delayed(const Duration(seconds: 1));
+//     setState(() {
+//       _isLoading = false;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
+//     return Scaffold(
+//         backgroundColor: AppColors.scaffoldBackground,
+//         appBar: PreferredSize(
+//           preferredSize: const Size.fromHeight(50),
+//           child: AppBarms(
+//               onPressedNotification: () => AppNotificationScreen(),
+//               onPressedSearchbar: () {},
+//               onPressedwathasapp: () {},
+//               imageLogo: 'assets/icons/von logo crop.png',
+//               gradientcolourAppbar: AppColors.appBarColorFS,
+//               colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
+//         ),
+//         body: SingleChildScrollView(
+//           child: Column(
+//             children: [
+//               SizedBox(
+//                 height: height * 0.18,
+//                 child: _isLoading
+//                     ? const ShimmerBanner(height: 150)
+//                     : CarouselSlider(
+//                         items: List.generate(
+//                           UiHelper.mainBanners.length,
+//                           (index) {
+//                             return InkWell(
+//                               onTap:
+//                                   //() => getMainBanner(index),
+//                                   // widget.onTap,
+//                                   () {
+//                                 Navigator.push(
+//                                   context,
+//                                   MaterialPageRoute(
+//                                       builder: (context) =>
+//                                           getMainBanner(index)),
+//                                 );
+//                               },
+//                               child: Container(
+//                                   decoration: BoxDecoration(
+//                                       borderRadius: BorderRadius.circular(30),
+//                                       image: DecorationImage(
+//                                         image: AssetImage(
+//                                           // widget.mbImages[index],
+//                                           UiHelper.mainBanners[index],
+//                                         ),
+//                                         fit: BoxFit.fill,
+//                                       ))),
+//                             );
+//                           },
+//                         ),
+//                         options: CarouselOptions(
+//                           height: height * 0.75,
+//                           aspectRatio: _aspectRatio,
+//                           viewportFraction: 0.8,
+//                           initialPage: 0,
+//                           enableInfiniteScroll: true,
+//                           reverse: false,
+//                           autoPlay: true,
+//                           autoPlayInterval: const Duration(seconds: 3),
+//                           autoPlayAnimationDuration:
+//                               const Duration(milliseconds: 800),
+//                           autoPlayCurve: Curves.fastOutSlowIn,
+//                           enlargeCenterPage: true,
+//                           scrollDirection: Axis.horizontal,
+//                         )),
+//               ),
+//               const SizedBox(height: 1),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   Container(
+//                     margin: const EdgeInsets.only(left: 10),
+//                     child: Text(
+//                       "Categories",
+//                       // widget.titleCT,
+//                       style:  TextStyle(
+//                         color: Authcolors.whiteColor,
+//                         fontSize:  15.sp,
+//                         fontWeight: FontWeight.bold,
+//                       ),
+//                     ),
+//                   ),
+//                   IconButton(
+//                     onPressed: () {
+//                       setState(() {
+//                         if (_viewType == ViewType.list) {
+//                           _crossAxisCount = 2;
+//                           _aspectRatio = 1.5;
+//                           _viewType = ViewType.grid;
+//                         } else {
+//                           _crossAxisCount = 1;
+//                           _aspectRatio = 5;
+//                           _viewType = ViewType.list;
+//                         }
+//                       });
+//                     },
+//                     icon: _viewType == ViewType.grid
+//                         ? SizedBox(
+//                             width: 40,
+//                             height: 40,
+//                             child: Image.asset(
+//                               "assets/icons/cateogrie_icon-removebg-preview.png",
+//                               fit: BoxFit.fill,
+//                             ))
+//                         : const Icon(Icons.list,
+//                             color: Authcolors.whiteColor, size: 40),
+//                   ),
+//                 ],
+//               ),
+
+//               Container(
+//                 margin: const EdgeInsets.only(left: 10, right: 10),
+//                 height: height * 0.3,
+//                 child: _isLoading
+//                     ? _viewType == ViewType.grid
+//                         ? const ShimmerCategoryGrid(
+//                             crossAxisCount: 2, aspectRatio: 1.5)
+//                         : ShimmerCategoryList(height: height)
+//                     : Stack(
+//                         children: [
+//                           _viewType == ViewType.grid
+//                               ? Stack(
+//                                   children: [
+//                                     GridView.builder(
+//                                       physics:
+//                                           const NeverScrollableScrollPhysics(),
+//                                       itemCount: UiHelper.categoryIcons.length,
+//                                       //widget.itemCountci.length,
+//                                       gridDelegate:
+//                                           SliverGridDelegateWithFixedCrossAxisCount(
+//                                         crossAxisCount: _crossAxisCount,
+//                                         childAspectRatio: _aspectRatio,
+//                                       ),
+//                                       itemBuilder: (context, index) {
+//                                         return Stack(
+//                                           children: [
+//                                             Padding(
+//                                               padding:
+//                                                   const EdgeInsets.all(8.0),
+//                                               child: InkWell(
+//                                                 onTap:
+//                                                     //() => getCategoryIcon(index),
+//                                                     //widget.onTapci,
+//                                                     () {
+//                                                   Navigator.push(
+//                                                     context,
+//                                                     MaterialPageRoute(
+//                                                       builder: (context) =>
+//                                                           getCategoryIcon(
+//                                                               index),
+//                                                     ),
+//                                                   );
+//                                                 },
+//                                                 child: Center(
+//                                                   child: Container(
+//                                                     height: height * 0.75,
+//                                                     decoration: BoxDecoration(
+//                                                         image: DecorationImage(
+//                                                           image: AssetImage(
+//                                                               UiHelper.categoryIcons[
+//                                                                   index]),
+//                                                           fit: BoxFit.fill,
+//                                                         ),
+//                                                         borderRadius:
+//                                                             BorderRadius
+//                                                                 .circular(30),
+//                                                         border: Border.all(
+//                                                             width: 3,
+//                                                             color: UiHelper
+//                                                                     .categoryColors[
+//                                                                 index]
+//                                                             //widget.colorCi[index],
+//                                                             )),
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                             Align(
+//                                               alignment: Alignment.bottomCenter,
+//                                               child: Padding(
+//                                                 padding:
+//                                                     const EdgeInsets.all(15.0),
+//                                                 child: Text(
+//                                                   UiHelper.categoryNames[index],
+//                                                   // widget.cNames[index],
+//                                                   style:  TextStyle(
+//                                                     color:
+//                                                         Authcolors.whiteColor,
+//                                                     fontSize:  15.sp,
+//                                                     fontWeight: FontWeight.bold,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ),
+//                                           ],
+//                                         );
+//                                       },
+//                                     ),
+//                                     Center(
+//                                         child: Align(
+//                                             alignment: Alignment.center,
+//                                             child: Container(
+//                                               decoration: const BoxDecoration(
+//                                                 shape: BoxShape.circle,
+//                                               ),
+//                                               child: CircleAvatar(
+//                                                 backgroundColor:
+//                                                     AppColors.transperent,
+//                                                 radius: 50,
+//                                                 child: IconButton(
+//                                                     icon: Image.asset(UiHelper
+//                                                         .vonieImages[0]),
+//                                                     onPressed: () =>
+//                                                         getVonieImage(0)),
+//                                               ),
+//                                             )))
+//                                   ],
+//                                 )
+//                               : Stack(
+//                                   children: [
+//                                     ListView.builder(
+//                                       itemCount: UiHelper.categoryIcons.length,
+//                                       itemBuilder: (context, index) {
+//                                         return Stack(children: [
+//                                           Stack(
+//                                             children: [
+//                                               InkWell(
+//                                                 onTap:
+//                                                     //() => getCategoryIcon(index),
+//                                                     // widget.onTapci,
+//                                                     () {
+//                                                   Navigator.push(
+//                                                     context,
+//                                                     MaterialPageRoute(
+//                                                       builder: (context) =>
+//                                                           getCategoryIcon(
+//                                                               index),
+//                                                     ),
+//                                                   );
+//                                                 },
+//                                                 child: SingleChildScrollView(
+//                                                   scrollDirection:
+//                                                       Axis.vertical,
+//                                                   child: Container(
+//                                                     height: height * 0.90,
+//                                                     margin: const EdgeInsets
+//                                                         .symmetric(
+//                                                         vertical: 10),
+//                                                     decoration: BoxDecoration(
+//                                                       image: DecorationImage(
+//                                                         image: AssetImage(UiHelper
+//                                                                 .categoryIcons[
+//                                                             index]),
+//                                                         // widget.imageci[index]),
+//                                                         fit: BoxFit.fill,
+//                                                       ),
+//                                                       borderRadius:
+//                                                           BorderRadius.circular(
+//                                                               30),
+//                                                     ),
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           Align(
+//                                             alignment: Alignment.bottomCenter,
+//                                             child: Text(
+//                                               UiHelper.categoryNames[index],
+//                                               //widget.cNames[index],
+//                                               style:  TextStyle(
+//                                                 color: Authcolors.whiteColor,
+//                                                 fontSize:  15.sp,
+//                                                 fontWeight: FontWeight.bold,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                         ]);
+//                                       },
+//                                     ),
+//                                     Align(
+//                                       alignment: Alignment.topRight,
+//                                       child: CircleAvatar(
+//                                         backgroundColor: AppColors.transperent,
+//                                         radius: 40,
+//                                         child: IconButton(
+//                                           icon: Image.asset(
+//                                             UiHelper.vonieImages[0],
+//                                             // widget.imageciVie[0]
+//                                           ),
+//                                           onPressed: () => getVonieImage(0),
+//                                           //widget.onpressedciVie
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                         ],
+//                       ),
+//               ),
+//               // foods offers
+//               const SizedBox(height: 1),
+//               SizedBox(
+//                 height: 20,
+//                 width: width,
+//                 child: _isLoading
+//                     ? const ShimmerSectionTitle()
+//                     : Padding(
+//                         padding: const EdgeInsets.only(left: 10.0),
+//                         child: Text(
+//                           UiHelper.categoryNames[0],
+//                           // widget.cNames[0],
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize:  15.sp,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                       ),
+//               ),
+//               const SizedBox(height: 1),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 child: Row(
+//                   children: [
+//                     Row(
+//                       children: List.generate(
+//                         _isLoading ? 6 : UiHelper.foodImages.length,
+//                         (index) => _isLoading
+//                             ? const ShimmerHorizontalItem(
+//                                 height: 300,
+//                                 width: 300,
+//                               )
+//                             : InkWell(
+//                                 onTap: // () => getFoodImage(index),
+//                                     //widget.onTapFo,
+//                                     () {
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) => getFoodImage(index),
+//                                     ),
+//                                   );
+//                                 },
+//                                 child: Container(
+//                                   height: 150,
+//                                   width: width - 50,
+//                                   margin: const EdgeInsets.symmetric(
+//                                       horizontal: 10),
+//                                   decoration: BoxDecoration(
+//                                     image: DecorationImage(
+//                                       image: AssetImage(//widget.imageFo[index]
+//                                           UiHelper.foodImages[index]),
+//                                       fit: BoxFit.fill,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(30),
+//                                   ),
+//                                 ),
+//                               ),
+//                       ),
+//                     ),
+//                     Align(
+//                       alignment: Alignment.centerRight,
+//                       child: IconButton(
+//                         onPressed: () {
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) => getFoodImage(0),
+//                             ),
+//                           );
+//                         },
+//                         //() => getFoodImage(0),
+//                         // widget.onTapFo,
+//                         icon: const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               // Livin generals offers
+//               const SizedBox(height: 1),
+//               SizedBox(
+//                 height: 20,
+//                 width: width,
+//                 child: _isLoading
+//                     ? const ShimmerSectionTitle()
+//                     : Padding(
+//                         padding: const EdgeInsets.only(left: 10.0),
+//                         child: Text(
+//                           UiHelper.categoryNames[1],
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize:  15.sp,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                       ),
+//               ),
+//               const SizedBox(height: 1),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 child: Row(
+//                   children: [
+//                     Row(
+//                       children: List.generate(
+//                         _isLoading ? 6 : UiHelper.livingEssentailsImages.length,
+//                         // widget.imagelg.length,
+//                         (index) => _isLoading
+//                             ? const ShimmerHorizontalItem(
+//                                 height: 300,
+//                                 width: 300,
+//                               )
+//                             : InkWell(
+//                                 onTap: // () => getLivinggeneralsImage(index),
+//                                     // widget.onTaplg,
+//                                     () {
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) =>
+//                                           getLivinggeneralsImage(index),
+//                                     ),
+//                                   );
+//                                 },
+//                                 child: Container(
+//                                   height: 150,
+//                                   width: width - 50,
+//                                   margin: const EdgeInsets.symmetric(
+//                                       horizontal: 10),
+//                                   decoration: BoxDecoration(
+//                                     image: DecorationImage(
+//                                       image: AssetImage(
+//                                         UiHelper.livingEssentailsImages[index],
+//                                         //widget.imagelg[index]
+//                                       ),
+//                                       fit: BoxFit.fill,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(30),
+//                                   ),
+//                                 ),
+//                               ),
+//                       ),
+//                     ),
+//                     Align(
+//                       alignment: Alignment.centerRight,
+//                       child: IconButton(
+//                         onPressed: () {
+//                           Navigator.push(
+//                               context,
+//                               MaterialPageRoute(
+//                                 builder: (context) =>
+//                                     LivingGeneralsMainScreen(),
+//                               ));
+//                         }, // () => getLivinggeneralsImage(0),
+//                         // widget.onTaplg,
+//                         icon: const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               // fashion offers
+//               const SizedBox(height: 1),
+//               SizedBox(
+//                 height: 20,
+//                 width: width,
+//                 child: _isLoading
+//                     ? const ShimmerSectionTitle()
+//                     : Padding(
+//                         padding: const EdgeInsets.only(left: 10.0),
+//                         child: Text(
+//                           UiHelper.categoryNames[2],
+//                           //widget.cNames[2],
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize:  15.sp,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                       ),
+//               ),
+//               const SizedBox(height: 1),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 child: Row(
+//                   children: [
+//                     Row(
+//                       children: List.generate(
+//                         _isLoading ? 6 : UiHelper.fashionImages.length,
+//                         // widget.imagefs.length,
+//                         (index) => _isLoading
+//                             ? const ShimmerHorizontalItem(
+//                                 width: 300,
+//                                 height: 300,
+//                               )
+//                             : InkWell(
+//                                 onTap:
+//                                     // () => getFashionImage(index),
+//                                     // widget.onTapfs,
+//                                     () {
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) =>
+//                                           getFashionImage(index),
+//                                     ),
+//                                   );
+//                                 },
+//                                 child: Container(
+//                                   height: 150,
+//                                   width: width - 50,
+//                                   margin: const EdgeInsets.symmetric(
+//                                       horizontal: 10),
+//                                   decoration: BoxDecoration(
+//                                     image: DecorationImage(
+//                                       image: AssetImage(
+//                                         UiHelper.foodImages[index],
+//                                         //widget.imagefs[index]
+//                                       ),
+//                                       fit: BoxFit.fill,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(30),
+//                                   ),
+//                                 ),
+//                               ),
+//                       ),
+//                     ),
+//                     Align(
+//                       alignment: Alignment.centerRight,
+//                       child: IconButton(
+//                         onPressed: () {
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) => getFashionImage(0),
+//                             ),
+//                           );
+//                         },
+//                         // widget.onTapfs,
+//                         icon: const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               // Cervces offers
+//               const SizedBox(height: 1),
+//               SizedBox(
+//                 height: 20,
+//                 width: width,
+//                 child: _isLoading
+//                     ? const ShimmerSectionTitle()
+//                     : Padding(
+//                         padding: const EdgeInsets.only(left: 10.0),
+//                         child: Text(
+//                           UiHelper.categoryNames[3],
+//                           //widget.cNames[3],
+//                           style: TextStyle(
+//                             color: Colors.white,
+//                             fontSize:  15.sp,
+//                             fontWeight: FontWeight.bold,
+//                           ),
+//                         ),
+//                       ),
+//               ),
+//               const SizedBox(height: 1),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 child: Row(
+//                   children: [
+//                     Row(
+//                       children: List.generate(
+//                         _isLoading ? 6 : UiHelper.cervcesImages.length,
+//                         // widget.imageco.length,
+//                         (index) => _isLoading
+//                             ? const ShimmerHorizontalItem(
+//                                 width: 300,
+//                                 height: 300,
+//                               )
+//                             : InkWell(
+//                                 onTap:
+//                                     //() => getCervcesImage(index),
+//                                     //widget.onTapco,
+//                                     () {
+//                                   Navigator.push(
+//                                     context,
+//                                     MaterialPageRoute(
+//                                       builder: (context) =>
+//                                           getCervcesImage(index),
+//                                     ),
+//                                   );
+//                                 },
+//                                 child: Container(
+//                                   height: 150,
+//                                   width: width - 50,
+//                                   margin: const EdgeInsets.symmetric(
+//                                       horizontal: 10),
+//                                   decoration: BoxDecoration(
+//                                     image: DecorationImage(
+//                                       image: AssetImage(
+//                                         UiHelper.cervcesImages[index],
+//                                         //  widget.imageco[index]
+//                                       ),
+//                                       fit: BoxFit.fill,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(30),
+//                                   ),
+//                                 ),
+//                               ),
+//                       ),
+//                     ),
+//                     Align(
+//                       alignment: Alignment.centerRight,
+//                       child: IconButton(
+//                         onPressed: () {
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) => CervcesMainScreen(),
+//                             ),
+//                           );
+//                         },
+
+//                         ///widget.onTapco,
+//                         icon: const Icon(
+//                           Icons.arrow_forward_ios,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ));
+//   }
+// }
 
 enum ViewType { grid, list }
+
+// class CategoryFeild1 extends StatefulWidget {
+//   final List<String> mainBanners;
+//   final String titleCt;
+//   final List<String> categoryIcons;
+//   final List<Color> categoryColors;
+//   final List<String> categoryNames;
+//   final List<String> vonieImages;
+//   final List<String> foodimages;
+//   final List<String> livingEssentailsImages;
+//   final List<String> fashionImages;
+//   final List<String> cervcesImages;
+//   final Function(int)? onBannerTap;
+//   final Function(int)? onCategoryTap;
+//   final Function(int)? onVonieTap;
+//   final Function(int)? onFoodTap;
+//   final Function(int)? onFoodpageTap;
+//   final Function(int)? onLivingTap;
+//   final Function(int)? onLivingpageTap;
+//   final Function(int)? onFashionTap;
+//   final Function(int)? onFashionpageTap;
+//   final Function(int)? onCervcesTap;
+//   final Function(int)? onCervcespageTap;
+//   const CategoryFeild1({
+//     super.key,
+//     required this.mainBanners,
+//     required this.titleCt,
+//     required this.categoryIcons,
+//     required this.categoryColors,
+//     required this.categoryNames,
+//     required this.vonieImages,
+//     required this.foodimages,
+//     required this.livingEssentailsImages,
+//     required this.fashionImages,
+//     required this.cervcesImages,
+//     required this.onBannerTap,
+//     required this.onCategoryTap,
+//     required this.onVonieTap,
+//     required this.onFoodTap,
+//     required this.onFoodpageTap,
+//     required this.onLivingTap,
+//     required this.onLivingpageTap,
+//     required this.onFashionTap,
+//     required this.onFashionpageTap,
+//     required this.onCervcesTap,
+//     required this.onCervcespageTap,
+//   });
+
+//   @override
+//   State<CategoryFeild1> createState() => _CategoryFeildState1();
+// }
+
+// class _CategoryFeildState1 extends State<CategoryFeild1> {
+//   int _crossAxisCount = 2;
+
+//   double _aspectRatio = 1.5;
+
+//   ViewType _viewType = ViewType.grid;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
+//     return Scaffold(
+//       backgroundColor: AppColors.scaffoldBackground,
+//       appBar: PreferredSize(
+//         preferredSize: const Size.fromHeight(50),
+//         child: AppBarms(
+//             onPressedNotification: () => AppNotificationScreen(),
+//             onPressedSearchbar: () {},
+//             onPressedwathasapp: () {},
+//             imageLogo: 'assets/icons/VikrayON_Text_Logo.png',
+//             gradientcolourAppbar: AppColors.appBarColorMS,
+//             colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
+//       ),
+//       body: SingleChildScrollView(
+//         child: Column(
+//           children: [
+//             SizedBox(
+//               height: height * 0.18,
+//               child: CarouselSlider(
+//                   items: List.generate(
+//                     widget.mainBanners.length,
+//                     (index) {
+//                       return InkWell(
+//                         onTap:  widget.onBannerTap!(index),
+//                         child: Container(
+//                             decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(30),
+//                                 image: DecorationImage(
+//                                   image: AssetImage(
+//                                     widget.mainBanners[index],
+//                                   ),
+//                                   fit: BoxFit.cover,
+//                                 ))),
+//                       );
+//                     },
+//                   ),
+//                   options: CarouselOptions(
+//                     height: height * 0.75,
+//                     aspectRatio: _aspectRatio,
+//                     viewportFraction: 0.8,
+//                     initialPage: 0,
+//                     enableInfiniteScroll: true,
+//                     reverse: false,
+//                     autoPlay: true,
+//                     autoPlayInterval: const Duration(seconds: 3),
+//                     autoPlayAnimationDuration:
+//                         const Duration(milliseconds: 800),
+//                     autoPlayCurve: Curves.fastOutSlowIn,
+//                     enlargeCenterPage: true,
+//                     scrollDirection: Axis.horizontal,
+//                   )),
+//             ),
+//             const SizedBox(height: 1),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Container(
+//                   margin: const EdgeInsets.only(left: 10),
+//                   child: Text(
+//                     //  "Categories",
+//                     widget.titleCt,
+//                     style: TextStyle(
+//                       color: Authcolors.whiteColor,
+//                       fontSize: 15.sp,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                   ),
+//                 ),
+//                 IconButton(
+//                   onPressed: () {
+//                     setState(() {
+//                       if (_viewType == ViewType.list) {
+//                         _crossAxisCount = 2;
+//                         _aspectRatio = 1.5;
+//                         _viewType = ViewType.grid;
+//                       } else {
+//                         _crossAxisCount = 1;
+//                         _aspectRatio = 5;
+//                         _viewType = ViewType.list;
+//                       }
+//                     });
+//                   },
+//                   icon: _viewType == ViewType.grid
+//                       ? SizedBox(
+//                           width: 40,
+//                           height: 40,
+//                           child: Image.asset(
+//                             "assets/icons/cateogrie_icon-removebg-preview.png",
+//                             fit: BoxFit.fill,
+//                           ))
+//                       : const Icon(Icons.list,
+//                           color: Authcolors.whiteColor, size: 40),
+//                 ),
+//               ],
+//             ),
+//             Container(
+//               margin: const EdgeInsets.only(left: 10, right: 10),
+//               height: height * 0.3,
+//               child: Stack(
+//                 children: [
+//                   _viewType == ViewType.grid
+//                       ? Stack(
+//                           children: [
+//                             GridView.builder(
+//                               physics: const NeverScrollableScrollPhysics(),
+//                               itemCount: //UiHelper.categoryIcons.length,
+//                                   widget.categoryIcons.length,
+//                               gridDelegate:
+//                                   SliverGridDelegateWithFixedCrossAxisCount(
+//                                 crossAxisCount: _crossAxisCount,
+//                                 childAspectRatio: _aspectRatio,
+//                               ),
+//                               itemBuilder: (context, index) {
+//                                 return Stack(
+//                                   children: [
+//                                     Padding(
+//                                       padding: const EdgeInsets.all(8.0),
+//                                       child: InkWell(
+//                                         onTap: () => widget.onCategoryTap,
+//                                         child: Center(
+//                                           child: Container(
+//                                             height: height * 0.75,
+//                                             decoration: BoxDecoration(
+//                                                 image: DecorationImage(
+//                                                   image: AssetImage(widget
+//                                                       .categoryIcons[index]),
+//                                                   fit: BoxFit.fill,
+//                                                 ),
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(30),
+//                                                 border: Border.all(
+//                                                   width: 3,
+//                                                   color: widget
+//                                                       .categoryColors[index],
+//                                                 )),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                     Align(
+//                                       alignment: Alignment.bottomCenter,
+//                                       child: Padding(
+//                                         padding: const EdgeInsets.all(15.0),
+//                                         child: Text(
+//                                           widget.categoryNames[index],
+//                                           style: TextStyle(
+//                                             color: Authcolors.whiteColor,
+//                                             fontSize: 15.sp,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 );
+//                               },
+//                             ),
+//                             Center(
+//                                 child: Align(
+//                                     alignment: Alignment.center,
+//                                     child: Container(
+//                                       decoration: const BoxDecoration(
+//                                         shape: BoxShape.circle,
+//                                       ),
+//                                       child: CircleAvatar(
+//                                         backgroundColor: AppColors.transperent,
+//                                         radius: 50,
+//                                         child: IconButton(
+//                                             icon: Image.asset(
+//                                                 UiHelper.vonieImages[0]),
+//                                             onPressed: () => widget.onVonieTap),
+//                                       ),
+//                                     )))
+//                           ],
+//                         )
+//                       : Stack(
+//                           children: [
+//                             ListView.builder(
+//                               itemCount: widget.categoryIcons.length,
+//                               itemBuilder: (context, index) {
+//                                 return Stack(children: [
+//                                   Stack(
+//                                     children: [
+//                                       InkWell(
+//                                         onTap: () => widget.onCategoryTap,
+//                                         child: SingleChildScrollView(
+//                                           scrollDirection: Axis.vertical,
+//                                           child: Container(
+//                                             height: height * 0.90,
+//                                             margin: const EdgeInsets.symmetric(
+//                                                 vertical: 10),
+//                                             decoration: BoxDecoration(
+//                                               image: DecorationImage(
+//                                                 image: AssetImage(widget
+//                                                     .categoryIcons[index]),
+//                                                 fit: BoxFit.fill,
+//                                               ),
+//                                               borderRadius:
+//                                                   BorderRadius.circular(30),
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                   Align(
+//                                     alignment: Alignment.bottomCenter,
+//                                     child: Text(
+//                                       widget.categoryNames[index],
+//                                       style: TextStyle(
+//                                         color: Authcolors.whiteColor,
+//                                         fontSize: 15.sp,
+//                                         fontWeight: FontWeight.bold,
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ]);
+//                               },
+//                             ),
+//                             Align(
+//                               alignment: Alignment.topRight,
+//                               child: CircleAvatar(
+//                                 backgroundColor: AppColors.transperent,
+//                                 radius: 40,
+//                                 child: IconButton(
+//                                   icon: Image.asset(widget.vonieImages[0]),
+//                                   onPressed: () => widget.onVonieTap,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                 ],
+//               ),
+//             ),
+//             // foods offers
+//             const SizedBox(height: 1),
+//             SizedBox(
+//               height: 20,
+//               width: width,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(left: 10.0),
+//                 child: Text(
+//                   // UiHelper.fieldsName[0],
+//                   widget.categoryNames[0],
+//                   style: TextStyle(
+//                     color: Colors.white,
+//                     fontSize: 15.sp,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 1),
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Row(
+//                     children: List.generate(
+//                       widget.foodimages.length,
+//                       (index) => InkWell(
+//                         onTap: () => widget.onFoodTap,
+//                         child: Container(
+//                           height: 150,
+//                           width: width - 50,
+//                           margin: const EdgeInsets.symmetric(horizontal: 10),
+//                           decoration: BoxDecoration(
+//                             image: DecorationImage(
+//                               image: AssetImage(widget.foodimages[index]
+//                                   //UiHelper.fiImages[index]
+//                                   ),
+//                               fit: BoxFit.fill,
+//                             ),
+//                             borderRadius: BorderRadius.circular(30),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Align(
+//                     alignment: Alignment.centerRight,
+//                     child: IconButton(
+//                       onPressed: () => // getFoodImage(0),
+//                           widget.onFoodpageTap,
+//                       icon: const Icon(
+//                         Icons.arrow_forward_ios,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             // Livin generals offers
+//             const SizedBox(height: 1),
+//             SizedBox(
+//               height: 20,
+//               width: width,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(left: 10.0),
+//                 child: Text(
+//                   UiHelper.categoryNames[1],
+//                   style: TextStyle(
+//                     color: Colors.white,
+//                     fontSize: 15.sp,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 1),
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Row(
+//                     children: List.generate(
+//                       widget.livingEssentailsImages.length,
+//                       (index) => InkWell(
+//                         onTap: () => widget.onLivingTap,
+//                         child: Container(
+//                           height: 150,
+//                           width: width - 50,
+//                           margin: const EdgeInsets.symmetric(horizontal: 10),
+//                           decoration: BoxDecoration(
+//                             image: DecorationImage(
+//                               image: AssetImage(
+//                                   widget.livingEssentailsImages[index]),
+//                               fit: BoxFit.fill,
+//                             ),
+//                             borderRadius: BorderRadius.circular(30),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Align(
+//                     alignment: Alignment.centerRight,
+//                     child: IconButton(
+//                       onPressed: () => widget.onLivingpageTap,
+//                       icon: const Icon(
+//                         Icons.arrow_forward_ios,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             // fashion offers
+//             const SizedBox(height: 1),
+//             SizedBox(
+//               height: 20,
+//               width: width,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(left: 10.0),
+//                 child: Text(
+//                   //UiHelper.fieldsName[2],
+//                   widget.categoryNames[2],
+//                   style: TextStyle(
+//                     color: Colors.white,
+//                     fontSize: 15.sp,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 1),
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Row(
+//                     children: List.generate(
+//                       widget.fashionImages.length,
+//                       // widget.imagefs.length,
+//                       (index) => InkWell(
+//                         onTap: () => widget.onFashionTap,
+//                         child: Container(
+//                           height: 150,
+//                           width: width - 50,
+//                           margin: const EdgeInsets.symmetric(horizontal: 10),
+//                           decoration: BoxDecoration(
+//                             image: DecorationImage(
+//                               image: AssetImage(
+//                                   // UiHelper.foodImages[index],
+//                                   widget.fashionImages[index]),
+//                               fit: BoxFit.fill,
+//                             ),
+//                             borderRadius: BorderRadius.circular(30),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Align(
+//                     alignment: Alignment.centerRight,
+//                     child: IconButton(
+//                       onPressed: () => widget.onFashionpageTap,
+//                       icon: const Icon(
+//                         Icons.arrow_forward_ios,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             // Cervces offers
+//             const SizedBox(height: 1),
+//             SizedBox(
+//               height: 20,
+//               width: width,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(left: 10.0),
+//                 child: Text(
+//                   widget.categoryNames[3],
+//                   style: TextStyle(
+//                     color: Colors.white,
+//                     fontSize: 15.sp,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 1),
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   Row(
+//                     children: List.generate(
+//                       widget.cervcesImages.length,
+//                       (index) => InkWell(
+//                         onTap: () => widget.onCervcesTap,
+//                         child: Container(
+//                           height: 150,
+//                           width: width - 50,
+//                           margin: const EdgeInsets.symmetric(horizontal: 10),
+//                           decoration: BoxDecoration(
+//                             image: DecorationImage(
+//                               image: AssetImage(
+//                                 widget.cervcesImages[index],
+//                               ),
+//                               fit: BoxFit.fill,
+//                             ),
+//                             borderRadius: BorderRadius.circular(30),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   Align(
+//                     alignment: Alignment.centerRight,
+//                     child: IconButton(
+//                       onPressed: () => widget.onCervcespageTap,
+//                       icon: const Icon(
+//                         Icons.arrow_forward_ios,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -33,7 +33,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/icons/vikray_logo.png",
+                      "assets/icons/VikrayON_Text_Logo.png",
                       height: height * 0.1,
                       width: width * 0.8,
                     ),

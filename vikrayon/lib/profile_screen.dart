@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void getUserData() async {
     user = await googleSignIn.signInSilently();
+    profileControler.userImage.value = user?.photoUrl ?? '';
     setState(() {});
   }
 
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Authcolors.backgrounColor,
-                      radius: 30,
+                      radius: 30.sp,
                       backgroundImage: profileControler
                               .profilepicpath.value.isNotEmpty
                           ? FileImage(
@@ -123,17 +124,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text(
                     user?.displayName ?? "Vikrayon",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Authcolors.whiteColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 10),
+                        fontSize: 14.sp),
                   ),
                   Text(
                     user?.email ?? "Admin@VikrayON",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Authcolors.whiteColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 10),
+                        fontSize: 14.sp),
                   ),
                 ],
               ),
@@ -142,34 +143,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 20,
           ),
-          BuildMenuItem(
+          buildMenuItem(
               icon: Icons.person, title: "Edit Profile", onTap: () {}),
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
               icon: Icons.history, title: "Order History", onTap: () {}),
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
               icon: Icons.local_shipping,
               title: 'Shipping Details',
               onTap: () {}),
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
               icon: Icons.payment, title: "Payment Details", onTap: () {}),
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
               icon: Icons.card_giftcard, title: "Rewards", onTap: () {}),
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
             icon: Icons.security,
             title: "Security &Privacy Policy",
             onTap: () {},
@@ -177,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: height * 0.01,
           ),
-          BuildMenuItem(
+          buildMenuItem(
             icon: Icons.logout,
             title: "Logout",
             onTap: () => gSignOut(),
@@ -191,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   //
 
-  Widget BuildMenuItem(
+  Widget buildMenuItem(
       {required IconData icon,
       required String title,
       required VoidCallback onTap}) {
@@ -232,13 +233,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       padding: const EdgeInsets.all(20),
-      height: height * 0.17,
+      height: height * 0.19,
       width: width * 0.95,
       child: Column(
         children: [
-          const Text(
+           Text(
             "Edit Profile Picture",
-            style: TextStyle(color: Authcolors.whiteColor, fontSize: 20),
+            style: TextStyle(color: Authcolors.whiteColor, fontSize: 20.sp),
           ),
           const SizedBox(
             height: 10,

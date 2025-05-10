@@ -1,23 +1,25 @@
-import 'dart:convert';
 import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vikrayon/main_screen.dart';
 import 'package:vikrayon/views/auth/login_screen.dart';
 import 'package:vikrayon/views/auth/user_conformation_screen.dart';
-import 'package:vikrayon/views/home/home_screen/home_screen.dart';
 
 class AuthController {
   final String baseUrl;
+  final Dio dio;
 
-  AuthController(this.baseUrl);
+  AuthController(
+    this.baseUrl,
+  ) : dio = Dio(BaseOptions(baseUrl: baseUrl));
+
   // google signin function
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  
 
   RxString userName = ''.obs;
   RxString userEmail = ''.obs;
@@ -43,25 +45,44 @@ class AuthController {
   }
   // Google Sign In
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
+  );
   Future<void> googleSignIn() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn(
+        
+      );
 
       if (googleUser != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('userNmae', googleUser.displayName ?? '');
         await prefs.setString('userEmail', googleUser.email);
         await prefs.setString('userphonenumber', '');
-        await prefs.setString('userImage', googleUser.photoUrl ?? '');
+        String? photoUrl = googleUser.photoUrl;
+        if (photoUrl != null) {
+          await prefs.setString('userImage', photoUrl);
+        } else {
+          await prefs.setString('userImage', '');
+        }
         await prefs.setBool('isLoggedIn', true);
 
         // update RX variables
         userName.value = googleUser.displayName ?? '';
         userEmail.value = googleUser.email;
         userphonenumber.value = '';
-        userImage.value = googleUser.photoUrl ?? '';
+        if (photoUrl != null) {
+          userImage.value = photoUrl;
+        } else {
+          userImage.value = '';
+        }
+        userphonenumber.value = '';
 
-        Get.off(() => HomeScreen());
+        Get.off(() => MainScreen());
       }
     } catch (error) {
       Get.snackbar("Error", "Google Sign-In failed!",
@@ -90,25 +111,22 @@ class AuthController {
     userphonenumber.value = '';
     userImage.value = '';
 
-    Future.delayed(Duration.zero, () => Get.off(() => LoginScreen()));
+    Get.off(() => LoginScreen());
   }
   // Login function
 
   Future<Map<String, dynamic>> login(String userid, String password) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/login'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'userid': userid, 'password': password}),
+      final response = await dio.post(
+        '/login',
+        data: {'userid': userid, 'password': password},
       );
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        return {"message": "Login failed!"};
-      }
-    } catch (e) {
-      return {"message": "Error:${e.toString()}"};
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "message": e.response?.data['message'] ?? "Login failed!",
+        "status": e.response?.statusCode
+      };
     }
   }
 
@@ -117,25 +135,22 @@ class AuthController {
   Future<Map<String, dynamic>> signup(String name, String userid,
       String password, String confirmpassword, int phonenumber) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/signup'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
+      final response = await dio.post(
+        '/signup',
+        data: {
           'name': name,
           'userid': userid,
           'password': password,
           'confirmpassword': confirmpassword,
           'phonenumber': phonenumber
-        }),
+        },
       );
-
-      if (response.statusCode == 201) {
-        return json.decode(response.body);
-      } else {
-        return {"message": "Signup failed!"};
-      }
-    } catch (e) {
-      return {"message": "Error:${e.toString()}"};
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "message": e.response?.data['message'] ?? "Signup failed!",
+        "status": "error",
+      };
     }
   }
 
@@ -144,19 +159,16 @@ class AuthController {
   Future<Map<String, dynamic>> confirmOtp(
       String emailorPhone, String otp) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/confirmotp'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'emailorPhone': emailorPhone, 'otp': otp}),
+      final response = await dio.post(
+        '/confirmotp',
+        data: {'emailorPhone': emailorPhone, 'otp': otp},
       );
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        return {"message": "Invalid OTP!"};
-      }
-    } catch (e) {
-      return {"message": "Error:${e.toString()}"};
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "message": e.response?.data['message'] ?? "Invalid OTP!",
+        "status": e.response?.statusCode
+      };
     }
   }
 
@@ -164,42 +176,37 @@ class AuthController {
 
   Future<Map<String, dynamic>> resendOtp(String emailorPhone) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/resendotp'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'emailorPhone': emailorPhone}),
+      final response = await dio.post(
+        '/resendotp',
+        data: {'emailorPhone': emailorPhone},
       );
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        return {"message": "Invalid OTP!"};
-      }
-    } catch (e) {
-      return {"message": "Error:${e.toString()}"};
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "message": e.response?.data['message'] ?? "Resend OTP failed!",
+        "status": e.response?.statusCode
+      };
     }
   }
 
   // fetch user profile from api
   Future<Map<String, dynamic>> getUserProfile() async {
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/profile'),
-        headers: {'Content-Type': 'application/json'},
+      final response = await dio.get(
+        '/profile',
       );
-
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        return {"message": "Failed to fetch user profile!"};
-      }
-    } catch (e) {
-      return {"message": "Error:${e.toString()}"};
+      return response.data;
+    } on DioException catch (e) {
+      return {
+        "message": e.response?.data['message'] ?? "Error:${e.toString()}",
+        "status": e.response?.statusCode
+      };
     }
   }
 }
 
 class LoginControler extends GetxController {
+  final AuthController authService = Get.find<AuthController>();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
 
@@ -207,8 +214,6 @@ class LoginControler extends GetxController {
   var passswordController = ''.obs;
   var isPasswordVisible = false.obs;
   var isLoginEnable = false.obs;
-
-  final AuthController authService = AuthController('http://192.168.1.69:8000');
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -244,20 +249,19 @@ class LoginControler extends GetxController {
 }
 
 class SignupControler extends GetxController {
+  final AuthController authService = Get.find<AuthController>();
   TextEditingController namecontroller = TextEditingController();
   TextEditingController useridcontroller = TextEditingController();
   TextEditingController passswordcontroller = TextEditingController();
   TextEditingController confirmpasswordcontroller = TextEditingController();
   TextEditingController phonenumbercontroller = TextEditingController();
-  var nameController = ''.obs;
-  var useridController = ''.obs;
-  var passswordController = ''.obs;
-  var confirmpasswordController = ''.obs;
-  var phonenumberController = ''.obs;
-  var isPasswordVisible = false.obs;
-  var isLoginEnable = false.obs;
-
-  final AuthController authService = AuthController('http://192.168.1.69:8000');
+  RxString nameController = ''.obs;
+  RxString useridController = ''.obs;
+  RxString passswordController = ''.obs;
+  RxString confirmpasswordController = ''.obs;
+  RxString phonenumberController = ''.obs;
+  RxBool isPasswordVisible = false.obs;
+  RxBool isLoginEnable = false.obs;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -307,14 +311,13 @@ class SignupControler extends GetxController {
 }
 
 class UserConformationControler extends GetxController {
+  final AuthController authService = Get.find<AuthController>();
   TextEditingController emailotpcontroller = TextEditingController();
   TextEditingController phoneotpcontroller = TextEditingController();
-  var emailotp = ''.obs;
-  var phoneoto = ''.obs;
-  var isLoginEnable = false.obs;
-  var isLoading = false.obs;
-
-  final AuthController authService = AuthController('http://192.168.1.69:8000');
+  RxString emailotp = ''.obs;
+  RxString phoneoto = ''.obs;
+  RxBool isOtpVerificationEnabled = false.obs;
+  RxBool isLoading = false.obs;
 
   // Conform otp function
 
@@ -339,7 +342,7 @@ class UserConformationControler extends GetxController {
       final response = await authService.confirmOtp(identifier, otp);
 
       if (response['message'] == "otp confirmed") {
-        Get.to(() => MainScreen ());
+        Get.to(() => MainScreen());
       } else {
         Get.snackbar("Error", response['message'] ?? "Invalid OTP!",
             snackPosition: SnackPosition.BOTTOM,
@@ -359,15 +362,14 @@ class UserConformationControler extends GetxController {
 // profile controlller
 
 class ProfileControler extends GetxController {
-  var userName = ''.obs;
-  var userEmail = ''.obs;
-  var userphonenumber = ''.obs;
-  var userImage = ''.obs;
-  var profilepicpath = ''.obs;
+  final AuthController authService = Get.find<AuthController>();
+  RxString userName = ''.obs;
+  RxString userEmail = ''.obs;
+  RxString userphonenumber = ''.obs;
+  RxString userImage = ''.obs;
+  RxString profilepicpath = ''.obs;
 
   final ImagePicker _imagePicker = ImagePicker();
-
-  final AuthController authService = AuthController('http://192.168.1.69:8000');
 
   @override
   void onInit() {
