@@ -56,7 +56,6 @@ class _LivingGeneralsState extends State<LivingGenerals> {
             gradientcolourAppbar: AppColors.appBarColorLgS,
             colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
       ),
-     
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -70,13 +69,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                         (index) {
                           return InkWell(
                             onTap:
-                                //() => getMainBanner(index),
+                                //() => mainBannerindex(index),
                                 // widget.onTap,
                                 () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => getMainBanner(index)),
+                                    builder: (context) =>
+                                        mainBannerindex(index)),
                               );
                             },
                             child: Container(
@@ -120,7 +120,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                     // widget.titleCT,
                     style: TextStyle(
                       color: Authcolors.whiteColor,
-                      fontSize:  15.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -182,14 +182,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: InkWell(
                                               onTap:
-                                                  //() => getCategoryIcon(index),
+                                                  //() => categoryIconindex(index),
                                                   //widget.onTapci,
                                                   () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        getLivingeneralsCategoryIcon(
+                                                        livingeneralsCategoryIconindex(
                                                             index),
                                                   ),
                                                 );
@@ -226,9 +226,9 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                                 UiHelper.livingGeneralsCategoryNames[
                                                     index],
                                                 // widget.cNames[index],
-                                                style:  TextStyle(
+                                                style: TextStyle(
                                                   color: Authcolors.whiteColor,
-                                                  fontSize:  15.sp,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -253,7 +253,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                                   icon: Image.asset(
                                                       UiHelper.vonieImages[0]),
                                                   onPressed: () =>
-                                                      getVonieImage(0)),
+                                                      vonieImageindex(0)),
                                             ),
                                           )))
                                 ],
@@ -268,14 +268,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                           children: [
                                             InkWell(
                                               onTap:
-                                                  //() => getCategoryIcon(index),
+                                                  //() => categoryIconindex(index),
                                                   // widget.onTapci,
                                                   () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        getLivingeneralsCategoryIcon(
+                                                        livingeneralsCategoryIconindex(
                                                             index),
                                                   ),
                                                 );
@@ -311,7 +311,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                             //widget.cNames[index],
                                             style: TextStyle(
                                               color: Authcolors.whiteColor,
-                                              fontSize:  15.sp,
+                                              fontSize: 15.sp,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -329,7 +329,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                                           UiHelper.vonieImages[0],
                                           // widget.imageciVie[0]
                                         ),
-                                        onPressed: () => getVonieImage(0),
+                                        onPressed: () => vonieImageindex(0),
                                         //widget.onpressedciVie
                                       ),
                                     ),
@@ -353,7 +353,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                         // widget.cNames[0],
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize:  15.sp,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -373,13 +373,13 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                               width: 300,
                             )
                           : InkWell(
-                              onTap: // () => getFoodImage(index),
+                              onTap: // () => foodImageindex(index),
                                   //widget.onTapFo,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => getFoodImage(index),
+                                    builder: (context) => foodImageindex(index),
                                   ),
                                 );
                               },
@@ -455,11 +455,11 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => getFoodImage(0),
+                            builder: (context) => foodImageindex(0),
                           ),
                         );
                       },
-                      //() => getFoodImage(0),
+                      //() => foodImageindex(0),
                       // widget.onTapFo,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
@@ -481,7 +481,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                   UiHelper.fieldsName[1],
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize:  15.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -502,14 +502,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                               width: 300,
                             )
                           : InkWell(
-                              onTap: // () => getLivinggeneralsImage(index),
+                              onTap: // () => livinggeneralsImageindex(index),
                                   // widget.onTaplg,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getLivinggeneralsImage(index),
+                                        livinggeneralsImageindex(index),
                                   ),
                                 );
                               },
@@ -541,7 +541,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                             MaterialPageRoute(
                               builder: (context) => LivingGeneralsMainScreen(),
                             ));
-                      }, // () => getLivinggeneralsImage(0),
+                      }, // () => livinggeneralsImageindex(0),
                       // widget.onTaplg,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
@@ -564,7 +564,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                   //widget.cNames[2],
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize:  15.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -586,14 +586,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                             )
                           : InkWell(
                               onTap:
-                                  // () => getFashionImage(index),
+                                  // () => fashionImageindex(index),
                                   // widget.onTapfs,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getFashionImage(index),
+                                        fashionImageindex(index),
                                   ),
                                 );
                               },
@@ -623,7 +623,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => getFashionImage(0),
+                            builder: (context) => fashionImageindex(0),
                           ),
                         );
                       },
@@ -649,7 +649,7 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                   //widget.cNames[3],
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize:  15.sp,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -671,14 +671,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
                             )
                           : InkWell(
                               onTap:
-                                  //() => getCervcesImage(index),
+                                  //() => cervcesImageindex(index),
                                   //widget.onTapco,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getCervcesImage(index),
+                                        cervcesImageindex(index),
                                   ),
                                 );
                               },

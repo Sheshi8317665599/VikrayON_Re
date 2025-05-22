@@ -71,13 +71,14 @@ class _FoodsScreensState extends State<FoodsScreens> {
                         (index) {
                           return InkWell(
                             onTap:
-                                //() => getMainBanner(index),
+                                //() => mainBannerindex(index),
                                 // widget.onTap,
                                 () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => getMainBanner(index)),
+                                    builder: (context) =>
+                                        mainBannerindex(index)),
                               );
                             },
                             child: Container(
@@ -183,14 +184,15 @@ class _FoodsScreensState extends State<FoodsScreens> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: InkWell(
                                               onTap:
-                                                  //() => getCategoryIcon(index),
+                                                  //() => categoryIconindex(index),
                                                   //widget.onTapci,
                                                   () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        getCategoryIcon(index),
+                                                        categoryIconindex(
+                                                            index),
                                                   ),
                                                 );
                                               },
@@ -253,7 +255,7 @@ class _FoodsScreensState extends State<FoodsScreens> {
                                                   icon: Image.asset(
                                                       UiHelper.vonieImages[0]),
                                                   onPressed: () =>
-                                                      getVonieImage(0)),
+                                                      vonieImageindex(0)),
                                             ),
                                           )))
                                 ],
@@ -268,14 +270,15 @@ class _FoodsScreensState extends State<FoodsScreens> {
                                           children: [
                                             InkWell(
                                               onTap:
-                                                  //() => getCategoryIcon(index),
+                                                  //() => categoryIconindex(index),
                                                   // widget.onTapci,
                                                   () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        getCategoryIcon(index),
+                                                        categoryIconindex(
+                                                            index),
                                                   ),
                                                 );
                                               },
@@ -327,7 +330,7 @@ class _FoodsScreensState extends State<FoodsScreens> {
                                           UiHelper.vonieImages[0],
                                           // widget.imageciVie[0]
                                         ),
-                                        onPressed: () => getVonieImage(0),
+                                        onPressed: () => vonieImageindex(0),
                                         //widget.onpressedciVie
                                       ),
                                     ),
@@ -371,13 +374,13 @@ class _FoodsScreensState extends State<FoodsScreens> {
                               width: 300,
                             )
                           : InkWell(
-                              onTap: // () => getFoodImage(index),
+                              onTap: // () => foodImageindex(index),
                                   //widget.onTapFo,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => getFoodImage(index),
+                                    builder: (context) => foodImageindex(index),
                                   ),
                                 );
                               },
@@ -405,11 +408,11 @@ class _FoodsScreensState extends State<FoodsScreens> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => getFoodImage(0),
+                            builder: (context) => foodImageindex(0),
                           ),
                         );
                       },
-                      //() => getFoodImage(0),
+                      //() => foodImageindex(0),
                       // widget.onTapFo,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
@@ -454,14 +457,14 @@ class _FoodsScreensState extends State<FoodsScreens> {
                               width: 300,
                             )
                           : InkWell(
-                              onTap: // () => getLivinggeneralsImage(index),
+                              onTap: // () => livinggeneralsImageindex(index),
                                   // widget.onTaplg,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getLivinggeneralsImage(index),
+                                        livinggeneralsImageindex(index),
                                   ),
                                 );
                               },
@@ -493,7 +496,7 @@ class _FoodsScreensState extends State<FoodsScreens> {
                             MaterialPageRoute(
                               builder: (context) => LivingGeneralsMainScreen(),
                             ));
-                      }, // () => getLivinggeneralsImage(0),
+                      }, // () => livinggeneralsImageindex(0),
                       // widget.onTaplg,
                       icon: const Icon(
                         Icons.arrow_forward_ios,
@@ -540,14 +543,14 @@ class _FoodsScreensState extends State<FoodsScreens> {
                             )
                           : InkWell(
                               onTap:
-                                  // () => getFashionImage(index),
+                                  // () => fashionImageindex(index),
                                   // widget.onTapfs,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getFashionImage(index),
+                                        fashionImageindex(index),
                                   ),
                                 );
                               },
@@ -577,7 +580,7 @@ class _FoodsScreensState extends State<FoodsScreens> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => getFashionImage(0),
+                            builder: (context) => fashionImageindex(0),
                           ),
                         );
                       },
@@ -627,14 +630,14 @@ class _FoodsScreensState extends State<FoodsScreens> {
                             )
                           : InkWell(
                               onTap:
-                                  //() => getCervcesImage(index),
+                                  //() => cervcesImageindex(index),
                                   //widget.onTapco,
                                   () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        getCervcesImage(index),
+                                        cervcesImageindex(index),
                                   ),
                                 );
                               },

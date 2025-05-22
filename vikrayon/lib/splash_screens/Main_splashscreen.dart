@@ -17,27 +17,30 @@ class _MainSplashscreenState extends State<MainSplashscreen> {
   @override
   void initState() {
     super.initState();
+    startSplashScreen();
+  }
+
+  void startSplashScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
     checkLoginStatus();
   }
 
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
-      Timer(const Duration(seconds: 2), () {
-        Get.off(() => MainScreen());
-      });
+    final email = prefs.getString('email') ?? '';
+    final userToken = prefs.getString('token') ?? '';
+    if (isLoggedIn && (email.isNotEmpty || userToken.isNotEmpty)) {
+      Get.offAll(() => MainScreen());
     } else {
-      Timer(const Duration(seconds: 2), () {
-        Get.off(() => const SignupScreen());
-      });
+      Get.offAll(() => SignupScreen());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenheight = MediaQuery.of(context).size.height;
-    final screenwidth = MediaQuery.of(context).size.width;
+    double screenheight = MediaQuery.of(context).size.height;
+    double screenwidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       body: SingleChildScrollView(

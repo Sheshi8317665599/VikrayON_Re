@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vikrayon/utils/colors.dart';
 
 class LoginFeild extends StatefulWidget {
@@ -29,50 +30,55 @@ class _LoginFeildState extends State<LoginFeild> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        maxWidth: 250,
-        maxHeight: 50,
+      constraints: BoxConstraints(
+        maxWidth: 250.w,
       ),
-      child: TextFormField(
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        obscureText: widget.obscureText,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(10),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Authcolors.borederColor,
-              width: 3,
+      child: SizedBox(
+        height: 50.h,
+        child: TextFormField(
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.obscureText,
+          textAlignVertical: TextAlignVertical.center,
+          textAlign: TextAlign.start,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(15),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Authcolors.borederColor,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(15),
             ),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Authcolors.gradient2,
-              width: 3,
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Authcolors.gradient2,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(15),
             ),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.redAccent,
-              width: 3,
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.redAccent,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            hintText: widget.hintText,
+            hintStyle: widget.hintStyle,
+            suffixIcon: widget.suffixIcon,
+            prefixIcon: widget.prefixIcon,
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.red,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(15),
             ),
           ),
-          hintText: widget.hintText,
-          hintStyle: widget.hintStyle,
-          suffixIcon: widget.suffixIcon,
-          prefixIcon: widget.prefixIcon,
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.red,
-              width: 3,
-            ),
-            borderRadius: BorderRadius.circular(15),
-          ),
+          validator: widget.validator,
+          style: widget.hintStyle,
         ),
-        validator: widget.validator,
-        style: widget.hintStyle,
       ),
     );
   }

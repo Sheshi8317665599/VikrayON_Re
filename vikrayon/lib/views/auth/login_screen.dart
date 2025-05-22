@@ -15,16 +15,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthController authController = Get.find<AuthController>();
+  // final AuthController authController = Get.find<AuthController>();
   final LoginControler loginControler = Get.put(LoginControler());
+  final _fromKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Authcolors.backgrounColor,
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Authcolors.backgrounColor,
+      body: Form(
+        key: _fromKey,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Image.asset("assets/icons/signin_balls.png"),
@@ -73,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // email feild
               LoginFeild(
                 hintText: "Email",
-                controller: loginControler.emailcontroller,
+                controller: loginControler.emailController,
                 keyboardType: TextInputType.emailAddress,
                 suffixIcon: null,
                 prefixIcon: Icon(Icons.email_outlined,
@@ -83,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value!.isEmpty ||
                       !RegExp(r"^[a-zA-Z0-9.!#$%&'*|+-/=?^_`{|}~]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+")
                           .hasMatch(value)) {
-                   Get.snackbar(
+                    Get.snackbar(
                       "Error",
                       "Please enter a valid email address",
                       backgroundColor: Authcolors.whiteColor,
@@ -105,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Obx(
                 () => LoginFeild(
                   hintText: "Password",
-                  controller: loginControler.passwordcontroller,
+                  controller: loginControler.passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -164,7 +166,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: height * 0.010,
                   ),
-                  SudmitButton(onPressed: loginControler.login, text: "Log In"),
+                  SudmitButton(
+                      onPressed: () async {
+                        if (_fromKey.currentState!.validate()) {
+                          await loginControler.login();
+                        }
+                      },
+                      text: "Log In"),
                   InkWell(
                     onTap: () {},
                     child: Text(

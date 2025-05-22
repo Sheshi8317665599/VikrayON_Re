@@ -16,7 +16,25 @@ class FVCategoryFeild extends StatefulWidget {
   State<FVCategoryFeild> createState() => _FVCategoryFeildState();
 }
 
-class _FVCategoryFeildState extends State<FVCategoryFeild> {
+class _FVCategoryFeildState extends State<FVCategoryFeild>
+    with TickerProviderStateMixin {
+  @override
+  // void initState() {
+  //   super.initState();
+  //   _hideBottomNavController.addListener(() {
+  //     if (_hideBottomNavController.position.userScrollDirection ==
+  //         ScrollDirection.reverse) {
+  //       setState(() {
+  //         _showBottomNav = false;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         _showBottomNav = true;
+  //       });
+  //     }
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -73,6 +91,7 @@ class _FVCategoryFeildState extends State<FVCategoryFeild> {
             Padding(
               padding: const EdgeInsets.only(top: 70.0),
               child: TabBarView(
+                controller: TabController(length: 3, vsync: this),
                 children: [
                   Fruits(),
                   Vegetables(),
@@ -95,6 +114,25 @@ class Fruits extends StatefulWidget {
 }
 
 class _FruitsState extends State<Fruits> {
+  // final ScrollController _hideBottomNavController = ScrollController();
+  // bool _showBottomNav = true;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _hideBottomNavController.addListener(() {
+  //     if (_hideBottomNavController.position.userScrollDirection ==
+  //         ScrollDirection.reverse) {
+  //       setState(() {
+  //         _showBottomNav = false;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         _showBottomNav = true;
+  //       });
+  //     }
+  //   });
+  // }
+
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
@@ -102,6 +140,17 @@ class _FruitsState extends State<Fruits> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
+      appBar: AppBar(
+        backgroundColor: AppColors.scaffoldBackground,
+        automaticallyImplyLeading: false,
+        leading:  SizedBox(
+                height: height * 0.1,
+                child: TearDropWidget(
+                  colorb: AppColors.bottomNavigationBarColorLgS,
+                  subcategoryTag: '',
+                ),
+              ), 
+      ),
       // appBar: PreferredSize(
       //   preferredSize: Size.fromHeight(50),
       //   child: AppBarsbs(
@@ -118,91 +167,92 @@ class _FruitsState extends State<Fruits> {
       //       Get.to(() => CartItem());
       //     },
       //   ),
-      // ),
+     // ),
       body: LayoutBuilder(builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: constraints.maxHeight),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 10,
+        return ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: ListView(
+            //controller: _hideBottomNavController,
+            children: <Widget>[
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // SizedBox(
+              //   height: height * 0.1,
+              //   child: TearDropWidget(
+              //     colorb: AppColors.bottomNavigationBarColorLgS,
+              //     subcategoryTag: '',
+              //   ),
+              // ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: height * 0.15,
+                child: Pvb(
+                  colorb: AppColors.bottomNavigationBarColorLgS,
+                  sliderTag: '',
                 ),
-                SizedBox(
-                  height: height * 0.1,
-                  child: TearDropWidget(
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    subcategoryTag: '',
-                  ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: height * 0.76,
+                child: Pvgp(
+                  controller: Get.put(ProductController()),
+                  colorb: AppColors.bottomNavigationBarColorLgS,
+                  gradient: AppColors.productscreencolourlgsp,
                 ),
-                const SizedBox(
-                  height: 10,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                height: height * 0.15,
+                child: Vb(
+                  controller: Get.put(VbController(sliderTag: '')),
+                  colorb: AppColors.bottomNavigationBarColorLgS,
+                  sliderTag: '',
                 ),
-                SizedBox(
-                  height: height * 0.15,
-                  child: Pvb(
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    sliderTag: '',
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: height * 0.72,
-                  child: Pvgp(
-                    controller: Get.put(ProductController()),
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    gradient: AppColors.productscreencolourlgsp,
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  height: height * 0.15,
-                  child: Vb(
-                    controller: Get.put(VbController(sliderTag: '')),
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    sliderTag: '',
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                SizedBox(
-                  height: height * 0.72,
-                  child: Pvgp(
-                    controller: Get.put(ProductController()),
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    gradient: AppColors.productscreencolourlgsp,
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.15,
-                  child: Vb(
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    controller: Get.put(VbController(sliderTag: '')),
-                    sliderTag: '',
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: height * 0.3,
-                  width: width * 0.95,
-                  child: Plgp(
-                    controller: Get.put(ProductController()),
-                    colorb: AppColors.bottomNavigationBarColorLgS,
-                    gradient: AppColors.productscreencolourlgsp,
-                  ),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Pvgp(
+                controller: Get.put(ProductController()),
+                colorb: AppColors.bottomNavigationBarColorLgS,
+                gradient: AppColors.productscreencolourlgsp,
+              ),
+              Vb(
+                colorb: AppColors.bottomNavigationBarColorLgS,
+                controller: Get.put(VbController(sliderTag: '')),
+                sliderTag: '',
+              ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // Plgp(
+              //   controller: Get.put(ProductController()),
+              //   colorb: AppColors.bottomNavigationBarColorLgS,
+              //   gradient: AppColors.productscreencolourlgsp,
+              // ),
+            ],
           ),
         );
       }),
+      //   bottomNavigationBar: AnimatedContainer(
+      //     duration: const Duration(seconds: 1),
+      //     height: _showBottomNav ? 0 : 70,
+      //     child: IconButton(
+      //         onPressed: () {},
+      //         icon: Icon(
+      //           Icons.arrow_drop_up_rounded,
+      //           size: 80.sp,
+      //           color: Authcolors.whiteColor,
+      //         )),
+      //   ),
+      // );
     );
   }
 }
@@ -270,7 +320,7 @@ class _VegetablesState extends State<Vegetables> {
                       height: 10,
                     ),
                     SizedBox(
-                      height: height * 0.72,
+                      height: height * 0.8,
                       child: Pvgp(
                         controller: Get.put(ProductController()),
                         colorb: AppColors.bottomNavigationBarColorLgS,
@@ -292,7 +342,7 @@ class _VegetablesState extends State<Vegetables> {
                       height: 5,
                     ),
                     SizedBox(
-                      height: height * 0.72,
+                      height: height * 0.8,
                       child: Pvgp(
                         controller: Get.put(ProductController()),
                         colorb: AppColors.bottomNavigationBarColorLgS,

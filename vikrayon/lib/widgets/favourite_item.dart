@@ -55,9 +55,9 @@ class _FavouriteItemState extends State<FavouriteItem> {
           }
 
           double totalDiscounted = 0;
-          favProducts.forEach((p) {
+          for (var p in favProducts) {
             totalDiscounted += p.price * (1 - p.discount / 100);
-          });
+          }
 
           return Column(
             children: [

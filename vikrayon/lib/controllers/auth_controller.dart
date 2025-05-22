@@ -1,9 +1,11 @@
-import 'dart:math';
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vikrayon/main_screen.dart';
 import 'package:vikrayon/views/auth/login_screen.dart';
@@ -19,8 +21,6 @@ class AuthController {
 
   // google signin function
 
-  
-
   RxString userName = ''.obs;
   RxString userEmail = ''.obs;
   RxString userphonenumber = ''.obs;
@@ -28,16 +28,16 @@ class AuthController {
 
   // normal signin function
 
-  Future<void> loginuser(String name, String userid, String phonenumber) async {
+  Future<void> loginuser(String name, String email, String phonenumber) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userName', name);
-    await prefs.setString('userEmail', userid);
+    await prefs.setString('userEmail', email);
     await prefs.setString('userImage', '');
     await prefs.setString('userphonenumber', phonenumber);
     await prefs.setBool('isLoggedIn', true);
 
     userName.value = name;
-    userEmail.value = userid;
+    userEmail.value = email;
     userImage.value = '';
     userphonenumber.value = phonenumber;
 
@@ -53,10 +53,7 @@ class AuthController {
   );
   Future<void> googleSignIn() async {
     try {
-      
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn(
-        
-      );
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser != null) {
         final prefs = await SharedPreferences.getInstance();
@@ -115,11 +112,11 @@ class AuthController {
   }
   // Login function
 
-  Future<Map<String, dynamic>> login(String userid, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await dio.post(
         '/login',
-        data: {'userid': userid, 'password': password},
+        data: {'email': email, 'password': password},
       );
       return response.data;
     } on DioException catch (e) {
@@ -132,20 +129,26 @@ class AuthController {
 
   // signup function
 
-  Future<Map<String, dynamic>> signup(String name, String userid,
-      String password, String confirmpassword, int phonenumber) async {
+  Future<Map<String, dynamic>> signup(String name, String email,
+      String password, String confirmPassword, String phoneNumber) async {
     try {
       final response = await dio.post(
-        '/signup',
+        '/register?role=user',
         data: {
           'name': name,
-          'userid': userid,
+          'email': email,
           'password': password,
-          'confirmpassword': confirmpassword,
-          'phonenumber': phonenumber
+          'confirmPassword': confirmPassword,
+          'phoneNumber': phoneNumber
         },
       );
-      return response.data;
+      if (response.data is String) {
+        return {"message": response.data, "status": "sucess"};
+      } else if (response.data is Map<String, dynamic>) {
+        return response.data;
+      } else {
+        throw Exception('Invalid response format');
+      }
     } on DioException catch (e) {
       return {
         "message": e.response?.data['message'] ?? "Signup failed!",
@@ -156,17 +159,41 @@ class AuthController {
 
   // Confirm Otp Function
 
-  Future<Map<String, dynamic>> confirmOtp(
-      String emailorPhone, String otp) async {
+  Future<Map<String, dynamic>> confirmOtp(String email, String otp) async {
     try {
       final response = await dio.post(
-        '/confirmotp',
-        data: {'emailorPhone': emailorPhone, 'otp': otp},
+        '/confirm-otp',
+        data: {'email': email, 'otp': otp},
       );
-      return response.data;
+
+      dynamic data = response.data;
+      if (data is String) {
+        try {
+          data = json.decode(data);
+        } catch (e) {
+          return {"message": data, "status": "error"};
+        }
+      }
+
+      if (data is Map<String, dynamic>) {
+        return data;
+      } else if (data is Map) {
+        return Map<String, dynamic>.from(data);
+      } else {
+        return {"message": "Invalid response format", "status": "error"};
+      }
     } on DioException catch (e) {
+      dynamic errdata = e.response?.data;
+      if (errdata is String) {
+        try {
+          errdata = json.decode(errdata);
+        } catch (_) {}
+      }
+      if (errdata is! Map) {
+        errdata = {"message": errdata, "status": "error"};
+      }
       return {
-        "message": e.response?.data['message'] ?? "Invalid OTP!",
+        "message": errdata['message'] ?? "Invalid OTP!",
         "status": e.response?.statusCode
       };
     }
@@ -207,36 +234,36 @@ class AuthController {
 
 class LoginControler extends GetxController {
   final AuthController authService = Get.find<AuthController>();
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  var useridController = ''.obs;
-  var passswordController = ''.obs;
+  // var emailController = ''.obs;
+  // var passswordController = ''.obs;
   var isPasswordVisible = false.obs;
-  var isLoginEnable = false.obs;
+  var isLoading = false.obs;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
   Future<void> login() async {
-    String userid = useridController.value;
-    String password = passswordController.value;
+    String email = emailController.value.text.trim();
+    String password = passwordController.text.trim();
 
-    if (userid.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty) {
       Get.snackbar("Error", "Please enter both email and pasword",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
       return;
     }
-
+    isLoading(true);
     try {
-      final response = await authService.login(userid, password);
-
-      if (response['message'] == "login sucessful") {
-        Get.to(() => MainScreen());
+      final response = await authService.login(email, password);
+      print("Login API response: $response");
+      if (response.containsKey('jwtToken')) {
+        Get.offAll(() => MainScreen());
       } else {
-        Get.snackbar("Error", "An error occured: ${e.toString()}",
+        Get.snackbar("Login Falied", response['message'] ?? "Unknown error",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
@@ -244,6 +271,8 @@ class LoginControler extends GetxController {
       Get.snackbar("Error", "An error occured: ${e.toString()}",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+    } finally {
+      isLoading(false);
     }
   }
 }
@@ -251,54 +280,76 @@ class LoginControler extends GetxController {
 class SignupControler extends GetxController {
   final AuthController authService = Get.find<AuthController>();
   TextEditingController namecontroller = TextEditingController();
-  TextEditingController useridcontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
   TextEditingController passswordcontroller = TextEditingController();
   TextEditingController confirmpasswordcontroller = TextEditingController();
   TextEditingController phonenumbercontroller = TextEditingController();
-  RxString nameController = ''.obs;
-  RxString useridController = ''.obs;
-  RxString passswordController = ''.obs;
-  RxString confirmpasswordController = ''.obs;
-  RxString phonenumberController = ''.obs;
+  // RxString nameController = ''.obs;
+  // RxString emailController = ''.obs;
+  // RxString passswordController = ''.obs;
+  // RxString confirmpasswordController = ''.obs;
+  // RxString phonenumberController = ''.obs;
   RxBool isPasswordVisible = false.obs;
-  RxBool isLoginEnable = false.obs;
+  RxBool isLoading = false.obs;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
   Future<void> signup() async {
-    String name = nameController.value;
-    String userid = useridController.value;
-    String password = passswordController.value;
-    String confirmpassword = confirmpasswordController.value;
-    String phonenumber = phonenumberController.value;
+    isLoading(true);
+    // String name = nameController.value;
+    // String email = emailController.value;
+    // String password = passswordController.value;
+    // String confirmpassword = confirmpasswordController.value;
+    // String phonenumber = phonenumberController.value;
 
-    if (name.isEmpty ||
-        userid.isEmpty ||
-        password.isEmpty ||
-        confirmpassword.isEmpty ||
-        phonenumberController.isEmpty) {
+    if (namecontroller.text.isEmpty ||
+        emailcontroller.text.isEmpty ||
+        passswordcontroller.text.isEmpty ||
+        confirmpasswordcontroller.text.isEmpty ||
+        phonenumbercontroller.text.isEmpty) {
       Get.snackbar("Error", "All fields are required",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+      isLoading(false);
       return;
     }
 
-    if (password != confirmpassword) {
+    if (passswordcontroller.text != confirmpasswordcontroller.text) {
       Get.snackbar("Error", "Passwords do not match",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+      isLoading(false);
       return;
     }
-    try {
-      final response = await authService.signup(
-          name, userid, password, confirmpassword, phonenumber as int);
 
-      if (response['message'] == "signup sucessful") {
-        Get.to(() => UserConformationScreen());
+    try {
+      final phonenumber = phonenumbercontroller.text.trim();
+      if (phonenumber.isEmpty) {
+        Get.snackbar("Error", "Invalid phone number",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Color(0xff5ce1e6));
+        isLoading(false);
+        return;
+      }
+      final response = await authService.signup(
+          namecontroller.text.trim(),
+          emailcontroller.text.trim(),
+          passswordcontroller.text,
+          confirmpasswordcontroller.text,
+          phonenumber);
+      print("Signup API response: $response");
+
+      if (response['status'] == 'sucess') {
+        final email = emailcontroller.text.trim();
+        //response.containsKey('jwtToken')) {
+
+        final userConformationControler = Get.put(UserConformationControler());
+        userConformationControler.setEmail(email);
+        Get.offAll(() => UserConformationScreen());
       } else {
-        Get.snackbar("Error", response['message'],
+        Get.snackbar("Error", response['message'] ?? "Signup failed!",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
@@ -306,6 +357,8 @@ class SignupControler extends GetxController {
       Get.snackbar("Error", "An error occured: ${e.toString()}",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+    } finally {
+      isLoading(false);
     }
   }
 }
@@ -313,40 +366,56 @@ class SignupControler extends GetxController {
 class UserConformationControler extends GetxController {
   final AuthController authService = Get.find<AuthController>();
   TextEditingController emailotpcontroller = TextEditingController();
-  TextEditingController phoneotpcontroller = TextEditingController();
-  RxString emailotp = ''.obs;
-  RxString phoneoto = ''.obs;
-  RxBool isOtpVerificationEnabled = false.obs;
-  RxBool isLoading = false.obs;
 
+  RxBool isLoading = false.obs;
+  String email = '';
   // Conform otp function
 
-  Future<void> confirmOtp() async {
-    String identifier = emailotpcontroller.text.isNotEmpty
-        ? emailotpcontroller.text
-        : phoneotpcontroller.text;
-    String otp = emailotpcontroller.text.isNotEmpty
-        ? emailotpcontroller.text
-        : phoneotpcontroller.text;
+  void setEmail(String email) {
+    this.email = email;
+    print("Email set  in controller : $email");
+  }
 
-    if (identifier.isEmpty || otp.isEmpty) {
-      Get.snackbar("Error", "Please enter otp",
+  Future<void> confirmOtp() async {
+    String otp =
+        //emailotpcontroller.text.isNotEmpty
+        emailotpcontroller.text.trim();
+    //  : phoneotpcontroller.text;
+
+    if (otp.isEmpty) {
+      Get.snackbar("Error", "Please enter OTP",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
       return;
     }
 
+    // if (email.isEmpty) {
+    //  // print("Email is empty in confirmOtp!");
+    //   Get.snackbar("Error", "Email is empty in confirmOtp!",
+    //       snackPosition: SnackPosition.BOTTOM,
+    //       backgroundColor: Color(0xff5ce1e6));
+    //   return;
+    // }
     isLoading.value = true;
 
     try {
-      final response = await authService.confirmOtp(identifier, otp);
+      print("confirming Otp for : $email and OTP: $otp");
+      final response = await authService.confirmOtp(email, otp);
 
-      if (response['message'] == "otp confirmed") {
-        Get.to(() => MainScreen());
+      print("Conform Otp Api response: $response");
+
+      final status = response['status']?.toString().toLowerCase() ?? "";
+      final message = response['message']?.toString().toLowerCase() ?? "";
+
+      if ((status == 'success' || status == '200' || status.contains('200'))/* &&
+          (message.contains("otp") && message.contains("confirm")*/) {
+        print("if working");
+        Get.offAll(() => MainScreen());
       } else {
-        Get.snackbar("Error", response['message'] ?? "Invalid OTP!",
+        Get.snackbar("success", message,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
+        print("else working, $message");
       }
     } catch (e) {
       Get.snackbar("Error", "An error occured: ${e.toString()}",
@@ -424,6 +493,7 @@ class ProfileControler extends GetxController {
 }
 
 class AuthService extends GetxController {
+
   final LoginControler loginControler = Get.put(LoginControler());
   final SignupControler signupControler = Get.put(SignupControler());
   final UserConformationControler userConformationControler =

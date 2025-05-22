@@ -1,5 +1,38 @@
 
+//  Appbar Model 
 
+import 'dart:core';
+import 'dart:ui';
+
+class AppBarModel {
+  late final String logoUrl;
+  late final List<Color> gradientColors;
+  late final Color searchBorderColor;
+  final List<String> tags;
+
+  AppBarModel({
+    required this.logoUrl,
+    required this.gradientColors,
+    required this.searchBorderColor,
+    required this.tags,
+  });
+
+
+  factory AppBarModel.fromJson(Map<String, dynamic> json) {
+    Color parseColor(String hex) {
+      hex = hex.replaceFirst('#', ''); 
+      if (hex.length == 6) hex = 'FF$hex';
+      return Color(int.parse(hex, radix: 16));
+    }
+  
+
+  return AppBarModel(logoUrl: json['logoUrl'] ?? '',
+  gradientColors: List<String>.from(json['gradientColors'] ?? []).map(parseColor).toList(),
+  searchBorderColor: parseColor(json['searchBorderColor'] ?? ''),
+  tags: List<String>.from(json['tags'] ?? []),
+  );
+  }
+}
 class TearDropItem {
   final int id;
   final String name;
@@ -64,7 +97,7 @@ class Product {
   final String image;
   final double price;
  final  int quantity;
-  final int discount;
+  final double discount;
   final double rating;
   bool isFavourite;
   bool isInCart;
@@ -130,6 +163,8 @@ class Product {
         'relatedImages': relatedImages
       };
 }
+
+
 
  
 
@@ -253,4 +288,27 @@ List<Product> loadProducts() {
       fruitsproducts.map((map) => Product.fromMap(map)).toList();
 
   return products;
+}
+
+class MainCategoryModel {
+  final String name;
+  final String imageUrl;
+  final String colorHex;
+  final String bannerUrl;
+
+  MainCategoryModel({
+    required this.name,
+    required this.imageUrl,
+    required this.colorHex,
+    required this.bannerUrl,
+  });
+
+  factory MainCategoryModel.fromJson(Map<String, dynamic> json) {
+    return MainCategoryModel(
+      name: json['name'],
+      imageUrl: json['imageUrl'],
+      colorHex: json['colorHex'],
+      bannerUrl: json['bannerUrl'],
+    );
+  }
 }

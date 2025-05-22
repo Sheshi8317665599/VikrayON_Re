@@ -37,11 +37,11 @@ class UiHelper {
   // MAIN page Banners
 
   static List<String> mainBanners = [
-    "assets/img/main_screen/vonc_main_banner.jpg",
-    "assets/img/main_screen/vonc food banner.png",
-    "assets/img/main_screen/Green And Gold Overlay Fresh Foods Email Header.png",
-    "assets/img/main_screen/Fashion Sale Landscape Banner.png",
-    "assets/img/main_screen/VOnc_Mechanic Shop Services Banner.png",
+    "assets/img/main_screen/vonc_main_banner (Small).jpg",
+    "assets/img/main_screen/vonc food banner (Small).png",
+    "assets/img/main_screen/Green And Gold Overlay Fresh Foods Email Header (Small).png",
+    "assets/img/main_screen/Fashion Sale Landscape Banner (Small).png",
+    "assets/img/main_screen/VOnc_Mechanic Shop Services Banner (Small).png",
   ];
 
   // cateogry icons
@@ -221,9 +221,9 @@ final RxInt selectedCervcesImagesIndex = 0.obs;
 
 final RxInt selectedVonieImagesIndex = 0.obs;
 
-// getMainBanner
+// mainBannerindex
 
-Widget getMainBanner(int index) {
+Widget mainBannerindex(int index) {
   switch (index) {
     case 0:
       return DiscountPage();
@@ -240,9 +240,9 @@ Widget getMainBanner(int index) {
   }
 }
 
-// getCategoryIcon
+// categoryIconindex
 
-Widget getCategoryIcon(int index) {
+Widget categoryIconindex(int index) {
   switch (index) {
     case 0:
       return FoodMainScreen();
@@ -257,9 +257,9 @@ Widget getCategoryIcon(int index) {
   }
 }
 
-// getFoodImage
+// foodImageindex
 
-Widget getFoodImage(index) {
+Widget foodImageindex(index) {
   switch (index) {
     default:
       return FoodMainScreen();
@@ -268,34 +268,34 @@ Widget getFoodImage(index) {
 
 // getLivingEssentailsImage
 
-Widget getLivinggeneralsImage(index) {
+Widget livinggeneralsImageindex(index) {
   switch (index) {
     default:
       return LivingGeneralsMainScreen();
   }
 }
 
-// getFashionImage
+// fashionImageindex
 
-Widget getFashionImage(index) {
+Widget fashionImageindex(index) {
   switch (index) {
     default:
       return FashionMainScreen();
   }
 }
 
-// getCervcesImage
+// cervcesImageindex
 
-Widget getCervcesImage(index) {
+Widget cervcesImageindex(index) {
   switch (index) {
     default:
       return CervcesMainScreen();
   }
 }
 
-// getVonieImage
+// vonieImageindex
 
-Widget getVonieImage(index) {
+Widget vonieImageindex(index) {
   switch (index) {
     default:
       return VoniEScreens();
@@ -303,7 +303,7 @@ Widget getVonieImage(index) {
 }
 
 // get livinggenerals category icons screens
-Widget getLivingeneralsCategoryIcon(int index) {
+Widget livingeneralsCategoryIconindex(int index) {
   switch (index) {
     case 0:
       return FVCategoryFeild();
@@ -718,24 +718,28 @@ class _PgpState extends State<Pgp> {
     return Obx(
       () {
         if (controller.isLoading.value) {
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.59,
-            ),
-            itemBuilder: (_, __) => Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(30),
+          return SizedBox(
+            height: height * 0.8,
+            width: width * 0.95,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.59,
+              ),
+              itemBuilder: (_, __) => Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
+              itemCount: 6,
             ),
-            itemCount: 6,
           );
         }
         return SizedBox(
@@ -1099,25 +1103,29 @@ class _PvgpState extends State<Pvgp> {
     return Obx(
       () {
         if (controller.isLoading.value) {
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.59,
-            ),
-            itemBuilder: (_, __) => Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(30),
+          return SizedBox(
+            height: height * 0.8,
+            width: width * 0.95,
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.59,
+              ),
+              itemBuilder: (_, __) => Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
+              itemCount: 6,
             ),
-            itemCount: 6,
           );
         }
         return SizedBox(
@@ -1195,9 +1203,9 @@ class _PvgpState extends State<Pvgp> {
                                           widget
                                               .controller
                                               .products[
-                                                  (index * 4 + currentIndex) %
-                                                      widget.controller.products
-                                                          .length]
+                                                  
+                                                      
+                                                          index]
                                               .name,
                                           style: TextStyle(
                                             fontSize: 18.sp.sp,

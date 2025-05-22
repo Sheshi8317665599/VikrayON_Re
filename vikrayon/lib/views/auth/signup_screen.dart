@@ -15,14 +15,30 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final SignupControler signupControler = Get.put(SignupControler());
+  final _fromKey = GlobalKey<FormState>();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _checkLoginStatus();
+  // }
+
+  // Future<void> _checkLoginStatus() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  //   if (isLoggedIn) {
+  //     Get.offAll(() => MainScreen());
+  //   }
+  // }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Authcolors.backgrounColor,
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Authcolors.backgrounColor,
+      body: Form(
+        key: _fromKey,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Image.asset("assets/icons/signin_balls.png"),
@@ -63,7 +79,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
-                      !RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
+                      !RegExp(r"^(?=.*[A-Z])[a-zA-Z0-9._]{3,15}$")
+                          .hasMatch(value)) {
                     return "Please enter a valid name(only alphabets and spaces)";
                   }
                   return null;
@@ -73,14 +90,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   fontSize: width * 0.050,
                 ),
               ),
-
+    
               SizedBox(
                 height: height * 0.02,
               ),
               // email feild
               LoginFeild(
                 hintText: "Email",
-                controller: signupControler.useridcontroller,
+                controller: signupControler.emailcontroller,
                 keyboardType: TextInputType.emailAddress,
                 suffixIcon: null,
                 prefixIcon: Icon(Icons.email_outlined,
@@ -100,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   fontSize: width * 0.050,
                 ),
               ),
-
+    
               SizedBox(
                 height: height * 0.015,
               ),
@@ -204,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
-                      !RegExp(r"^[0-9]{10}$").hasMatch(value)) {
+                      !RegExp(r"^\+?[0-9]{10,15}$").hasMatch(value)) {
                     return "Please enter a valid phone number";
                   }
                   return null;
@@ -239,7 +256,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: height * 0.015,
               ),
               // signup button
-              SudmitButton(onPressed: signupControler.signup, text: "Sign Up"),
+              SudmitButton(
+                  onPressed: () {
+                    if (_fromKey.currentState!.validate()) {
+                      signupControler.signup();
+                    }
+                  },
+                  text: "Sign Up"),
               SizedBox(
                 height: height * 0.015,
               ),

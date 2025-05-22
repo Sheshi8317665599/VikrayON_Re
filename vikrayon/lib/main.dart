@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:vikrayon/controllers/auth_controller.dart';
 import 'package:vikrayon/controllers/widget_controller.dart';
 
-import 'package:vikrayon/splash_screens/Main_splashscreen.dart';
 import 'package:vikrayon/utils/colors.dart';
+import 'package:vikrayon/views/auth/signup_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Get.put(AuthController('http://127.0.0.1:8000' ));
+  Get.put(AuthController('https://dca9-223-230-113-217.ngrok-free.app/auth'));
   Get.lazyPut(() => ProductController());
-  Get.lazyPut(() => CategoryController());
-  
-
   runApp(MyApp());
 }
 
@@ -35,7 +32,7 @@ class MyApp extends StatelessWidget {
               seedColor: AppColors.bottomNavigationBarColorMS),
           useMaterial3: true,
         ),
-        home: const MainSplashscreen(),
+        home: SignupScreen(),
       ),
     );
   }

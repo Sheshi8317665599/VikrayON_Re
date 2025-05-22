@@ -1,9 +1,42 @@
-import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 import 'package:vikrayon/controllers/product_model.dart';
+
+// class AppBarController extends GetxController {
+//   final Dio _dio = Dio(BaseOptions(
+//     baseUrl: 'https://vikrayon.com',
+//   ));
+
+//   final RxMap<String, AppBarModel> appBarModel = <String, AppBarModel>{}.obs;
+//   final RxBool isLoading = true.obs;
+
+//   Future<void> fetchAllAppBarModel() async {
+//     try {
+//       isLoading.value = true;
+//       final response = await _dio.get('/appbar/model');
+//       final List data = response.data['appbars'];
+//       for (var item in data) {
+//         final model = AppBarModel.fromJson(item);
+//         appBarModel[model.id] = model;
+//       }
+//     } catch (e) {
+//       Get.snackbar('Network Error', e.toString());
+//     } finally {
+//       isLoading.value = false;
+//     }
+
+//     AppBarModel? getmodelById(String id) => AppBarModel[id];
+
+//     @override
+//     void onInit() {
+//       super.onInit();
+//       fetchAllAppBarModel();
+//     }
+
+//   }
+// }
 
 class TearDropController extends GetxController {
   final String subcategoryTag;
@@ -13,7 +46,7 @@ class TearDropController extends GetxController {
   var isLoading = true.obs;
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://run.mocky.io/v3/e233275e-7561-4fa6-884f-0201167f5dda',
+    baseUrl: 'https://run.mocky.io/v3/96ccc2b8-1279-4529-bff5-2bad4e14f2d3',
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 5),
   ));
@@ -84,59 +117,9 @@ class VbController extends GetxController {
   }
 }
 
-class CategoryController extends GetxController {
-  var mainBanners = <String>[].obs;
-  var categoryicons = <String>[].obs;
-  var categoryColors = <Color>[].obs;
-  var categoryNames = <String>[].obs;
-  var voineimages = <String>[].obs;
-  var foodimages = <String>[].obs;
-  var livingGeneralsimages = <String>[].obs;
-  var fashionimages = <String>[].obs;
-  var cervcesImages = <String>[].obs;
 
-  var isLoading = true.obs;
-
-  final Dio dio = Dio();
-  Future<void> fetchCategoryData(
-      {required String apiUrl,
-      required Map<String, dynamic> responseFeilds}) async {
-    try {
-      isLoading.value = true;
-
-      final response = await dio.get(apiUrl);
-      if (response.statusCode == 200) {
-        var data = response.data;
-        mainBanners.value =
-            List<String>.from(data[responseFeilds['mainBanners']]);
-        categoryicons.value =
-            List<String>.from(data[responseFeilds['categoryIcons']]);
-        categoryColors.value = List<Color>.from(
-            data[responseFeilds['categoryColors']]
-                .map((color) => Color(int.parse(color))));
-        categoryNames.value =
-            List<String>.from(data[responseFeilds['categoryNames']]);
-        voineimages.value =
-            List<String>.from(data[responseFeilds['voineImages']]);
-        foodimages.value =
-            List<String>.from(data[responseFeilds['foodImages']]);
-        livingGeneralsimages.value =
-            List<String>.from(data[responseFeilds['livingGeneralsImages']]);
-        fashionimages.value =
-            List<String>.from(data[responseFeilds['fashionImages']]);
-        cervcesImages.value =
-            List<String>.from(data[responseFeilds['cervcesImages']]);
-      } else {
-        print('failed to load data : ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
-    } finally {
-      isLoading.value = false;
-    }
-  }
-}
-
+// category controller
+ 
 class PvbController extends GetxController {
   final String sliderTag;
   PvbController({required this.sliderTag});
@@ -146,7 +129,7 @@ class PvbController extends GetxController {
 
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: 'https://run.mocky.io/v3/e233275e-7561-4fa6-884f-0201167f5dda',
+      baseUrl: 'https://dca9-223-230-113-217.ngrok-free.app/',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
     ),
@@ -191,7 +174,7 @@ class ProductController extends GetxController {
 
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: 'https://run.mocky.io/v3/e233275e-7561-4fa6-884f-0201167f5dda',
+      baseUrl: 'https://dca9-223-230-113-217.ngrok-free.app/',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
     ),
@@ -206,7 +189,7 @@ class ProductController extends GetxController {
   Future<void> fetchProducts() async {
     try {
       isLoading.value = true;
-      final response = await dio.get('/api/products');
+      final response = await dio.get('products');
 
       if (response.statusCode == 200) {
         final List data = response.data;
@@ -221,7 +204,7 @@ class ProductController extends GetxController {
     }
   }
 
-  // loding for product details page 
+  // loding for product details page
 
   void loadProdutDetails(Product product) {
     isLoading.value = true;
