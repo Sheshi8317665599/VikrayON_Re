@@ -31,19 +31,61 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- Permissions -->
+	<!-- Camera -->
+	<key>NSCameraUsageDescription</key>
+	<string>Vikrayon requires access to your camera to  capturing photos , scan barcodes and QR codes.</string>
+	<!-- Photo LIbary Access -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Vikrayon requires access to your photo library to upload images.</string>
+
+	<!-- Location -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Vikrayon requires access to your location to provide location-based services.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Vikrayon requires access to your location to provide location-based services even when the app is in the background.</string>
+
+	<!-- Microphone -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Vikrayon requires access to your microphone for voice recording and communication features.</string>
+
+	<!-- BackgroundModels -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>audio</string>
+		<String>remote-notification</string>
+	</array>
+
+	<!-- Bluetooth -->	
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Vikrayon requires access to Bluetooth to connect with nearby devices and provide enhanced functionality.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Vikrayon requires access to Bluetooth to connect with nearby devices and provide enhanced functionality.</string>	
+
+	<!-- Face ID -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Vikrayon requires access to Face ID for secure authentication and login.</string>
+
+	<!-- Siri -->
+	<key>NSSiriUsageDescription</key>
+	<string>Vikrayon requires access to Siri for voice commands and interactions.</string>
+	
+
+	
+		
+
+
 </dict>
 </plist>

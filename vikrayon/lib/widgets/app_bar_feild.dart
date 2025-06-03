@@ -87,7 +87,7 @@ class _AppBarmsState extends State<AppBarms> {
               height: 20,
               width: 20,
               child: Image.asset(
-                "assets/icons/vonc wathsapp logo crop.png",
+                "assets/icons/vonc wathsapp logo crop (Small).png",
                 height: 20,
                 width: 20,
                 fit: BoxFit.fill,
@@ -196,7 +196,7 @@ class _AppBarsbsState extends State<AppBarsbs> {
               height: 20,
               width: 20,
               child: Image.asset(
-                "assets/icons/vonc wathsapp logo crop.png",
+                "assets/icons/vonc wathsapp logo crop (Small).png",
                 height: 20,
                 width: 20,
                 fit: BoxFit.fill,

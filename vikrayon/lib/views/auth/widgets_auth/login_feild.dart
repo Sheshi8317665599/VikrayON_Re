@@ -34,7 +34,7 @@ class _LoginFeildState extends State<LoginFeild> {
         maxWidth: 250.w,
       ),
       child: SizedBox(
-        height: 50.h,
+        height: 60.h,
         child: TextFormField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
@@ -42,25 +42,25 @@ class _LoginFeildState extends State<LoginFeild> {
           textAlignVertical: TextAlignVertical.center,
           textAlign: TextAlign.start,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(15),
+            // contentPadding: const EdgeInsets.all(15),
             enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: Authcolors.borederColor,
-                width: 3,
+                width: 3.w,
               ),
               borderRadius: BorderRadius.circular(15),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: Authcolors.gradient2,
-                width: 3,
+                width: 3.w,
               ),
               borderRadius: BorderRadius.circular(15),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Colors.redAccent,
-                width: 3,
+              borderSide: BorderSide(
+                color: Colors.red,
+                width: 3.w,
               ),
               borderRadius: BorderRadius.circular(15),
             ),
@@ -68,10 +68,14 @@ class _LoginFeildState extends State<LoginFeild> {
             hintStyle: widget.hintStyle,
             suffixIcon: widget.suffixIcon,
             prefixIcon: widget.prefixIcon,
+            errorStyle:
+                TextStyle(fontSize: 12.sp, height: 1.2, color: Colors.red),
+            alignLabelWithHint: true,
+            isDense: true,
             errorBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: Colors.red,
-                width: 3,
+                width: 3.w,
               ),
               borderRadius: BorderRadius.circular(15),
             ),

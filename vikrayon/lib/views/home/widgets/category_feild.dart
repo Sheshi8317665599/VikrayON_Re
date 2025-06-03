@@ -1,9 +1,13 @@
-//ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:vikrayon/controllers/location_controller.dart';
+import 'package:vikrayon/controllers/widget_controller.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
+import 'package:vikrayon/views/home/category/living_generals_category.dart';
+import 'package:vikrayon/views/screens/livingenerals/category_feilds.dart/f_v_category_feild.dart';
 
 // class CategoryFeild extends StatefulWidget {
 //   final VoidCallback? onPressedNotification;
@@ -216,7 +220,7 @@ import 'package:vikrayon/utils/colors.dart';
 //                             width: 40,
 //                             height: 40,
 //                             child: Image.asset(
-//                               "assets/icons/cateogrie_icon-removebg-preview.png",
+//                               "assets/icons/cateogrie_icon-removebg-preview (Small).png",
 //                               fit: BoxFit.fill,
 //                             ))
 //                         : const Icon(Icons.list,
@@ -780,22 +784,11 @@ class CategoryFeild extends StatefulWidget {
   final List<String> categoryIcons;
   final List<Color> categoryColors;
   final List<String> categoryNames;
+  final List<String> fieldsName;
   final List<String> vonieImages;
-  final List<String> foodimages;
-  final List<String> livingEssentailsImages;
-  final List<String> fashionImages;
-  final List<String> cervcesImages;
   final Function(int)? onBannerTap;
   final Function(int)? onCategoryTap;
   final Function(int)? onVonieTap;
-  final Function(int)? onFoodTap;
-  final Function(int)? onFoodpageTap;
-  final Function(int)? onLivingTap;
-  final Function(int)? onLivingpageTap;
-  final Function(int)? onFashionTap;
-  final Function(int)? onFashionpageTap;
-  final Function(int)? onCervcesTap;
-  final Function(int)? onCervcespageTap;
   const CategoryFeild({
     super.key,
     required this.searchText,
@@ -811,22 +804,11 @@ class CategoryFeild extends StatefulWidget {
     required this.categoryIcons,
     required this.categoryColors,
     required this.categoryNames,
+    required this.fieldsName,
     required this.vonieImages,
-    required this.foodimages,
-    required this.livingEssentailsImages,
-    required this.fashionImages,
-    required this.cervcesImages,
     required this.onBannerTap,
     required this.onCategoryTap,
     required this.onVonieTap,
-    required this.onFoodTap,
-    required this.onFoodpageTap,
-    required this.onLivingTap,
-    required this.onLivingpageTap,
-    required this.onFashionTap,
-    required this.onFashionpageTap,
-    required this.onCervcesTap,
-    required this.onCervcespageTap,
   });
 
   @override
@@ -857,8 +839,11 @@ class _CategoryFeildState extends State<CategoryFeild> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image(image: AssetImage(widget.imageLogo), height: 32, width: 50),
-            const SizedBox(width: 2),
+            Image(
+                image: AssetImage(widget.imageLogo),
+                height: 100.sp,
+                width: 100.sp),
+            SizedBox(width: 1.sp),
             Expanded(
               child: Container(
                 height: height * 0.045,
@@ -892,9 +877,9 @@ class _CategoryFeildState extends State<CategoryFeild> {
             const SizedBox(width: 2),
             InkWell(
               onTap: widget.onPressedNotification,
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none,
-                size: 30,
+                size: 30.sp,
                 color: Authcolors.whiteColor,
               ),
             ),
@@ -915,19 +900,14 @@ class _CategoryFeildState extends State<CategoryFeild> {
           ],
         ),
       ),
-      // appBar: PreferredSize(
-      //   preferredSize: const Size.fromHeight(50),
-      //   child: AppBarms(
-      //       onPressedNotification: () => AppNotificationScreen(),
-      //       onPressedSearchbar: () {},
-      //       onPressedwathasapp: () {},
-      //       imageLogo: 'assets/icons/VikrayON_Text_Logo.png',
-      //       gradientcolourAppbar: AppColors.appBarColorMS,
-      //       colorsearchBorder: AppColors.bottomNavigationBarColorCvS),
-      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: height * 0.05,
+              width: width,
+              child: LocationInfoWidget(),
+            ),
             SizedBox(
               height: height * 0.18,
               child: CarouselSlider(
@@ -996,10 +976,10 @@ class _CategoryFeildState extends State<CategoryFeild> {
                   },
                   icon: _viewType == ViewType.grid
                       ? SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 30.sp,
+                          height: 30.sp,
                           child: Image.asset(
-                            "assets/icons/cateogrie_icon-removebg-preview.png",
+                            "assets/icons/cateogrie_icon-removebg-preview (Small).png",
                             fit: BoxFit.fill,
                           ))
                       : const Icon(Icons.list,
@@ -1141,243 +1121,12 @@ class _CategoryFeildState extends State<CategoryFeild> {
                                 radius: 40,
                                 child: IconButton(
                                   icon: Image.asset(widget.vonieImages[0]),
-                                  onPressed: () => widget.onVonieTap,
+                                  onPressed: () => widget.onVonieTap?.call(0),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                ],
-              ),
-            ),
-            // foods offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  // UiHelper.fieldsName[0],
-                  widget.categoryNames[0],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.foodimages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onFoodTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(widget.foodimages[index]
-                                  //UiHelper.fiImages[index]
-                                  ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => // foodImageindex(0),
-                          widget.onFoodpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Livin generals offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  UiHelper.categoryNames[1],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.livingEssentailsImages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onLivingTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  widget.livingEssentailsImages[index]),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onLivingpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // fashion offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  //UiHelper.fieldsName[2],
-                  widget.categoryNames[2],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.fashionImages.length,
-                      // widget.imagefs.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onFashionTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  // UiHelper.foodImages[index],
-                                  widget.fashionImages[index]),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onFashionpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Cervces offers
-            const SizedBox(height: 1),
-            SizedBox(
-              height: 20,
-              width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  widget.categoryNames[3],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.cervcesImages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onCervcesTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                widget.cervcesImages[index],
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onCervcespageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -1400,25 +1149,17 @@ class CategoryFeild1 extends StatefulWidget {
   final List<String> mainBanners;
   final String titleCt;
   final List<String> categoryIcons;
+
   final List<Color> categoryColors;
   final List<String> categoryNames;
+
   final List<String> fieldsName;
   final List<String> vonieImages;
-  final List<String> foodimages;
-  final List<String> livingEssentailsImages;
-  final List<String> fashionImages;
-  final List<String> cervcesImages;
   final Function(int)? onBannerTap;
   final Function(int)? onCategoryTap;
+
   final Function(int)? onVonieTap;
-  final Function(int)? onFoodTap;
-  final Function(int)? onFoodpageTap;
-  final Function(int)? onLivingTap;
-  final Function(int)? onLivingpageTap;
-  final Function(int)? onFashionTap;
-  final Function(int)? onFashionpageTap;
-  final Function(int)? onCervcesTap;
-  final Function(int)? onCervcespageTap;
+
   const CategoryFeild1({
     super.key,
     required this.searchText,
@@ -1436,21 +1177,9 @@ class CategoryFeild1 extends StatefulWidget {
     required this.categoryNames,
     required this.fieldsName,
     required this.vonieImages,
-    required this.foodimages,
-    required this.livingEssentailsImages,
-    required this.fashionImages,
-    required this.cervcesImages,
     required this.onBannerTap,
     required this.onCategoryTap,
     required this.onVonieTap,
-    required this.onFoodTap,
-    required this.onFoodpageTap,
-    required this.onLivingTap,
-    required this.onLivingpageTap,
-    required this.onFashionTap,
-    required this.onFashionpageTap,
-    required this.onCervcesTap,
-    required this.onCervcespageTap,
   });
 
   @override
@@ -1481,8 +1210,11 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image(image: AssetImage(widget.imageLogo), height: 32, width: 50),
-            const SizedBox(width: 2),
+            Image(
+                image: AssetImage(widget.imageLogo),
+                height: 100.sp,
+                width: 100.sp),
+            SizedBox(width: 1.sp),
             Expanded(
               child: Container(
                 height: height * 0.045,
@@ -1516,9 +1248,9 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
             const SizedBox(width: 2),
             InkWell(
               onTap: widget.onPressedNotification,
-              child: const Icon(
+              child: Icon(
                 Icons.notifications_none,
-                size: 30,
+                size: 30.sp,
                 color: Authcolors.whiteColor,
               ),
             ),
@@ -1542,6 +1274,11 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: height * 0.03,
+              width: width,
+              child: LocationInfoWidget(),
+            ),
             SizedBox(
               height: height * 0.18,
               child: CarouselSlider(
@@ -1610,10 +1347,10 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                   },
                   icon: _viewType == ViewType.grid
                       ? SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 30.sp,
+                          height: 30.sp,
                           child: Image.asset(
-                            "assets/icons/cateogrie_icon-removebg-preview.png",
+                            "assets/icons/cateogrie_icon-removebg-preview (Small).png",
                             fit: BoxFit.fill,
                           ))
                       : const Icon(Icons.list,
@@ -1659,8 +1396,8 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                                                     BorderRadius.circular(30),
                                                 border: Border.all(
                                                   width: 3,
-                                                  color: widget
-                                                      .categoryColors[index],
+                                                  color:
+                                                      widget.categoryColors[0],
                                                 )),
                                           ),
                                         ),
@@ -1695,10 +1432,11 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                                         backgroundColor: AppColors.transperent,
                                         radius: 50,
                                         child: IconButton(
-                                            icon: Image.asset(
-                                                UiHelper.vonieImages[0]),
-                                            onPressed: () =>
-                                                widget.onVonieTap?.call(0)),
+                                          icon: Image.asset(
+                                              UiHelper.vonieImages[0]),
+                                          onPressed: () =>
+                                              widget.onVonieTap?.call(0),
+                                        ),
                                       ),
                                     )))
                           ],
@@ -1717,7 +1455,7 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
                                           child: Container(
-                                            height: height * 0.90,
+                                            height: height * 0.50,
                                             margin: const EdgeInsets.symmetric(
                                                 vertical: 10),
                                             decoration: BoxDecoration(
@@ -1752,10 +1490,10 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                               alignment: Alignment.topRight,
                               child: CircleAvatar(
                                 backgroundColor: AppColors.transperent,
-                                radius: 40.sp,
+                                radius: 40,
                                 child: IconButton(
                                   icon: Image.asset(widget.vonieImages[0]),
-                                  onPressed: () => widget.onVonieTap,
+                                  onPressed: () => widget.onVonieTap?.call(0),
                                 ),
                               ),
                             ),
@@ -1764,7 +1502,8 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                 ],
               ),
             ),
-            // foods offers
+            // food vemdor details
+
             const SizedBox(height: 1),
             SizedBox(
               height: 20.sp,
@@ -1782,55 +1521,31 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                 ),
               ),
             ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.foodimages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onFoodTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(widget.foodimages[index]
-                                  //UiHelper.fiImages[index]
-                                  ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => // foodImageindex(0),
-                          widget.onFoodpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            // food vemdor details
+            Plgp(
+              controller: Get.put(ProductController()),
+              colorb: AppColors.bottomNavigationBarColorLgS,
+              gradient: AppColors.productscreencolourlgsp,
+              showOnlyFavourites: true,
             ),
-            // Livin generals offers
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: IconButton(
+            //     onPressed: () => widget.onCervcespageTap?.call(0),
+            //     icon: const Icon(
+            //       Icons.arrow_forward_ios,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 1),
             SizedBox(
-              height: 20,
+              height: 20.sp,
               width: width,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
+                  // UiHelper.fieldsName[0],
                   widget.fieldsName[1],
                   style: TextStyle(
                     color: Colors.white,
@@ -1840,54 +1555,31 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                 ),
               ),
             ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.livingEssentailsImages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onLivingTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  widget.livingEssentailsImages[index]),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onLivingpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            // food vemdor details
+            Plgp(
+              controller: Get.put(ProductController()),
+              colorb: AppColors.bottomNavigationBarColorLgS,
+              gradient: AppColors.productscreencolourlgsp,
+              showOnlyFavourites: false,
             ),
-            // fashion offers
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: IconButton(
+            //     onPressed: () => widget.onCervcespageTap?.call(0),
+            //     icon: const Icon(
+            //       Icons.arrow_forward_ios,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 1),
             SizedBox(
-              height: 20,
+              height: 20.sp,
               width: width,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  //UiHelper.fieldsName[2],
+                  // UiHelper.fieldsName[0],
                   widget.fieldsName[2],
                   style: TextStyle(
                     color: Colors.white,
@@ -1897,55 +1589,31 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                 ),
               ),
             ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.fashionImages.length,
-                      // widget.imagefs.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onFashionTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  // UiHelper.foodImages[index],
-                                  widget.fashionImages[index]),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onFashionpageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            // food vemdor details
+            Plgp(
+              controller: Get.put(ProductController()),
+              colorb: AppColors.bottomNavigationBarColorLgS,
+              gradient: AppColors.productscreencolourlgsp,
+              showOnlyFavourites: false,
             ),
-            // Cervces offers
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: IconButton(
+            //     onPressed: () => widget.onCervcespageTap?.call(0),
+            //     icon: const Icon(
+            //       Icons.arrow_forward_ios,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 1),
             SizedBox(
-              height: 20,
+              height: 20.sp,
               width: width,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
+                  // UiHelper.fieldsName[0],
                   widget.fieldsName[3],
                   style: TextStyle(
                     color: Colors.white,
@@ -1955,46 +1623,23 @@ class _CategoryFeild1State extends State<CategoryFeild1> {
                 ),
               ),
             ),
-            const SizedBox(height: 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Row(
-                    children: List.generate(
-                      widget.cervcesImages.length,
-                      (index) => InkWell(
-                        onTap: () => widget.onCervcesTap?.call(index),
-                        child: Container(
-                          height: 150,
-                          width: width - 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                widget.cervcesImages[index],
-                              ),
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () => widget.onCervcespageTap?.call(0),
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            // food vemdor details
+            Plgp(
+              controller: Get.put(ProductController()),
+              colorb: AppColors.bottomNavigationBarColorLgS,
+              gradient: AppColors.productscreencolourlgsp,
+              showOnlyFavourites: false,
             ),
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: IconButton(
+            //     onPressed: () => widget.onCervcespageTap?.call(0),
+            //     icon: const Icon(
+            //       Icons.arrow_forward_ios,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

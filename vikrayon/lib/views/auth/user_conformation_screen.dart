@@ -15,6 +15,16 @@ class UserConformationScreen extends StatefulWidget {
 class _UserConformationScreenState extends State<UserConformationScreen> {
   final UserConformationControler userConformationControler =
       Get.find<UserConformationControler>();
+
+  String hideEmail(String email) {
+    // Hide the first part of the email
+    int atIndex = email.indexOf('@');
+    if (atIndex > 2) {
+      return '*' * (atIndex + 2) + email.substring(atIndex - 2);
+    }
+    return email; // Return as is if not enough characters
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -25,7 +35,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Image.asset("assets/icons/signin_balls.png"),
+              Image.asset("assets/icons/signin_balls (Small).png"),
               SizedBox(
                 height: height * 0.02,
               ),
@@ -33,7 +43,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/icons/VikrayON_Text_Logo.png",
+                      "assets/icons/VikrayON_Text_Logo (Small).png",
                       height: height * 0.1,
                       width: width * 0.8,
                     ),
@@ -49,8 +59,10 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                   SizedBox(
                     height: height * 0.02,
                   ),
+
                   Text(
-                    'Please enter the OTP sent to your Email',
+                    'Please enter the OTP sent to your Email id ${hideEmail(userConformationControler.email)}',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Authcolors.whiteColor, fontSize: width * 0.04),
                   ),
@@ -91,7 +103,30 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                       fontSize: width * 0.050,
                     ),
                   ),
-
+                  Obx(() {
+                    if (userConformationControler.canResendOtp.value) {
+                      return TextButton(
+                        onPressed: () {
+                          userConformationControler.resendOtp();
+                        },
+                        child: Text(
+                          "Resend OTP",
+                          style: TextStyle(
+                            color: Authcolors.whiteColor,
+                            fontSize: width * 0.04,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        "You can resend OTP after ${userConformationControler.otpCountdown.value} seconds",
+                        style: TextStyle(
+                          color: Authcolors.whiteColor,
+                          fontSize: width * 0.04,
+                        ),
+                      );
+                    }
+                  }),
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -139,6 +174,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                   ),
 
                   // conformed button
+
                   SudmitButton(
                     text: "Conform",
                     onPressed: () {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
 import 'package:vikrayon/controllers/widget_controller.dart';
 import 'package:vikrayon/discount_page.dart';
 import 'package:vikrayon/main_screen.dart';
@@ -47,10 +46,10 @@ class UiHelper {
   // cateogry icons
 
   static List<String> categoryIcons = [
-    "assets/icons/food .png",
-    "assets/icons/grocerys.png",
-    "assets/icons/fashion.png",
-    "assets/icons/cervices.png",
+    "assets/icons/food  (Small).png",
+    "assets/icons/grocerys (Small).png",
+    "assets/icons/fashion (Small).png",
+    "assets/icons/cervices (Small).png",
   ];
 
   // Category names
@@ -74,43 +73,43 @@ class UiHelper {
   // Foods Section Images
 
   static List<String> foodImages = [
-    "assets/img/foods/vonc_m_f_1.png",
-    "assets/img/foods/vonc_m_f_2.png",
-    "assets/img/foods/vonc_m_f_3 .png",
-    "assets/img/foods/vonc_m_f_4.png",
+    "assets/img/foods/vonc_m_f_1 (Small).png",
+    "assets/img/foods/vonc_m_f_2 (Small).png",
+    "assets/img/foods/vonc_m_f_3  (Small).png",
+    "assets/img/foods/vonc_m_f_4 (Small).png",
   ];
 
   // Living Essentails Images
 
   static List<String> livingEssentailsImages = [
-    "assets/img/living_generals/VOnC LE EGGS.png",
-    "assets/img/living_generals/VOnC LE Chicken.png",
-    "assets/img/living_generals/VOnC LE FLESH.png",
-    "assets/img/living_generals/VOnC LE FISH.png",
+    "assets/img/living_generals/VOnC LE EGGS (Small).png",
+    "assets/img/living_generals/VOnC LE Chicken (Small).png",
+    "assets/img/living_generals/VOnC LE FLESH (Small).png",
+    "assets/img/living_generals/VOnC LE FISH (Small).png",
   ];
 
   // Fashion Section Images
 
   static List<String> fashionImages = [
-    "assets/img/fashion/vonc clothes Fashion.png",
-    "assets/img/fashion/vonc_L-E_P.png",
-    "assets/img/fashion/vonc_l-e_s.png",
-    "assets/img/fashion/VONC_L-E.png",
+    "assets/img/fashion/vonc clothes Fashion (Small).png",
+    "assets/img/fashion/vonc_L-E_P (Small).png",
+    "assets/img/fashion/vonc_l-e_s (Small).png",
+    "assets/img/fashion/VONC_L-E (Small).png",
   ];
 
   // Cervces Section Images
 
   static List<String> cervcesImages = [
-    "assets/img/cervces/cervices ad-min.png",
-    "assets/img/cervces/VONC D CERVICES-min.png",
-    "assets/img/cervces/VONC MOTOR CERVICES-min.png",
-    "assets/img/cervces/VONC CAR CERVICES-min.png",
+    "assets/img/cervces/cervices ad-min (Small).png",
+    "assets/img/cervces/Electronic Service  Banner app-min (Small).png",
+    "assets/img/cervces/VONC MOTOR CERVICES-min (Small).png",
+    "assets/img/cervces/VONC CAR CERVICES-min (Small).png",
   ];
 
   // VONI&E Section Images
 
   static List<String> vonieImages = [
-    "assets/icons/vonc_io_main-removebg-preview edited.png",
+    "assets/icons/vonc_io_main-removebg-preview edited (Small).png",
   ];
 
   // feilds name in main screen
@@ -142,26 +141,26 @@ class UiHelper {
   // livingenerals main screen banners
 
   static List<String> livingGeneralsMainBanners = [
-    "assets/img/living_generals/vonc_Le.png",
-    "assets/img/living_generals/vonc_le_f_banner.png",
-    "assets/img/living_generals/vonc_le_ vegetables banners.png",
-    "assets/img/living_generals/vonc-ie_le_ Meat banner.png",
-    "assets/img/living_generals/Vonc_le_Grains_banner.png",
+    "assets/img/living_generals/vonc_Le (Small).png",
+    "assets/img/living_generals/vonc_le_f_banner (Small).png",
+    "assets/img/living_generals/vonc_le_ vegetables banners (Small).png",
+    "assets/img/living_generals/vonc-ie_le_ Meat banner (Small).png",
+    "assets/img/living_generals/Vonc_le_Grains_banner (Small).png",
   ];
 
   static List<String> livingGeneralsBanners = [
-    "assets/img/living_generals/rv 1.png",
-    "assets/img/living_generals/re 2.png",
-    "assets/img/living_generals/re 3.png",
-    "assets/img/living_generals/RE-4.png",
+    "assets/img/living_generals/rv 1 (Small).png",
+    "assets/img/living_generals/re 2 (Small).png",
+    "assets/img/living_generals/re 3 (Small).png",
+    "assets/img/living_generals/RE-4 (Small).png",
   ];
 
   // livingenerals category icons
   static List<String> livingGeneralsCategoryIcons = [
-    "assets/img/living_generals/fruits_icon-removebg-preview.png",
-    "assets/img/living_generals/vegetables_icon-removebg-preview.png",
-    "assets/img/living_generals/meat_ivon-removebg-preview.png",
-    "assets/img/living_generals/grains_icon_img-removebg-preview.png",
+    "assets/img/living_generals/fruits_icon-removebg-preview (Small).png",
+    "assets/img/living_generals/vegetables_icon-removebg-preview (Small).png",
+    "assets/img/living_generals/meat_ivon-removebg-preview (Small).png",
+    "assets/img/living_generals/grains_icon_img-removebg-preview (Small).png",
   ];
 
   // livingenerals category names
@@ -179,7 +178,7 @@ class UiHelper {
 
 //
 
-  // fashion main screen banners
+//   // fashion main screen banners
   static List<String> fashionMainBanners = [];
 
   // fashion category icons
@@ -193,37 +192,37 @@ class UiHelper {
     Color(0xffe3a705),
   ];
 }
-//
+// //
 
-// // RxInt of main banner index
+// // // RxInt of main banner index
 
-final RxInt selectedmainBannersIndex = 0.obs;
-// // RxInt of category icons index
+// final RxInt selectedmainBannersIndex = 0.obs;
+// // // RxInt of category icons index
 
-final RxInt selectedCategoryIconsIndex = 0.obs;
-// // RxInt of Food images index
+// final RxInt selectedCategoryIconsIndex = 0.obs;
+// // // RxInt of Food images index
 
-final RxInt selectedFoodImagesIndex = 0.obs;
+// final RxInt selectedFoodImagesIndex = 0.obs;
 
-// // RxInt of Living Essentails images index
+// // // RxInt of Living Essentails images index
 
-final RxInt selectedLivingEssentailsImagesIndex = 0.obs;
+// final RxInt selectedLivingEssentailsImagesIndex = 0.obs;
 
-// // RxInt of Fashion images index
+// // // RxInt of Fashion images index
 
-final RxInt selectedFashionImagesIndex = 0.obs;
+// final RxInt selectedFashionImagesIndex = 0.obs;
 
-// // RxInt of Cervces images index
+// // // RxInt of Cervces images index
 
-final RxInt selectedCervcesImagesIndex = 0.obs;
+// final RxInt selectedCervcesImagesIndex = 0.obs;
 
-// RxInt of VONI&E images index
+// // RxInt of VONI&E images index
 
-final RxInt selectedVonieImagesIndex = 0.obs;
+// final RxInt selectedVonieImagesIndex = 0.obs;
 
 // mainBannerindex
 
-Widget mainBannerindex(int index) {
+Widget mainBannerindex(index) {
   switch (index) {
     case 0:
       return DiscountPage();
@@ -242,7 +241,7 @@ Widget mainBannerindex(int index) {
 
 // categoryIconindex
 
-Widget categoryIconindex(int index) {
+Widget categoryIconindex(index) {
   switch (index) {
     case 0:
       return FoodMainScreen();
@@ -302,19 +301,36 @@ Widget vonieImageindex(index) {
   }
 }
 
-// get livinggenerals category icons screens
-Widget livingeneralsCategoryIconindex(int index) {
+//get livinggenerals category icons screens
+ Widget lgsCategoryIcon(int index) {
   switch (index) {
     case 0:
-      return FVCategoryFeild();
+      return const FVCategoryFeild();
     case 1:
-      return Vegetables();
+      return const Vegetables();
     case 2:
-      return FashionMainScreen();
+      return const FashionMainScreen();
     case 3:
-      return CervcesFavouriteScreen();
+      return const CervcesMainScreen();
     default:
-      return MainScreen();
+      return const LivingGeneralsMainScreen();
+  }
+}
+
+Widget lgsmainbannere(int index) {
+  switch (index) {
+    case 0:
+      return const FVCategoryFeild();
+    case 1:
+      return const Fruits();
+    case 2:
+      return const Vegetables();
+    case 3:
+      return const FashionMainScreen();
+    case 4:
+      return const CervcesMainScreen();
+    default:
+      return LivingGeneralsMainScreen();
   }
 }
 
@@ -1201,12 +1217,7 @@ class _PvgpState extends State<Pvgp> {
                                         // Product Name
                                         Text(
                                           widget
-                                              .controller
-                                              .products[
-                                                  
-                                                      
-                                                          index]
-                                              .name,
+                                              .controller.products[index].name,
                                           style: TextStyle(
                                             fontSize: 18.sp.sp,
                                             fontWeight: FontWeight.bold,
@@ -1458,11 +1469,13 @@ class Plgp extends StatefulWidget {
 
   final Color colorb;
   final LinearGradient gradient;
+  final bool showOnlyFavourites;
   const Plgp({
     super.key,
     required this.controller,
     required this.colorb,
     required this.gradient,
+    this.showOnlyFavourites = false,
   });
 
   @override
@@ -1482,9 +1495,23 @@ class _PlgpState extends State<Plgp> {
         width: width * 0.95,
         child: Obx(() {
           final isLoading = controller.isLoading.value;
+          final products = widget.showOnlyFavourites
+              ? controller.products
+                  .where((p) => controller.isFavourite(p.id))
+                  .toList()
+              : controller.products;
 
+          final itemCount = isLoading ? 5 : products.length;
+
+          if (widget.showOnlyFavourites && products.isEmpty) {
+            return Center(
+                child: Text(
+              "No Favourites",
+              style: TextStyle(color: Authcolors.whiteColor, fontSize: 20.sp),
+            ));
+          }
           return ListView.builder(
-              itemCount: isLoading ? 5 : controller.products.length,
+              itemCount: itemCount,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 if (isLoading) {

@@ -50,9 +50,7 @@ class TearDropItem {
       name: json['name'],
       image: json['image'],// Must be a valid url
     );
-  }
-
-  
+  } 
 }
 
 class Vb {
@@ -119,6 +117,8 @@ class Product {
  // Getter to calculate the price after discount 
  double get discountPrice => price *(1- discount / 100);
 
+  
+
  // factory constructor to create a product from json
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
@@ -170,12 +170,13 @@ class Product {
 
 List<Product> loadProducts() {
   List<Map<String, dynamic>> fruitsproducts = [
+   // Products,
     // apple's
     {
       "id": 1,
       "name": " Apple's",
       "description": "Fresh Apple's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452255/apples-removebg-preview_m7fhyj.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403658/apples-removebg-preview_Small_zj84ub.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -186,7 +187,7 @@ List<Product> loadProducts() {
       "id": 2,
       "name": " Banana's",
       "description": "Fresh Bannana's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452257/bannas-removebg-preview_vx4nqq.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403662/bannas-removebg-preview_Small_qhb7vy.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -197,7 +198,7 @@ List<Product> loadProducts() {
       "id": 3,
       "name": " Cherry's",
       "description": "Fresh Cherry's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452259/cherrys-removebg-preview_fejmza.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403665/cherrys-removebg-preview_Small_qtkofq.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -208,18 +209,18 @@ List<Product> loadProducts() {
       "id": 4,
       "name": " Dates",
       "description": "Fresh Date's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452261/dates-removebg-preview_aaw8yu.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403668/dates-removebg-preview_Small_ah2zg8.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
       "rating": 4.5,
     },
-    // Elderberrys
+    // grapes
     {
       "id": 5,
       "name": " Grapes's",
       "description": " Fresh Grapes's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452270/Grapes-removebg-preview_jfijk0.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403680/Grapes-removebg-preview_Small_uruhdk.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -231,7 +232,7 @@ List<Product> loadProducts() {
       "name": " Elderberry's",
       "description": "Fresh Elderberry's \n ssfrom organic farm's",
       "image":
-          "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452263/Elderberrys-removebg-preview_oxoway.png",
+          "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403671/Elderberrys-removebg-preview_Small_h0eoxt.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -243,7 +244,7 @@ List<Product> loadProducts() {
       "name": " Jack Fruits",
       "description": "Fresh Jack Fruit's from organic farm's",
       "image":
-          "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452274/Jackfruits-removebg-preview_hmtxtp.png",
+          "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403687/Jackfruits-removebg-preview_Small_iexjav.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -254,7 +255,7 @@ List<Product> loadProducts() {
       "id": 8,
       "name": " Fig's",
       "description": "Fresh Fig's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452266/Figs-removebg-preview_q82bg7.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403674/Figs-removebg-preview_Small_dshere.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -265,7 +266,7 @@ List<Product> loadProducts() {
       "id": 9,
       "name": " Guava Fruits",
       "description": "Fresh Guava's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452272/Guavas-removebg-preview_dkw8vo.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403684/Guavas-removebg-preview_Small_isesdq.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,
@@ -276,7 +277,7 @@ List<Product> loadProducts() {
       "id": 10,
       "name": " Kiwi's",
       "description": "Fresh Kiwi's from organic farm's",
-      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1746452277/Kiwi-removebg-preview_iylg31.png",
+      "image": "https://res.cloudinary.com/ddlyhla10/image/upload/v1748403690/Kiwi-removebg-preview_Small_nr7dv1.png",
       "price": 120.0,
       "discount": 20,
       "quantity": 6,

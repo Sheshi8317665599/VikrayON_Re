@@ -38,6 +38,7 @@ class _SudmitButtonState extends State<SudmitButton> {
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 17,
+            color: Authcolors.whiteColor,
           ),
         ),
       ),

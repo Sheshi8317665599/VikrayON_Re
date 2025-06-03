@@ -41,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Image.asset("assets/icons/signin_balls.png"),
+              Image.asset("assets/icons/signin_balls (Small).png"),
               SizedBox(
                 height: height * 0.02,
               ),
@@ -49,7 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 children: [
                   Center(
                     child: Image.asset(
-                      "assets/icons/VikrayON_Text_Logo.png",
+                      "assets/icons/VikrayON_Text_Logo (Small).png",
                       height: height * 0.1,
                       width: width * 0.8,
                     ),
@@ -90,7 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   fontSize: width * 0.050,
                 ),
               ),
-    
+
               SizedBox(
                 height: height * 0.02,
               ),
@@ -117,7 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   fontSize: width * 0.050,
                 ),
               ),
-    
+
               SizedBox(
                 height: height * 0.015,
               ),

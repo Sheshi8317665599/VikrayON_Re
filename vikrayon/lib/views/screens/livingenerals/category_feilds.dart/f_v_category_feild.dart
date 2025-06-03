@@ -47,7 +47,7 @@ class _FVCategoryFeildState extends State<FVCategoryFeild>
             onPressedNotification: () => AppNotificationScreen(),
             onPressedSearchbar: () {},
             onPressedwathasapp: () {},
-            imageLogo: "assets/icons/VFruits-LETTER.png",
+            imageLogo: "assets/icons/VFruits-LETTER (Small).png",
             gradientcolourAppbar: AppColors.appBarColorLgS,
             colorsearchBorder: AppColors.bottomNavigationBarColorCvS,
             onPressedfavourite: () async {
@@ -91,7 +91,6 @@ class _FVCategoryFeildState extends State<FVCategoryFeild>
             Padding(
               padding: const EdgeInsets.only(top: 70.0),
               child: TabBarView(
-                controller: TabController(length: 3, vsync: this),
                 children: [
                   Fruits(),
                   Vegetables(),
@@ -137,19 +136,19 @@ class _FruitsState extends State<Fruits> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackground,
       appBar: AppBar(
         backgroundColor: AppColors.scaffoldBackground,
         automaticallyImplyLeading: false,
-        leading:  SizedBox(
-                height: height * 0.1,
-                child: TearDropWidget(
-                  colorb: AppColors.bottomNavigationBarColorLgS,
-                  subcategoryTag: '',
-                ),
-              ), 
+        leading: SizedBox(
+          height: height * 0.1,
+          child: TearDropWidget(
+            colorb: AppColors.bottomNavigationBarColorLgS,
+            subcategoryTag: '',
+          ),
+        ),
       ),
       // appBar: PreferredSize(
       //   preferredSize: Size.fromHeight(50),
@@ -157,7 +156,7 @@ class _FruitsState extends State<Fruits> {
       //     onPressedNotification: () => AppNotificationScreen(),
       //     onPressedSearchbar: () {},
       //     onPressedwathasapp: () {},
-      //     imageLogo: "assets/icons/VFruits-LETTER.png",
+      //     imageLogo: "assets/icons/VFruits-LETTER (Small).png",
       //     gradientcolourAppbar: AppColors.appBarColorLgS,
       //     colorsearchBorder: AppColors.bottomNavigationBarColorCvS,
       //     onPressedfavourite: () async {
@@ -167,7 +166,7 @@ class _FruitsState extends State<Fruits> {
       //       Get.to(() => CartItem());
       //     },
       //   ),
-     // ),
+      // ),
       body: LayoutBuilder(builder: (context, constraints) {
         return ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -278,7 +277,7 @@ class _VegetablesState extends State<Vegetables> {
         //     onPressedNotification: () => AppNotificationScreen(),
         //     onPressedSearchbar: () {},
         //     onPressedwathasapp: () {},
-        //     imageLogo: "assets/icons/VFruits-LETTER.png",
+        //     imageLogo: "assets/icons/VFruits-LETTER (Small).png",
         //     gradientcolourAppbar: AppColors.appBarColorLgS,
         //     colorsearchBorder: AppColors.bottomNavigationBarColorCvS,
         //     onPressedfavourite: () async {

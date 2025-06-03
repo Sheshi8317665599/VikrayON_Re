@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:vikrayon/controllers/product_model.dart';
@@ -46,7 +47,7 @@ class TearDropController extends GetxController {
   var isLoading = true.obs;
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://run.mocky.io/v3/96ccc2b8-1279-4529-bff5-2bad4e14f2d3',
+    baseUrl: 'https://run.mocky.io/v3/4b1ec499-b6b1-4a81-87ab-f3add2f5c065',
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 5),
   ));
@@ -70,7 +71,11 @@ class TearDropController extends GetxController {
         Get.snackbar('Error', 'Failed to load items');
       }
     } catch (e) {
-      Get.snackbar('Network Error', e.toString());
+      Get.snackbar(
+          'Network Error', 'Failed to fetch items. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
@@ -87,7 +92,7 @@ class VbController extends GetxController {
   var isLoading = true.obs;
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://run.mocky.io/v3/e233275e-7561-4fa6-884f-0201167f5dda',
+    baseUrl: 'https://run.mocky.io/v3/4b1ec499-b6b1-4a81-87ab-f3add2f5c065',
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 5),
   ));
@@ -110,16 +115,19 @@ class VbController extends GetxController {
         Get.snackbar('Error', 'Failed to load items');
       }
     } catch (e) {
-      Get.snackbar('Network Error', e.toString());
+      Get.snackbar(
+          'Network Error', 'Failed to fetch products. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
   }
 }
 
-
 // category controller
- 
+
 class PvbController extends GetxController {
   final String sliderTag;
   PvbController({required this.sliderTag});
@@ -153,7 +161,11 @@ class PvbController extends GetxController {
         Get.snackbar('Error', 'Failed to load items');
       }
     } catch (e) {
-      Get.snackbar('Network Error', e.toString());
+      Get.snackbar(
+          'Network Error', 'Failed to fetch products. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
@@ -183,7 +195,11 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchProducts();
+    try {
+      fetchProducts();
+    } catch (e) {
+      loadProducts();
+    }
   }
 
   Future<void> fetchProducts() async {
@@ -198,7 +214,11 @@ class ProductController extends GetxController {
         Get.snackbar('Error', 'Failed to load items');
       }
     } catch (e) {
-      Get.snackbar('Network Error', e.toString());
+      Get.snackbar(
+          'Network Error', 'Failed to fetch products. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }

@@ -131,3 +131,14 @@ class Authcolors {
   static const Color borederColor = Color.fromRGBO(52, 51, 67, 1);
   static const Color whiteColor = Colors.white;
 }
+
+Color hexToColor(String? hex) {
+  if(hex == null || hex.isEmpty) return Colors.transparent;
+  hex = hex.replaceFirst('#', ''); 
+  if (hex.length == 6) hex = 'FF$hex';
+  try {
+  return Color(int.parse(hex, radix: 16));
+  } catch (e) {
+    return Colors.transparent;
+  }
+}
