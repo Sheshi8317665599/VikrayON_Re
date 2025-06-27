@@ -1,21 +1,15 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vikrayon/api/api_client.dart';
 import 'package:vikrayon/app_notification_Screen.dart';
 import 'package:vikrayon/models/category_model.dart';
 import 'package:vikrayon/ui_helper.dart';
 
 class CategoryFeildController extends GetxController {
-  final String categoryTag;
-  CategoryFeildController({required this.categoryTag});
+  final String? categoryTag;
+  CategoryFeildController({ this.categoryTag});
 
-  final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://run.mocky.io/v3/96ccc2b8-1279-4529-bff5-2bad4e14f2d3',
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 5),
-    ),
-  );
+  
 
   @override
   void onInit() {
@@ -30,7 +24,10 @@ class CategoryFeildController extends GetxController {
   Future<void> fetchCategoryData() async {
     try {
       isLoading.value = true;
-      final response = await dio.get(categoryTag);
+
+  
+      final response = await ApiClient.get('getCategoriesUrl',
+          queryParams: {'tag': categoryTag});
       if (response.statusCode == 2000) {
         categoryModel.value = CategoryModel.fromJson(response.data);
       } else {
@@ -71,32 +68,25 @@ class CategoryFeildController extends GetxController {
   // Banner tap handler
 
   void onBannerSelected(int index) {
-    Get.to(mainBannerindex(index));
-    return;
+    final image = categoryModel.value?.mainBanners[index];
+    if (image != null) {
+    Get.to(() => lgsmainbannere(imageUrl: [image], index: index));
+    }
   }
 
   // Category tap handler
   void onCategorySelected(int index) {
-    Get.to(() => categoryIconindex(index));
+    final image = categoryModel.value?.categorygl[index];
+    if (image != null){
+    Get.to(() => lgsCategoryIcon(imageUrl: [image], index: index));
+    }
   }
 
-// foodImageindex
-  void onFoodVendorSelected(int index) {
-    Get.to(() => foodImageindex(index));
-  }
-
-// livinggeneralsImageindex
-  void onLivingGeneralVendorSelected(int index) {
-    Get.to(() => livinggeneralsImageindex(index));
-  }
-
-// fashionImageindex
-  void onFashionVendorSelected(int index) {
-    Get.to(() => fashionImageindex(index));
-  }
-
-// cervcesImageindex
-  void oncervcesVendorSelected(int index) {
-    Get.to(() => cervcesImageindex(index));
+// vonieImageindex
+  void onvoniesetected(int index) {
+    final image = categoryModel.value?.vonieImages[index];
+    if (image != null) {
+    Get.to(() => vonieImageindex(imageUrl: [image], index: index));
+    }
   }
 }

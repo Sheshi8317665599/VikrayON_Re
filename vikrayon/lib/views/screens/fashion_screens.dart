@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
 import 'package:vikrayon/views/home/widgets/category_feild.dart';
-import 'package:vikrayon/views/home/widgets/sector_feild.dart';
 import 'package:vikrayon/views/screens/voni_e_screens.dart';
 
 class FashionScreens extends StatefulWidget {
@@ -20,7 +19,7 @@ class _FashionScreensState extends State<FashionScreens> {
 
   // final ViewType _viewType = ViewType.grid;
 
-  bool _isLoading = true;
+ // bool _isLoading = true;
 
   @override
   void initState() {
@@ -32,7 +31,7 @@ class _FashionScreensState extends State<FashionScreens> {
     // simulate network delay
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
-      _isLoading = false;
+     // _isLoading = false;
     });
   }
 
@@ -61,14 +60,14 @@ class _FashionScreensState extends State<FashionScreens> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onCategoryTap: (int index) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onVonieTap: (int index) {

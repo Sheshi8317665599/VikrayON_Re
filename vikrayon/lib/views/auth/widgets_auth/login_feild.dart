@@ -9,6 +9,8 @@ class LoginFeild extends StatefulWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool obscureText;
+  final bool readOnly;
+  final void Function(String)? onchanged;
   final String? Function(String?)? validator;
   final TextStyle? hintStyle;
   const LoginFeild(
@@ -19,6 +21,8 @@ class LoginFeild extends StatefulWidget {
       required this.suffixIcon,
       required this.prefixIcon,
       required this.obscureText,
+      required this.readOnly,
+      this.onchanged,
       required this.validator,
       required this.hintStyle});
 

@@ -65,3 +65,4 @@ class Subcategory {
         'products': products.map((p) => p.toJson()).toList(),
   };
 }
+

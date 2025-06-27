@@ -1,5 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_Service">
+            <action android:name="android.intent.action.STS_Service">
+            </intent>
+        <queries> -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -26,7 +31,8 @@
     <application
         android:label="vikrayon"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
         <provider
     android:name="androidx.core.content.FileProvider"
     android:authorities="${applicationId}.fileprovider"

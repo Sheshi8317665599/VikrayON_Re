@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vikrayon/controllers/widget_controller.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
 import 'package:vikrayon/views/home/widgets/category_feild.dart';
-import 'package:vikrayon/views/screens/livingenerals/category_feilds.dart/f_v_category_feild.dart';
 import 'package:vikrayon/views/screens/voni_e_screens.dart';
 
 class LivingGenerals extends StatefulWidget {
@@ -53,14 +51,14 @@ class _LivingGeneralsState extends State<LivingGenerals> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onCategoryTap: (int index) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onVonieTap: (int index) {

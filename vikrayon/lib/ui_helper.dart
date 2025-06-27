@@ -1,14 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:vikrayon/controllers/widget_controller.dart';
 import 'package:vikrayon/discount_page.dart';
 import 'package:vikrayon/main_screen.dart';
 import 'package:vikrayon/profile_screen.dart';
-import 'package:vikrayon/utils/colors.dart';
 import 'package:vikrayon/views/home/cart/cervices_cart_screen.dart';
 import 'package:vikrayon/views/home/cart/fashoin_cart_screen.dart';
 import 'package:vikrayon/views/home/cart/foods_cart_screen.dart';
@@ -29,7 +24,6 @@ import 'package:vikrayon/views/screens/fashion_screens.dart';
 import 'package:vikrayon/views/screens/foods_screens.dart';
 import 'package:vikrayon/views/screens/living_generals.dart';
 import 'package:vikrayon/views/screens/livingenerals/category_feilds.dart/f_v_category_feild.dart';
-import 'package:vikrayon/views/screens/livingenerals/products/product_details_page.dart';
 import 'package:vikrayon/views/screens/voni_e_screens.dart';
 
 class UiHelper {
@@ -222,7 +216,7 @@ class UiHelper {
 
 // mainBannerindex
 
-Widget mainBannerindex(index) {
+Widget mainBannerindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     case 0:
       return DiscountPage();
@@ -241,7 +235,7 @@ Widget mainBannerindex(index) {
 
 // categoryIconindex
 
-Widget categoryIconindex(index) {
+Widget categoryIconindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     case 0:
       return FoodMainScreen();
@@ -258,7 +252,7 @@ Widget categoryIconindex(index) {
 
 // foodImageindex
 
-Widget foodImageindex(index) {
+Widget foodImageindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     default:
       return FoodMainScreen();
@@ -267,7 +261,7 @@ Widget foodImageindex(index) {
 
 // getLivingEssentailsImage
 
-Widget livinggeneralsImageindex(index) {
+Widget livinggeneralsImageindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     default:
       return LivingGeneralsMainScreen();
@@ -276,7 +270,7 @@ Widget livinggeneralsImageindex(index) {
 
 // fashionImageindex
 
-Widget fashionImageindex(index) {
+Widget fashionImageindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     default:
       return FashionMainScreen();
@@ -285,7 +279,7 @@ Widget fashionImageindex(index) {
 
 // cervcesImageindex
 
-Widget cervcesImageindex(index) {
+Widget cervcesImageindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     default:
       return CervcesMainScreen();
@@ -294,7 +288,7 @@ Widget cervcesImageindex(index) {
 
 // vonieImageindex
 
-Widget vonieImageindex(index) {
+Widget vonieImageindex({required List<String> imageUrl, required int index}) {
   switch (index) {
     default:
       return VoniEScreens();
@@ -302,7 +296,7 @@ Widget vonieImageindex(index) {
 }
 
 //get livinggenerals category icons screens
- Widget lgsCategoryIcon(int index) {
+ Widget lgsCategoryIcon( {required List<String> imageUrl, required int index}) {
   switch (index) {
     case 0:
       return const FVCategoryFeild();
@@ -317,7 +311,7 @@ Widget vonieImageindex(index) {
   }
 }
 
-Widget lgsmainbannere(int index) {
+Widget lgsmainbannere({required List<String> imageUrl, required int index}) {
   switch (index) {
     case 0:
       return const FVCategoryFeild();
@@ -402,1476 +396,1494 @@ final List<String> categoryNamest = [
   "Kiwi",
 ];
 
-class TearDropWidget extends StatefulWidget {
-  final String subcategoryTag;
-  final Color colorb;
-
-  const TearDropWidget({
-    super.key,
-    required this.colorb,
-    required this.subcategoryTag,
-  });
-
-  @override
-  State<TearDropWidget> createState() => _TearDropWidgetState();
-}
-
-class _TearDropWidgetState extends State<TearDropWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final TearDropController controller = Get.put(
-        TearDropController(subcategoryTag: widget.subcategoryTag),
-        tag: widget.subcategoryTag);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    return Obx(
-      () {
-        if (controller.isLoading.value) {
-          return SizedBox(
-            height: height * 0.1,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: height * 0.06,
-                            width: width * 0.140,
-                            decoration: BoxDecoration(
-                              color: Authcolors.whiteColor,
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(25),
-                                topLeft: Radius.circular(25),
-                                bottomRight: Radius.circular(25),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          Container(
-                            height: 10,
-                            width: width * 0.12,
-                            color: Authcolors.whiteColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-          );
-        }
-        return SizedBox(
-          height: height * 0.1,
-          child: GestureDetector(
-            onTap: () {},
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: controller.tearDropItems.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: height * 0.06,
-                        width: width * 0.140,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(25),
-                              topLeft: Radius.circular(25),
-                              bottomRight: Radius.circular(25),
-                            ),
-                            border: Border.all(
-                              width: 3.sp,
-                              color: widget.colorb,
-                            )),
-                        child: Container(
-                          height: height * 0.058,
-                          width: width * 0.139,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: const Radius.circular(25),
-                              topLeft: const Radius.circular(25),
-                              bottomRight: const Radius.circular(25),
-                            ),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  controller.tearDropItems[index].image),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.01,
-                      ),
-                      Text(
-                        controller.tearDropItems[index].name,
-                        style: TextStyle(
-                            color: widget.colorb,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
+Widget navigateToCategory(String category) {
+  switch (category) {
+    case "food":
+      Get.to(() => FoodMainScreen());
+      return FoodMainScreen();
+    case "livinggenerals":
+      Get.to(() => LivingGeneralsMainScreen());
+      return LivingGeneralsMainScreen();
+    case "fashion":
+      Get.to(() => FashionMainScreen());
+      return FashionMainScreen();
+    case "cervces":
+      Get.to(() => CervcesMainScreen());
+      return CervcesMainScreen();
+    default:
+      return MainScreen();
   }
 }
+// class TearDropWidget extends StatefulWidget {
+//   final String subcategoryTag;
+//   final Color colorb;
 
-// premium vendor banner
+//   const TearDropWidget({
+//     super.key,
+//     required this.colorb,
+//     required this.subcategoryTag,
+//   });
 
-class Pvb extends StatelessWidget {
-  final String sliderTag;
-  final Color colorb;
-  const Pvb({
-    super.key,
-    required this.colorb,
-    required this.sliderTag,
-  });
+//   @override
+//   State<TearDropWidget> createState() => _TearDropWidgetState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    final PvbController controller =
-        Get.put(PvbController(sliderTag: sliderTag), tag: sliderTag);
-    double height = MediaQuery.of(context).size.height;
-    return Obx(
-      () {
-        if (controller.isLoading.value) {
-          return SizedBox(
-            height: height * 0.75,
-            child: CarouselSlider.builder(
-              itemCount: 5,
-              itemBuilder: (context, index, _) {
-                return Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                );
-              },
-              options: CarouselOptions(
-                height: height * 0.75,
-                viewportFraction: 0.8,
-                enlargeCenterPage: true,
-                autoPlay: true,
-              ),
-            ),
-          );
-        }
+// class _TearDropWidgetState extends State<TearDropWidget> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final TearDropController controller = Get.put(
+//         TearDropController(subcategoryTag: widget.subcategoryTag),
+//         tag: widget.subcategoryTag);
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
+//     return Obx(
+//       () {
+//         if (controller.isLoading.value) {
+//           return SizedBox(
+//             height: height * 0.1,
+//             child: ListView.builder(
+//                 scrollDirection: Axis.horizontal,
+//                 itemCount: 5,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   return Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 10),
+//                     child: Shimmer.fromColors(
+//                       baseColor: Colors.grey.shade300,
+//                       highlightColor: Colors.grey.shade100,
+//                       child: Column(
+//                         children: [
+//                           Container(
+//                             height: height * 0.06,
+//                             width: width * 0.140,
+//                             decoration: BoxDecoration(
+//                               color: Authcolors.whiteColor,
+//                               borderRadius: BorderRadius.only(
+//                                 bottomLeft: Radius.circular(25),
+//                                 topLeft: Radius.circular(25),
+//                                 bottomRight: Radius.circular(25),
+//                               ),
+//                             ),
+//                           ),
+//                           SizedBox(
+//                             height: height * 0.01,
+//                           ),
+//                           Container(
+//                             height: 10,
+//                             width: width * 0.12,
+//                             color: Authcolors.whiteColor,
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   );
+//                 }),
+//           );
+//         }
+//         return SizedBox(
+//           height: height * 0.1,
+//           child: GestureDetector(
+//             onTap: () {},
+//             child: ListView.builder(
+//               scrollDirection: Axis.horizontal,
+//               itemCount: controller.tearDropItems.length,
+//               itemBuilder: (BuildContext context, int index) {
+//                 return Padding(
+//                   padding: const EdgeInsets.only(left: 10, right: 10),
+//                   child: Column(
+//                     children: [
+//                       Container(
+//                         height: height * 0.06,
+//                         width: width * 0.140,
+//                         decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.only(
+//                               bottomLeft: Radius.circular(25),
+//                               topLeft: Radius.circular(25),
+//                               bottomRight: Radius.circular(25),
+//                             ),
+//                             border: Border.all(
+//                               width: 3.sp,
+//                               color: widget.colorb,
+//                             )),
+//                         child: Container(
+//                           height: height * 0.058,
+//                           width: width * 0.139,
+//                           decoration: BoxDecoration(
+//                             borderRadius: BorderRadius.only(
+//                               bottomLeft: const Radius.circular(25),
+//                               topLeft: const Radius.circular(25),
+//                               bottomRight: const Radius.circular(25),
+//                             ),
+//                             image: DecorationImage(
+//                               image: NetworkImage(
+//                                   controller.tearDropItems[index].image),
+//                               fit: BoxFit.fill,
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         height: height * 0.01,
+//                       ),
+//                       Text(
+//                         controller.tearDropItems[index].name,
+//                         style: TextStyle(
+//                             color: widget.colorb,
+//                             fontWeight: FontWeight.bold,
+//                             fontSize: 12.sp),
+//                       ),
+//                     ],
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-        return SizedBox(
-          height: height * 0.75,
-          child: CarouselSlider(
-            items: List.generate(controller.pvbItems.length, (index) {
-              return InkWell(
-                onTap: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    image: DecorationImage(
-                      image: NetworkImage(controller.pvbItems[index].image),
-                      fit: BoxFit.fill,
-                    ),
-                    border: Border.all(
-                      width: 2.sp,
-                      color: colorb,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-            options: CarouselOptions(
-              height: height * 0.75,
-              aspectRatio: 1.5,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              scrollDirection: Axis.horizontal,
-              onPageChanged: controller.onPageChanged,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+// // premium vendor banner
 
-// vendor banner
+// class Pvb extends StatelessWidget {
+//   final String sliderTag;
+//   final Color colorb;
+//   const Pvb({
+//     super.key,
+//     required this.colorb,
+//     required this.sliderTag,
+//   });
 
-class Vb extends StatelessWidget {
-  final String sliderTag;
-  final VbController controller;
-  final Color colorb;
-  const Vb({
-    super.key,
-    required this.controller,
-    required this.colorb,
-    required this.sliderTag,
-  });
+//   @override
+//   Widget build(BuildContext context) {
+//     final PvbController controller =
+//         Get.put(PvbController(sliderTag: sliderTag), tag: sliderTag);
+//     double height = MediaQuery.of(context).size.height;
+//     return Obx(
+//       () {
+//         if (controller.isLoading.value) {
+//           return SizedBox(
+//             height: height * 0.75,
+//             child: CarouselSlider.builder(
+//               itemCount: 5,
+//               itemBuilder: (context, index, _) {
+//                 return Shimmer.fromColors(
+//                   baseColor: Colors.grey.shade300,
+//                   highlightColor: Colors.grey.shade100,
+//                   child: Container(
+//                     margin: const EdgeInsets.symmetric(horizontal: 10),
+//                     decoration: BoxDecoration(
+//                       color: Colors.grey.shade300,
+//                       borderRadius: BorderRadius.circular(30),
+//                     ),
+//                   ),
+//                 );
+//               },
+//               options: CarouselOptions(
+//                 height: height * 0.75,
+//                 viewportFraction: 0.8,
+//                 enlargeCenterPage: true,
+//                 autoPlay: true,
+//               ),
+//             ),
+//           );
+//         }
 
-  @override
-  Widget build(BuildContext context) {
-    final VbController controller = Get.put(VbController(sliderTag: sliderTag));
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    return Obx(
-      () {
-        if (controller.isLoading.value) {
-          return ListView.builder(
-              itemCount: 5,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                        width: width * 0.35,
-                        height: height * 0.15,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(30),
-                        )));
-              });
-        }
-        return Container(
-          height: height * 0.15,
-          color: AppColors.scaffoldBackground,
-          child: Row(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: controller.vbItems.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    if (index == controller.vbItems.length - 1) {
-                      return IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_forward_ios_sharp,
-                            color: Colors.white),
-                      );
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    controller.vbItems[index].image,
-                                  ),
-                                  fit: BoxFit.fill),
-                              border: Border.all(color: colorb, width: 2),
-                            ),
-                            height: height * 0.15,
-                            width: width * 0.45,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-// pvgp Premium vendor grid products
+//         return SizedBox(
+//           height: height * 0.75,
+//           child: CarouselSlider(
+//             items: List.generate(controller.pvbItems.length, (index) {
+//               return InkWell(
+//                 onTap: () {},
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(30),
+//                     image: DecorationImage(
+//                       image: NetworkImage(controller.pvbItems[index].image),
+//                       fit: BoxFit.fill,
+//                     ),
+//                     border: Border.all(
+//                       width: 2.sp,
+//                       color: colorb,
+//                     ),
+//                   ),
+//                 ),
+//               );
+//             }).toList(),
+//             options: CarouselOptions(
+//               height: height * 0.75,
+//               aspectRatio: 1.5,
+//               viewportFraction: 0.8,
+//               initialPage: 0,
+//               enableInfiniteScroll: true,
+//               reverse: false,
+//               autoPlay: true,
+//               autoPlayInterval: const Duration(seconds: 3),
+//               autoPlayAnimationDuration: const Duration(milliseconds: 500),
+//               autoPlayCurve: Curves.fastOutSlowIn,
+//               enlargeCenterPage: true,
+//               scrollDirection: Axis.horizontal,
+//               onPageChanged: controller.onPageChanged,
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-class Pgp extends StatefulWidget {
-  final ProductController controller;
-  final Color colorb;
-  final LinearGradient gradient;
-  const Pgp({
-    super.key,
-    required this.controller,
-    required this.colorb,
-    required this.gradient,
-  });
+// // vendor banner
 
-  @override
-  State<Pgp> createState() => _PgpState();
-}
+// class Vb extends StatelessWidget {
+//   final String sliderTag;
+//   final VbController controller;
+//   final Color colorb;
+//   const Vb({
+//     super.key,
+//     required this.controller,
+//     required this.colorb,
+//     required this.sliderTag,
+//   });
 
-class _PgpState extends State<Pgp> {
-  final ProductController controller = Get.put(ProductController());
+//   @override
+//   Widget build(BuildContext context) {
+//     final VbController controller = Get.put(VbController(sliderTag: sliderTag));
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
+//     return Obx(
+//       () {
+//         if (controller.isLoading.value) {
+//           return ListView.builder(
+//               itemCount: 5,
+//               scrollDirection: Axis.horizontal,
+//               itemBuilder: (context, index) {
+//                 return Shimmer.fromColors(
+//                     baseColor: Colors.grey.shade300,
+//                     highlightColor: Colors.grey.shade100,
+//                     child: Container(
+//                         width: width * 0.35,
+//                         height: height * 0.15,
+//                         decoration: BoxDecoration(
+//                           color: Colors.grey.shade300,
+//                           borderRadius: BorderRadius.circular(30),
+//                         )));
+//               });
+//         }
+//         return Container(
+//           height: height * 0.15,
+//           color: AppColors.scaffoldBackground,
+//           child: Row(
+//             children: [
+//               Expanded(
+//                 child: ListView.builder(
+//                   itemCount: controller.vbItems.length,
+//                   scrollDirection: Axis.horizontal,
+//                   itemBuilder: (context, index) {
+//                     if (index == controller.vbItems.length - 1) {
+//                       return IconButton(
+//                         onPressed: () {},
+//                         icon: Icon(Icons.arrow_forward_ios_sharp,
+//                             color: Colors.white),
+//                       );
+//                     }
+//                     return Padding(
+//                       padding: const EdgeInsets.all(8.0),
+//                       child: Row(
+//                         children: [
+//                           Container(
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(30),
+//                               image: DecorationImage(
+//                                   image: NetworkImage(
+//                                     controller.vbItems[index].image,
+//                                   ),
+//                                   fit: BoxFit.fill),
+//                               border: Border.all(color: colorb, width: 2),
+//                             ),
+//                             height: height * 0.15,
+//                             width: width * 0.45,
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+// // pvgp Premium vendor grid products
 
-  int currentIndex = 0;
+// class Pgp extends StatefulWidget {
+//   final ProductController controller;
+//   final Color colorb;
+//   final LinearGradient gradient;
+//   const Pgp({
+//     super.key,
+//     required this.controller,
+//     required this.colorb,
+//     required this.gradient,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+//   @override
+//   State<Pgp> createState() => _PgpState();
+// }
 
-    return Obx(
-      () {
-        if (controller.isLoading.value) {
-          return SizedBox(
-            height: height * 0.8,
-            width: width * 0.95,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.59,
-              ),
-              itemBuilder: (_, __) => Shimmer.fromColors(
-                baseColor: Colors.grey.shade300,
-                highlightColor: Colors.grey.shade100,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-              itemCount: 6,
-            ),
-          );
-        }
-        return SizedBox(
-          height: height * 0.80,
-          width: width * 0.95,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.59,
-                  ),
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
+// class _PgpState extends State<Pgp> {
+//   final ProductController controller = Get.put(ProductController());
 
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          () => ProductDetailsPage(product: product),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: height * 0.5,
-                            width: width * 0.45,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: widget.gradient
-                                    .colors, //AppColors.detailsScreenColorLgS.colors
-                              ),
-                              border: Border.all(
-                                color: widget
-                                    .colorb, //AppColors.bottomNavigationBarColorLgS,
-                                width: 2.sp,
-                              ),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: Container(
-                                      height: height * 0.22,
-                                      width: width * 0.42,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(widget
-                                              .controller
-                                              .products[
-                                                  (index * 4 + currentIndex) %
-                                                      widget.controller.products
-                                                          .length]
-                                              .image),
-                                          fit: BoxFit.contain,
-                                        ),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        // Product Name
-                                        Text(
-                                          widget
-                                              .controller
-                                              .products[
-                                                  (index * 4 + currentIndex) %
-                                                      widget.controller.products
-                                                          .length]
-                                              .name,
-                                          style: TextStyle(
-                                            fontSize: 18.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.scaffoldBackground,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
-                                    ),
-                                    //Description
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: height * 0.038,
-                                          width: width * 0.3,
-                                          child: Text(
-                                            widget
-                                                .controller
-                                                .products[
-                                                    (index * 4 + currentIndex) %
-                                                        widget.controller
-                                                            .products.length]
-                                                .description,
-                                            style: TextStyle(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: Authcolors.whiteColor,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 2.5,
-                                        ),
-                                        Icon(
-                                          Icons.shopping_bag,
-                                          color: AppColors.scaffoldBackground,
-                                          size: 20,
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        //Quantity
-                                        Text(
-                                          widget
-                                              .controller
-                                              .products[
-                                                  (index * 4 + currentIndex) %
-                                                      widget.controller.products
-                                                          .length]
-                                              .quantity
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.scaffoldBackground,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 10.0,
-                                        bottom: 5.0,
-                                        top: 5.0,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.currency_rupee,
-                                                color: Colors.yellow,
-                                                size: 15,
-                                              ),
-                                              // Price & discount
-                                              Text(
-                                                '${widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].price * (1 - (widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].discount / 100))}'
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors
-                                                      .scaffoldBackground,
-                                                ),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                              // Price
-                                              Text(
-                                                '${widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].price}'
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red,
-                                                  decoration:
-                                                      TextDecoration.combine([
-                                                    TextDecoration.lineThrough,
-                                                  ]),
-                                                  decorationColor: Colors.red,
-                                                  decorationThickness: 2.0,
-                                                  decorationStyle:
-                                                      TextDecorationStyle.solid,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Obx(() {
-                                                bool isInCart = widget
-                                                    .controller
-                                                    .isInCart(product.id);
-                                                return InkWell(
-                                                  onTap: () {
-                                                    if (!isInCart) {
-                                                      widget.controller
-                                                          .addToCart(product);
-                                                      Get.snackbar(
-                                                        "Added",
+//   int currentIndex = 0;
 
-                                                        "Item added to cart",
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
 
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                        backgroundColor: widget
-                                                            .colorb, //AppColors
-                                                        //  .bottomNavigationBarColorLgS,
-                                                        colorText: Authcolors
-                                                            .whiteColor,
-                                                      );
-                                                    } else {
-                                                      widget.controller
-                                                          .removeFromCart(
-                                                              product.id);
-                                                      Get.snackbar(
-                                                        "Removed",
+//     return Obx(
+//       () {
+//         if (controller.isLoading.value) {
+//           return SizedBox(
+//             height: height * 0.8,
+//             width: width * 0.95,
+//             child: GridView.builder(
+//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 2,
+//                 crossAxisSpacing: 10,
+//                 mainAxisSpacing: 10,
+//                 childAspectRatio: 0.59,
+//               ),
+//               itemBuilder: (_, __) => Shimmer.fromColors(
+//                 baseColor: Colors.grey.shade300,
+//                 highlightColor: Colors.grey.shade100,
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     color: Colors.grey.shade300,
+//                     borderRadius: BorderRadius.circular(30),
+//                   ),
+//                 ),
+//               ),
+//               itemCount: 6,
+//             ),
+//           );
+//         }
+//         return SizedBox(
+//           height: height * 0.80,
+//           width: width * 0.95,
+//           child: Stack(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.all(5.0),
+//                 child: GridView.builder(
+//                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                     crossAxisCount: 2,
+//                     crossAxisSpacing: 10,
+//                     mainAxisSpacing: 10,
+//                     childAspectRatio: 0.59,
+//                   ),
+//                   itemCount: controller.products.length,
+//                   itemBuilder: (context, index) {
+//                     final product = controller.products[index];
 
-                                                        "Item removed from cart",
+//                     return GestureDetector(
+//                       onTap: () {
+//                         Get.to(
+//                           () => ProductDetailsPage(product: product),
+//                         );
+//                       },
+//                       child: Stack(
+//                         children: [
+//                           Container(
+//                             height: height * 0.5,
+//                             width: width * 0.45,
+//                             decoration: BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 colors: widget.gradient
+//                                     .colors, //AppColors.detailsScreenColorLgS.colors
+//                               ),
+//                               border: Border.all(
+//                                 color: widget
+//                                     .colorb, //AppColors.bottomNavigationBarColorLgS,
+//                                 width: 2.sp,
+//                               ),
+//                               borderRadius: BorderRadius.circular(30),
+//                             ),
+//                             child: Column(
+//                               children: [
+//                                 Expanded(
+//                                   child: Padding(
+//                                     padding: const EdgeInsets.all(1.0),
+//                                     child: Container(
+//                                       height: height * 0.22,
+//                                       width: width * 0.42,
+//                                       decoration: BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: NetworkImage(widget
+//                                               .controller
+//                                               .products[
+//                                                   (index * 4 + currentIndex) %
+//                                                       widget.controller.products
+//                                                           .length]
+//                                               .image),
+//                                           fit: BoxFit.contain,
+//                                         ),
+//                                         borderRadius: BorderRadius.circular(20),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 Column(
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Row(
+//                                       children: [
+//                                         // Product Name
+//                                         Text(
+//                                           widget
+//                                               .controller
+//                                               .products[
+//                                                   (index * 4 + currentIndex) %
+//                                                       widget.controller.products
+//                                                           .length]
+//                                               .name,
+//                                           style: TextStyle(
+//                                             fontSize: 18.sp,
+//                                             fontWeight: FontWeight.bold,
+//                                             color: AppColors.scaffoldBackground,
+//                                           ),
+//                                           textAlign: TextAlign.left,
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     //Description
+//                                     Row(
+//                                       mainAxisAlignment:
+//                                           MainAxisAlignment.start,
+//                                       children: [
+//                                         SizedBox(
+//                                           height: height * 0.038,
+//                                           width: width * 0.3,
+//                                           child: Text(
+//                                             widget
+//                                                 .controller
+//                                                 .products[
+//                                                     (index * 4 + currentIndex) %
+//                                                         widget.controller
+//                                                             .products.length]
+//                                                 .description,
+//                                             style: TextStyle(
+//                                               fontSize: 12.sp,
+//                                               fontWeight: FontWeight.bold,
+//                                               color: Authcolors.whiteColor,
+//                                             ),
+//                                             textAlign: TextAlign.center,
+//                                           ),
+//                                         ),
+//                                         SizedBox(
+//                                           width: 2.5,
+//                                         ),
+//                                         Icon(
+//                                           Icons.shopping_bag,
+//                                           color: AppColors.scaffoldBackground,
+//                                           size: 20,
+//                                         ),
+//                                         SizedBox(
+//                                           width: 2,
+//                                         ),
+//                                         //Quantity
+//                                         Text(
+//                                           widget
+//                                               .controller
+//                                               .products[
+//                                                   (index * 4 + currentIndex) %
+//                                                       widget.controller.products
+//                                                           .length]
+//                                               .quantity
+//                                               .toString(),
+//                                           style: TextStyle(
+//                                             fontSize: 12.sp,
+//                                             color: AppColors.scaffoldBackground,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                           textAlign: TextAlign.center,
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     Padding(
+//                                       padding: const EdgeInsets.only(
+//                                         left: 10.0,
+//                                         right: 10.0,
+//                                         bottom: 5.0,
+//                                         top: 5.0,
+//                                       ),
+//                                       child: Column(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.spaceBetween,
+//                                         children: [
+//                                           Row(
+//                                             children: [
+//                                               Icon(
+//                                                 Icons.currency_rupee,
+//                                                 color: Colors.yellow,
+//                                                 size: 15,
+//                                               ),
+//                                               // Price & discount
+//                                               Text(
+//                                                 '${widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].price * (1 - (widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].discount / 100))}'
+//                                                     .toString(),
+//                                                 style: TextStyle(
+//                                                   fontSize: 12.sp,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: AppColors
+//                                                       .scaffoldBackground,
+//                                                 ),
+//                                                 textAlign: TextAlign.left,
+//                                               ),
+//                                               // Price
+//                                               Text(
+//                                                 '${widget.controller.products[(index * 4 + currentIndex) % widget.controller.products.length].price}'
+//                                                     .toString(),
+//                                                 style: TextStyle(
+//                                                   fontSize: 12.sp,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: Colors.red,
+//                                                   decoration:
+//                                                       TextDecoration.combine([
+//                                                     TextDecoration.lineThrough,
+//                                                   ]),
+//                                                   decorationColor: Colors.red,
+//                                                   decorationThickness: 2.0,
+//                                                   decorationStyle:
+//                                                       TextDecorationStyle.solid,
+//                                                 ),
+//                                               ),
+//                                               SizedBox(
+//                                                 width: 5,
+//                                               ),
+//                                               Obx(() {
+//                                                 bool isInCart = widget
+//                                                     .controller
+//                                                     .isInCart(product.id);
+//                                                 return InkWell(
+//                                                   onTap: () {
+//                                                     if (!isInCart) {
+//                                                       widget.controller
+//                                                           .addToCart(product);
+//                                                       Get.snackbar(
+//                                                         "Added",
 
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                        backgroundColor: widget
-                                                            .colorb, //AppColors
-                                                        //  .bottomNavigationBarColorLgS,
-                                                        colorText: Authcolors
-                                                            .whiteColor,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: AnimatedContainer(
-                                                    duration: Duration(
-                                                        milliseconds: 100),
-                                                    curve: Curves.easeInOut,
-                                                    height: height * 0.03.sp,
-                                                    width: width * 0.13.sp,
-                                                    decoration: BoxDecoration(
-                                                      color: isInCart
-                                                          ? Colors
-                                                              .amberAccent //  AppColors
-                                                          //     .bottomNavigationBarColorLgS
-                                                          : widget.colorb,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.sp),
-                                                      border: Border.all(
-                                                        color: Authcolors
-                                                            .whiteColor,
-                                                      ),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        isInCart
-                                                            ? "Add+"
-                                                            : "Add",
-                                                        style: TextStyle(
-                                                          fontSize: 15.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Authcolors
-                                                              .whiteColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.topRight,
-                                child: Obx(() {
-                                  bool isFav = widget.controller.isFavourite(
-                                      widget.controller.products[index].id);
-                                  return GestureDetector(
-                                      onTap: () {
-                                        widget.controller.toogleFavourite(widget
-                                            .controller.products[index].id);
+//                                                         "Item added to cart",
 
-                                        Get.snackbar(
-                                          isFav
-                                              ? "Removed from favourites"
-                                              : " Added to Favourite",
-                                          isFav
-                                              ? "Item Removed from favourites"
-                                              : " Item Added to Favourite",
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: AppColors
-                                              .bottomNavigationBarColorLgS,
-                                          colorText: Authcolors.whiteColor,
-                                        );
-                                      },
-                                      child: Icon(
-                                        isFav
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: isFav
-                                            ? Colors.red
-                                            : Authcolors.borederColor,
-                                        size: 30.sp,
-                                      ));
-                                })),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+//                                                         snackPosition:
+//                                                             SnackPosition
+//                                                                 .BOTTOM,
+//                                                         backgroundColor: widget
+//                                                             .colorb, //AppColors
+//                                                         //  .bottomNavigationBarColorLgS,
+//                                                         colorText: Authcolors
+//                                                             .whiteColor,
+//                                                       );
+//                                                     } else {
+//                                                       widget.controller
+//                                                           .removeFromCart(
+//                                                               product.id);
+//                                                       Get.snackbar(
+//                                                         "Removed",
 
-class Pvgp extends StatefulWidget {
-  final ProductController controller;
-  final Color colorb;
-  final LinearGradient gradient;
-  const Pvgp({
-    super.key,
-    required this.controller,
-    required this.colorb,
-    required this.gradient,
-  });
+//                                                         "Item removed from cart",
 
-  @override
-  State<Pvgp> createState() => _PvgpState();
-}
+//                                                         snackPosition:
+//                                                             SnackPosition
+//                                                                 .BOTTOM,
+//                                                         backgroundColor: widget
+//                                                             .colorb, //AppColors
+//                                                         //  .bottomNavigationBarColorLgS,
+//                                                         colorText: Authcolors
+//                                                             .whiteColor,
+//                                                       );
+//                                                     }
+//                                                   },
+//                                                   child: AnimatedContainer(
+//                                                     duration: Duration(
+//                                                         milliseconds: 100),
+//                                                     curve: Curves.easeInOut,
+//                                                     height: height * 0.03.sp,
+//                                                     width: width * 0.13.sp,
+//                                                     decoration: BoxDecoration(
+//                                                       color: isInCart
+//                                                           ? Colors
+//                                                               .amberAccent //  AppColors
+//                                                           //     .bottomNavigationBarColorLgS
+//                                                           : widget.colorb,
+//                                                       borderRadius:
+//                                                           BorderRadius.circular(
+//                                                               30.sp),
+//                                                       border: Border.all(
+//                                                         color: Authcolors
+//                                                             .whiteColor,
+//                                                       ),
+//                                                     ),
+//                                                     child: Center(
+//                                                       child: Text(
+//                                                         isInCart
+//                                                             ? "Add+"
+//                                                             : "Add",
+//                                                         style: TextStyle(
+//                                                           fontSize: 15.sp,
+//                                                           fontWeight:
+//                                                               FontWeight.bold,
+//                                                           color: Authcolors
+//                                                               .whiteColor,
+//                                                         ),
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 );
+//                                               }),
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                           Padding(
+//                             padding: const EdgeInsets.all(8.0),
+//                             child: Align(
+//                                 alignment: Alignment.topRight,
+//                                 child: Obx(() {
+//                                   bool isFav = widget.controller.isFavourite(
+//                                       widget.controller.products[index].id);
+//                                   return GestureDetector(
+//                                       onTap: () {
+//                                         widget.controller.toogleFavourite(widget
+//                                             .controller.products[index].id);
 
-class _PvgpState extends State<Pvgp> {
-  final ProductController controller = Get.find<ProductController>();
+//                                         Get.snackbar(
+//                                           isFav
+//                                               ? "Removed from favourites"
+//                                               : " Added to Favourite",
+//                                           isFav
+//                                               ? "Item Removed from favourites"
+//                                               : " Item Added to Favourite",
+//                                           snackPosition: SnackPosition.BOTTOM,
+//                                           backgroundColor: AppColors
+//                                               .bottomNavigationBarColorLgS,
+//                                           colorText: Authcolors.whiteColor,
+//                                         );
+//                                       },
+//                                       child: Icon(
+//                                         isFav
+//                                             ? Icons.favorite
+//                                             : Icons.favorite_border,
+//                                         color: isFav
+//                                             ? Colors.red
+//                                             : Authcolors.borederColor,
+//                                         size: 30.sp,
+//                                       ));
+//                                 })),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-  int currentIndex = 0;
-  @override
-  Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+// class Pvgp extends StatefulWidget {
+//   final ProductController controller;
+//   final Color colorb;
+//   final LinearGradient gradient;
+//   const Pvgp({
+//     super.key,
+//     required this.controller,
+//     required this.colorb,
+//     required this.gradient,
+//   });
 
-    return Obx(
-      () {
-        if (controller.isLoading.value) {
-          return SizedBox(
-            height: height * 0.8,
-            width: width * 0.95,
-            child: GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.59,
-              ),
-              itemBuilder: (_, __) => Shimmer.fromColors(
-                baseColor: Colors.grey.shade300,
-                highlightColor: Colors.grey.shade100,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-              itemCount: 6,
-            ),
-          );
-        }
-        return SizedBox(
-          height: height * 0.80,
-          width: width * 0.95,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.59,
-                  ),
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
+//   @override
+//   State<Pvgp> createState() => _PvgpState();
+// }
 
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          () => ProductDetailsPage(product: product),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: height * 0.5,
-                            width: width * 0.45,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: widget.gradient.colors,
-                                //AppColors.detailsScreenColorLgS.colors
-                                stops: [0.5, 0.8],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                              border: Border.all(
-                                color: widget
-                                    .colorb, //AppColors.bottomNavigationBarColorLgS,
-                                width: 2.sp,
-                              ),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: Container(
-                                      height: height * 0.22,
-                                      width: width * 0.42,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              controller.products[index].image),
-                                          fit: BoxFit.contain,
-                                        ),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        // Product Name
-                                        Text(
-                                          widget
-                                              .controller.products[index].name,
-                                          style: TextStyle(
-                                            fontSize: 18.sp.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.scaffoldBackground,
-                                          ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
-                                    ),
-                                    //Description
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height: height * 0.038,
-                                          width: width * 0.3,
-                                          child: Text(
-                                            widget.controller.products[index]
-                                                .description,
-                                            style: TextStyle(
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: Authcolors.whiteColor,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 2.5,
-                                        ),
-                                        Icon(
-                                          Icons.shopping_bag,
-                                          color: AppColors.scaffoldBackground,
-                                          size: 20,
-                                        ),
-                                        SizedBox(
-                                          width: 2,
-                                        ),
-                                        //Quantity
-                                        Text(
-                                          widget.controller.products[index]
-                                              .quantity
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.scaffoldBackground,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 10.0,
-                                        bottom: 5.0,
-                                        top: 5.0,
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.currency_rupee,
-                                                color: Colors.yellow,
-                                                size: 15,
-                                              ),
-                                              // Price & discount
-                                              Text(
-                                                '${widget.controller.products[index].price * (1 - (widget.controller.products[index].discount / 100))}'
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors
-                                                      .scaffoldBackground,
-                                                ),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                              // Price
-                                              Text(
-                                                '${widget.controller.products[index].price}'
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red,
-                                                  decoration:
-                                                      TextDecoration.combine([
-                                                    TextDecoration.lineThrough,
-                                                  ]),
-                                                  decorationColor: Colors.red,
-                                                  decorationThickness: 2.0,
-                                                  decorationStyle:
-                                                      TextDecorationStyle.solid,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Obx(() {
-                                                bool isInCart = widget
-                                                    .controller
-                                                    .isInCart(product.id);
-                                                return InkWell(
-                                                  onTap: () {
-                                                    if (!isInCart) {
-                                                      widget.controller
-                                                          .addToCart(product);
-                                                      Get.snackbar(
-                                                        "Added",
+// class _PvgpState extends State<Pvgp> {
+//   final ProductController controller = Get.find<ProductController>();
 
-                                                        "Item added to cart",
+//   int currentIndex = 0;
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
 
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                        backgroundColor: widget
-                                                            .colorb, //AppColors
-                                                        //  .bottomNavigationBarColorLgS,
-                                                        colorText: Authcolors
-                                                            .whiteColor,
-                                                      );
-                                                    } else {
-                                                      widget.controller
-                                                          .removeFromCart(
-                                                              product.id);
-                                                      Get.snackbar(
-                                                        "Removed",
+//     return Obx(
+//       () {
+//         if (controller.isLoading.value) {
+//           return SizedBox(
+//             height: height * 0.8,
+//             width: width * 0.95,
+//             child: GridView.builder(
+//               physics: const NeverScrollableScrollPhysics(),
+//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 2,
+//                 crossAxisSpacing: 10,
+//                 mainAxisSpacing: 10,
+//                 childAspectRatio: 0.59,
+//               ),
+//               itemBuilder: (_, __) => Shimmer.fromColors(
+//                 baseColor: Colors.grey.shade300,
+//                 highlightColor: Colors.grey.shade100,
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                     color: Colors.grey.shade300,
+//                     borderRadius: BorderRadius.circular(30),
+//                   ),
+//                 ),
+//               ),
+//               itemCount: 6,
+//             ),
+//           );
+//         }
+//         return SizedBox(
+//           height: height * 0.80,
+//           width: width * 0.95,
+//           child: Stack(
+//             children: [
+//               Padding(
+//                 padding: const EdgeInsets.all(5.0),
+//                 child: GridView.builder(
+//                   physics: const NeverScrollableScrollPhysics(),
+//                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                     crossAxisCount: 2,
+//                     crossAxisSpacing: 10,
+//                     mainAxisSpacing: 10,
+//                     childAspectRatio: 0.59,
+//                   ),
+//                   itemCount: controller.products.length,
+//                   itemBuilder: (context, index) {
+//                     final product = controller.products[index];
 
-                                                        "Item removed from cart",
+//                     return GestureDetector(
+//                       onTap: () {
+//                         Get.to(
+//                           () => ProductDetailsPage(product: product  ),
+//                         );
+//                       },
+//                       child: Stack(
+//                         children: [
+//                           Container(
+//                             height: height * 0.5,
+//                             width: width * 0.45,
+//                             decoration: BoxDecoration(
+//                               gradient: LinearGradient(
+//                                 colors: widget.gradient.colors,
+//                                 //AppColors.detailsScreenColorLgS.colors
+//                                 stops: [0.5, 0.8],
+//                                 begin: Alignment.topCenter,
+//                                 end: Alignment.bottomCenter,
+//                               ),
+//                               border: Border.all(
+//                                 color: widget
+//                                     .colorb, //AppColors.bottomNavigationBarColorLgS,
+//                                 width: 2.sp,
+//                               ),
+//                               borderRadius: BorderRadius.circular(30),
+//                             ),
+//                             child: Column(
+//                               children: [
+//                                 Expanded(
+//                                   child: Padding(
+//                                     padding: const EdgeInsets.all(1.0),
+//                                     child: Container(
+//                                       height: height * 0.22,
+//                                       width: width * 0.42,
+//                                       decoration: BoxDecoration(
+//                                         image: DecorationImage(
+//                                           image: NetworkImage(
+//                                               controller.products[index].image),
+//                                           fit: BoxFit.contain,
+//                                         ),
+//                                         borderRadius: BorderRadius.circular(20),
+//                                       ),
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 Column(
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   crossAxisAlignment: CrossAxisAlignment.start,
+//                                   children: [
+//                                     Row(
+//                                       children: [
+//                                         // Product Name
+//                                         Text(
+//                                           widget
+//                                               .controller.products[index].name,
+//                                           style: TextStyle(
+//                                             fontSize: 18.sp.sp,
+//                                             fontWeight: FontWeight.bold,
+//                                             color: AppColors.scaffoldBackground,
+//                                           ),
+//                                           textAlign: TextAlign.left,
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     //Description
+//                                     Row(
+//                                       mainAxisAlignment:
+//                                           MainAxisAlignment.start,
+//                                       children: [
+//                                         SizedBox(
+//                                           height: height * 0.038,
+//                                           width: width * 0.3,
+//                                           child: Text(
+//                                             widget.controller.products[index]
+//                                                 .description,
+//                                             style: TextStyle(
+//                                               fontSize: 12.sp,
+//                                               fontWeight: FontWeight.bold,
+//                                               color: Authcolors.whiteColor,
+//                                             ),
+//                                             textAlign: TextAlign.center,
+//                                           ),
+//                                         ),
+//                                         SizedBox(
+//                                           width: 2.5,
+//                                         ),
+//                                         Icon(
+//                                           Icons.shopping_bag,
+//                                           color: AppColors.scaffoldBackground,
+//                                           size: 20,
+//                                         ),
+//                                         SizedBox(
+//                                           width: 2,
+//                                         ),
+//                                         //Quantity
+//                                         Text(
+//                                           widget.controller.products[index]
+//                                               .quantity
+//                                               .toString(),
+//                                           style: TextStyle(
+//                                             fontSize: 12.sp,
+//                                             color: AppColors.scaffoldBackground,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                           textAlign: TextAlign.center,
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     Padding(
+//                                       padding: const EdgeInsets.only(
+//                                         left: 10.0,
+//                                         right: 10.0,
+//                                         bottom: 5.0,
+//                                         top: 5.0,
+//                                       ),
+//                                       child: Column(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.spaceBetween,
+//                                         children: [
+//                                           Row(
+//                                             children: [
+//                                               Icon(
+//                                                 Icons.currency_rupee,
+//                                                 color: Colors.yellow,
+//                                                 size: 15,
+//                                               ),
+//                                               // Price & discount
+//                                               Text(
+//                                                 '${widget.controller.products[index].price * (1 - (widget.controller.products[index].discount / 100))}'
+//                                                     .toString(),
+//                                                 style: TextStyle(
+//                                                   fontSize: 12.sp,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: AppColors
+//                                                       .scaffoldBackground,
+//                                                 ),
+//                                                 textAlign: TextAlign.left,
+//                                               ),
+//                                               // Price
+//                                               Text(
+//                                                 '${widget.controller.products[index].price}'
+//                                                     .toString(),
+//                                                 style: TextStyle(
+//                                                   fontSize: 12.sp,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: Colors.red,
+//                                                   decoration:
+//                                                       TextDecoration.combine([
+//                                                     TextDecoration.lineThrough,
+//                                                   ]),
+//                                                   decorationColor: Colors.red,
+//                                                   decorationThickness: 2.0,
+//                                                   decorationStyle:
+//                                                       TextDecorationStyle.solid,
+//                                                 ),
+//                                               ),
+//                                               SizedBox(
+//                                                 width: 5,
+//                                               ),
+//                                               Obx(() {
+//                                                 bool isInCart = widget
+//                                                     .controller
+//                                                     .isInCart(product.id);
+//                                                 return InkWell(
+//                                                   onTap: () {
+//                                                     if (!isInCart) {
+//                                                       widget.controller
+//                                                           .addToCart(product);
+//                                                       Get.snackbar(
+//                                                         "Added",
 
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                        backgroundColor: widget
-                                                            .colorb, //AppColors
-                                                        //  .bottomNavigationBarColorLgS,
-                                                        colorText: Authcolors
-                                                            .whiteColor,
-                                                      );
-                                                    }
-                                                  },
-                                                  child: AnimatedContainer(
-                                                    duration: Duration(
-                                                        milliseconds: 100),
-                                                    curve: Curves.easeInOut,
-                                                    height: height * 0.03.sp,
-                                                    width: width * 0.13.sp,
-                                                    decoration: BoxDecoration(
-                                                      color: isInCart
-                                                          ? Colors
-                                                              .amberAccent //  AppColors
-                                                          //     .bottomNavigationBarColorLgS
-                                                          : widget.colorb,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.sp),
-                                                      border: Border.all(
-                                                        color: Authcolors
-                                                            .whiteColor,
-                                                      ),
-                                                    ),
-                                                    child: Center(
-                                                      child: Text(
-                                                        isInCart
-                                                            ? "Add+"
-                                                            : "Add",
-                                                        style: TextStyle(
-                                                          fontSize: 15.sp,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Authcolors
-                                                              .whiteColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.topRight,
-                                child: Obx(() {
-                                  bool isFav = widget.controller.isFavourite(
-                                      widget.controller.products[index].id);
-                                  return GestureDetector(
-                                      onTap: () {
-                                        widget.controller.toogleFavourite(widget
-                                            .controller.products[index].id);
+//                                                         "Item added to cart",
 
-                                        Get.snackbar(
-                                          isFav
-                                              ? "Removed from favourites"
-                                              : " Added to Favourite",
-                                          isFav
-                                              ? "Item Removed from favourites"
-                                              : " Item Added to Favourite",
-                                          snackPosition: SnackPosition.BOTTOM,
-                                          backgroundColor: AppColors
-                                              .bottomNavigationBarColorLgS,
-                                          colorText: Authcolors.whiteColor,
-                                        );
-                                      },
-                                      child: Icon(
-                                        isFav
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: isFav
-                                            ? Colors.red
-                                            : Authcolors.borederColor,
-                                        size: 30.sp,
-                                      ));
-                                })),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
+//                                                         snackPosition:
+//                                                             SnackPosition
+//                                                                 .BOTTOM,
+//                                                         backgroundColor: widget
+//                                                             .colorb, //AppColors
+//                                                         //  .bottomNavigationBarColorLgS,
+//                                                         colorText: Authcolors
+//                                                             .whiteColor,
+//                                                       );
+//                                                     } else {
+//                                                       widget.controller
+//                                                           .removeFromCart(
+//                                                               product.id);
+//                                                       Get.snackbar(
+//                                                         "Removed",
 
-// Product List
+//                                                         "Item removed from cart",
 
-class Plgp extends StatefulWidget {
-  final ProductController controller;
+//                                                         snackPosition:
+//                                                             SnackPosition
+//                                                                 .BOTTOM,
+//                                                         backgroundColor: widget
+//                                                             .colorb, //AppColors
+//                                                         //  .bottomNavigationBarColorLgS,
+//                                                         colorText: Authcolors
+//                                                             .whiteColor,
+//                                                       );
+//                                                     }
+//                                                   },
+//                                                   child: AnimatedContainer(
+//                                                     duration: Duration(
+//                                                         milliseconds: 100),
+//                                                     curve: Curves.easeInOut,
+//                                                     height: height * 0.03.sp,
+//                                                     width: width * 0.13.sp,
+//                                                     decoration: BoxDecoration(
+//                                                       color: isInCart
+//                                                           ? Colors
+//                                                               .amberAccent //  AppColors
+//                                                           //     .bottomNavigationBarColorLgS
+//                                                           : widget.colorb,
+//                                                       borderRadius:
+//                                                           BorderRadius.circular(
+//                                                               30.sp),
+//                                                       border: Border.all(
+//                                                         color: Authcolors
+//                                                             .whiteColor,
+//                                                       ),
+//                                                     ),
+//                                                     child: Center(
+//                                                       child: Text(
+//                                                         isInCart
+//                                                             ? "Add+"
+//                                                             : "Add",
+//                                                         style: TextStyle(
+//                                                           fontSize: 15.sp,
+//                                                           fontWeight:
+//                                                               FontWeight.bold,
+//                                                           color: Authcolors
+//                                                               .whiteColor,
+//                                                         ),
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                 );
+//                                               }),
+//                                             ],
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ],
+//                             ),
+//                           ),
+//                           Padding(
+//                             padding: const EdgeInsets.all(8.0),
+//                             child: Align(
+//                                 alignment: Alignment.topRight,
+//                                 child: Obx(() {
+//                                   bool isFav = widget.controller.isFavourite(
+//                                       widget.controller.products[index].id);
+//                                   return GestureDetector(
+//                                       onTap: () {
+//                                         widget.controller.toogleFavourite(widget
+//                                             .controller.products[index].id);
 
-  final Color colorb;
-  final LinearGradient gradient;
-  final bool showOnlyFavourites;
-  const Plgp({
-    super.key,
-    required this.controller,
-    required this.colorb,
-    required this.gradient,
-    this.showOnlyFavourites = false,
-  });
+//                                         Get.snackbar(
+//                                           isFav
+//                                               ? "Removed from favourites"
+//                                               : " Added to Favourite",
+//                                           isFav
+//                                               ? "Item Removed from favourites"
+//                                               : " Item Added to Favourite",
+//                                           snackPosition: SnackPosition.BOTTOM,
+//                                           backgroundColor: AppColors
+//                                               .bottomNavigationBarColorLgS,
+//                                           colorText: Authcolors.whiteColor,
+//                                         );
+//                                       },
+//                                       child: Icon(
+//                                         isFav
+//                                             ? Icons.favorite
+//                                             : Icons.favorite_border,
+//                                         color: isFav
+//                                             ? Colors.red
+//                                             : Authcolors.borederColor,
+//                                         size: 30.sp,
+//                                       ));
+//                                 })),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
 
-  @override
-  State<Plgp> createState() => _PlgpState();
-}
+// // Product List
 
-class _PlgpState extends State<Plgp> {
-  final ProductController controller = Get.find<ProductController>();
+// class Plgp extends StatefulWidget {
+//   final ProductController controller;
 
-  @override
-  Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+//   final Color colorb;
+//   final LinearGradient gradient;
+//   final bool showOnlyFavourites;
+//   const Plgp({
+//     super.key,
+//     required this.controller,
+//     required this.colorb,
+//     required this.gradient,
+//     this.showOnlyFavourites = false,
+//   });
 
-    return SizedBox(
-        height: height * 0.35,
-        width: width * 0.95,
-        child: Obx(() {
-          final isLoading = controller.isLoading.value;
-          final products = widget.showOnlyFavourites
-              ? controller.products
-                  .where((p) => controller.isFavourite(p.id))
-                  .toList()
-              : controller.products;
+//   @override
+//   State<Plgp> createState() => _PlgpState();
+// }
 
-          final itemCount = isLoading ? 5 : products.length;
+// class _PlgpState extends State<Plgp> {
+//   final ProductController controller = Get.find<ProductController>();
 
-          if (widget.showOnlyFavourites && products.isEmpty) {
-            return Center(
-                child: Text(
-              "No Favourites",
-              style: TextStyle(color: Authcolors.whiteColor, fontSize: 20.sp),
-            ));
-          }
-          return ListView.builder(
-              itemCount: itemCount,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                if (isLoading) {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Container(
-                        height: height * 0.3,
-                        width: width * 0.42,
-                        decoration: BoxDecoration(
-                          color: Authcolors.whiteColor,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                  );
-                }
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
 
-                final product = controller.products[index];
+//     return SizedBox(
+//         height: height * 0.35,
+//         width: width * 0.95,
+//         child: Obx(() {
+//           final isLoading = controller.isLoading.value;
+//           final products = widget.showOnlyFavourites
+//               ? controller.products
+//                   .where((p) => controller.isFavourite(p.id))
+//                   .toList()
+//               : controller.products;
 
-                return Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: SizedBox(
-                        height: height * 0.3,
-                        width: width * 0.425,
-                        // child: ListView.builder(
-                        //   scrollDirection: Axis.horizontal,
-                        //   itemCount: isLoading ? 5 : controller.products.length,
-                        //   itemBuilder: (context, index) {
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.to(
-                              () => ProductDetailsPage(product: product),
-                            );
-                          },
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Container(
-                                  height: height * 0.3,
-                                  width: width * 0.42,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: widget.gradient.colors,
-                                      stops: [0.5, 0.8],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      //AppColors.detailsScreenColorLgS.colors
-                                    ),
-                                    border: Border.all(
-                                      color: widget
-                                          .colorb, //AppColors.bottomNavigationBarColorLgS,
-                                      width: 2,
-                                    ),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Container(
-                                            height: height * 0.15,
-                                            width: width * 0.42,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image:
-                                                    NetworkImage(product.image),
-                                                fit: BoxFit.contain,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              // Product Name
-                                              Text(
-                                                product.name,
-                                                style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors
-                                                      .scaffoldBackground,
-                                                ),
-                                                textAlign: TextAlign.left,
-                                              ),
-                                            ],
-                                          ),
-                                          //Description
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: height * 0.038,
-                                                width: width * 0.3,
-                                                child: Text(
-                                                  product.description,
-                                                  style: TextStyle(
-                                                    fontSize: 10.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        Authcolors.whiteColor,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 2.5,
-                                              ),
-                                              Icon(
-                                                Icons.shopping_bag,
-                                                color: AppColors
-                                                    .scaffoldBackground,
-                                                size: 20,
-                                              ),
-                                              SizedBox(
-                                                width: 2,
-                                              ),
-                                              //Quantity
-                                              Text(
-                                                product.quantity.toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: AppColors
-                                                      .scaffoldBackground,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 10.0,
-                                              right: 10.0,
-                                              bottom: 5.0,
-                                              top: 5.0,
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.currency_rupee,
-                                                      color: Colors.yellow,
-                                                      size: 15,
-                                                    ),
-                                                    // Price & discount
-                                                    Text(
-                                                      (product.price *
-                                                              (1 -
-                                                                  product.discount /
-                                                                      100))
-                                                          .toStringAsFixed(2),
-                                                      style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: AppColors
-                                                            .scaffoldBackground,
-                                                      ),
-                                                      textAlign: TextAlign.left,
-                                                    ),
-                                                    // Price
-                                                    Text(
-                                                      product.price.toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.red,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .combine([
-                                                          TextDecoration
-                                                              .lineThrough,
-                                                        ]),
-                                                        decorationColor:
-                                                            Colors.red,
-                                                        decorationThickness:
-                                                            2.0,
-                                                        decorationStyle:
-                                                            TextDecorationStyle
-                                                                .solid,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Obx(() {
-                                                      bool isInCart = widget
-                                                          .controller
-                                                          .isInCart(product.id);
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          if (!isInCart) {
-                                                            widget.controller
-                                                                .addToCart(
-                                                                    product);
-                                                            Get.snackbar(
-                                                              "Added",
+//           final itemCount = isLoading ? 5 : products.length;
 
-                                                              "Item added to cart",
+//           if (widget.showOnlyFavourites && products.isEmpty) {
+//             return Center(
+//                 child: Text(
+//               "No Favourites",
+//               style: TextStyle(color: Authcolors.whiteColor, fontSize: 20.sp),
+//             ));
+//           }
+//           return ListView.builder(
+//               itemCount: itemCount,
+//               scrollDirection: Axis.horizontal,
+//               itemBuilder: (context, index) {
+//                 if (isLoading) {
+//                   return Padding(
+//                     padding: const EdgeInsets.all(5.0),
+//                     child: Shimmer.fromColors(
+//                       baseColor: Colors.grey.shade300,
+//                       highlightColor: Colors.grey.shade100,
+//                       child: Container(
+//                         height: height * 0.3,
+//                         width: width * 0.42,
+//                         decoration: BoxDecoration(
+//                           color: Authcolors.whiteColor,
+//                           borderRadius: BorderRadius.circular(30),
+//                         ),
+//                       ),
+//                     ),
+//                   );
+//                 }
 
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              backgroundColor:
-                                                                  widget
-                                                                      .colorb, //AppColors
-                                                              //  .bottomNavigationBarColorLgS,
-                                                              colorText:
-                                                                  Authcolors
-                                                                      .whiteColor,
-                                                            );
-                                                          } else {
-                                                            widget.controller
-                                                                .removeFromCart(
-                                                                    product.id);
-                                                            Get.snackbar(
-                                                              "Removed",
+//                 final product = controller.products[index];
 
-                                                              "Item removed from cart",
+//                 return Stack(
+//                   children: [
+//                     Padding(
+//                       padding: const EdgeInsets.all(4.0),
+//                       child: SizedBox(
+//                         height: height * 0.3,
+//                         width: width * 0.425,
+//                         // child: ListView.builder(
+//                         //   scrollDirection: Axis.horizontal,
+//                         //   itemCount: isLoading ? 5 : controller.products.length,
+//                         //   itemBuilder: (context, index) {
+//                         child: GestureDetector(
+//                           onTap: () {
+//                             Get.to(
+//                               () => ProductDetailsPage(product: product),
+//                             );
+//                           },
+//                           child: Stack(
+//                             children: [
+//                               Padding(
+//                                 padding: const EdgeInsets.all(2.0),
+//                                 child: Container(
+//                                   height: height * 0.3,
+//                                   width: width * 0.42,
+//                                   decoration: BoxDecoration(
+//                                     gradient: LinearGradient(
+//                                       colors: widget.gradient.colors,
+//                                       stops: [0.5, 0.8],
+//                                       begin: Alignment.topCenter,
+//                                       end: Alignment.bottomCenter,
+//                                       //AppColors.detailsScreenColorLgS.colors
+//                                     ),
+//                                     border: Border.all(
+//                                       color: widget
+//                                           .colorb, //AppColors.bottomNavigationBarColorLgS,
+//                                       width: 2,
+//                                     ),
+//                                     borderRadius: BorderRadius.circular(30),
+//                                   ),
+//                                   child: Column(
+//                                     children: [
+//                                       Expanded(
+//                                         child: Padding(
+//                                           padding: const EdgeInsets.all(1.0),
+//                                           child: Container(
+//                                             height: height * 0.15,
+//                                             width: width * 0.42,
+//                                             decoration: BoxDecoration(
+//                                               image: DecorationImage(
+//                                                 image:
+//                                                     NetworkImage(product.image),
+//                                                 fit: BoxFit.contain,
+//                                               ),
+//                                               borderRadius:
+//                                                   BorderRadius.circular(20),
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Column(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.start,
+//                                         crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                         children: [
+//                                           Row(
+//                                             children: [
+//                                               // Product Name
+//                                               Text(
+//                                                 product.name,
+//                                                 style: TextStyle(
+//                                                   fontSize: 18.sp,
+//                                                   fontWeight: FontWeight.bold,
+//                                                   color: AppColors
+//                                                       .scaffoldBackground,
+//                                                 ),
+//                                                 textAlign: TextAlign.left,
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           //Description
+//                                           Row(
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.start,
+//                                             children: [
+//                                               SizedBox(
+//                                                 height: height * 0.038,
+//                                                 width: width * 0.3,
+//                                                 child: Text(
+//                                                   product.description,
+//                                                   style: TextStyle(
+//                                                     fontSize: 10.sp,
+//                                                     fontWeight: FontWeight.bold,
+//                                                     color:
+//                                                         Authcolors.whiteColor,
+//                                                   ),
+//                                                   textAlign: TextAlign.center,
+//                                                 ),
+//                                               ),
+//                                               SizedBox(
+//                                                 width: 2.5,
+//                                               ),
+//                                               Icon(
+//                                                 Icons.shopping_bag,
+//                                                 color: AppColors
+//                                                     .scaffoldBackground,
+//                                                 size: 20,
+//                                               ),
+//                                               SizedBox(
+//                                                 width: 2,
+//                                               ),
+//                                               //Quantity
+//                                               Text(
+//                                                 product.quantity.toString(),
+//                                                 style: TextStyle(
+//                                                   fontSize: 12.sp,
+//                                                   color: AppColors
+//                                                       .scaffoldBackground,
+//                                                   fontWeight: FontWeight.bold,
+//                                                 ),
+//                                                 textAlign: TextAlign.center,
+//                                               ),
+//                                             ],
+//                                           ),
+//                                           Padding(
+//                                             padding: const EdgeInsets.only(
+//                                               left: 10.0,
+//                                               right: 10.0,
+//                                               bottom: 5.0,
+//                                               top: 5.0,
+//                                             ),
+//                                             child: Column(
+//                                               mainAxisAlignment:
+//                                                   MainAxisAlignment.spaceAround,
+//                                               children: [
+//                                                 Row(
+//                                                   mainAxisAlignment:
+//                                                       MainAxisAlignment
+//                                                           .spaceAround,
+//                                                   children: [
+//                                                     Icon(
+//                                                       Icons.currency_rupee,
+//                                                       color: Colors.yellow,
+//                                                       size: 15,
+//                                                     ),
+//                                                     // Price & discount
+//                                                     Text(
+//                                                       (product.price *
+//                                                               (1 -
+//                                                                   product.discount /
+//                                                                       100))
+//                                                           .toStringAsFixed(2),
+//                                                       style: TextStyle(
+//                                                         fontSize: 10.sp,
+//                                                         fontWeight:
+//                                                             FontWeight.bold,
+//                                                         color: AppColors
+//                                                             .scaffoldBackground,
+//                                                       ),
+//                                                       textAlign: TextAlign.left,
+//                                                     ),
+//                                                     // Price
+//                                                     Text(
+//                                                       product.price.toString(),
+//                                                       style: TextStyle(
+//                                                         fontSize: 10.sp,
+//                                                         fontWeight:
+//                                                             FontWeight.bold,
+//                                                         color: Colors.red,
+//                                                         decoration:
+//                                                             TextDecoration
+//                                                                 .combine([
+//                                                           TextDecoration
+//                                                               .lineThrough,
+//                                                         ]),
+//                                                         decorationColor:
+//                                                             Colors.red,
+//                                                         decorationThickness:
+//                                                             2.0,
+//                                                         decorationStyle:
+//                                                             TextDecorationStyle
+//                                                                 .solid,
+//                                                       ),
+//                                                     ),
+//                                                     SizedBox(
+//                                                       width: 5,
+//                                                     ),
+//                                                     Obx(() {
+//                                                       bool isInCart = widget
+//                                                           .controller
+//                                                           .isInCart(product.id);
+//                                                       return InkWell(
+//                                                         onTap: () {
+//                                                           if (!isInCart) {
+//                                                             widget.controller
+//                                                                 .addToCart(
+//                                                                     product);
+//                                                             Get.snackbar(
+//                                                               "Added",
 
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .BOTTOM,
-                                                              backgroundColor:
-                                                                  widget
-                                                                      .colorb, //AppColors
-                                                              //  .bottomNavigationBarColorLgS,
-                                                              colorText:
-                                                                  Authcolors
-                                                                      .whiteColor,
-                                                            );
-                                                          }
-                                                        },
-                                                        child:
-                                                            AnimatedContainer(
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  100),
-                                                          curve:
-                                                              Curves.easeInOut,
-                                                          height:
-                                                              height * 0.03.sp,
-                                                          width:
-                                                              width * 0.13.sp,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: isInCart
-                                                                ? Colors
-                                                                    .amberAccent //  AppColors
-                                                                //     .bottomNavigationBarColorLgS
-                                                                : widget.colorb,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        30.sp),
-                                                            border: Border.all(
-                                                              color: Authcolors
-                                                                  .whiteColor,
-                                                            ),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              isInCart
-                                                                  ? "Add+"
-                                                                  : "Add",
-                                                              style: TextStyle(
-                                                                fontSize: 15.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Authcolors
-                                                                    .whiteColor,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    }),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Obx(() {
-                                      bool isFav = widget.controller
-                                          .isFavourite(widget
-                                              .controller.products[index].id);
-                                      return GestureDetector(
-                                          onTap: () {
-                                            widget.controller.toogleFavourite(
-                                                widget.controller
-                                                    .products[index].id);
+//                                                               "Item added to cart",
 
-                                            Get.snackbar(
-                                              isFav
-                                                  ? "Removed from favourites"
-                                                  : " Added to Favourite",
-                                              isFav
-                                                  ? "Item Removed from favourites"
-                                                  : " Item Added to Favourite",
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                              backgroundColor: AppColors
-                                                  .bottomNavigationBarColorLgS,
-                                              colorText: Authcolors.whiteColor,
-                                            );
-                                          },
-                                          child: Icon(
-                                            isFav
-                                                ? Icons.favorite
-                                                : Icons.favorite_border,
-                                            color: isFav
-                                                ? Colors.red
-                                                : Authcolors.borederColor,
-                                            size: 30.sp,
-                                          ));
-                                    })),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              });
-        }));
-  }
-}
+//                                                               snackPosition:
+//                                                                   SnackPosition
+//                                                                       .BOTTOM,
+//                                                               backgroundColor:
+//                                                                   widget
+//                                                                       .colorb, //AppColors
+//                                                               //  .bottomNavigationBarColorLgS,
+//                                                               colorText:
+//                                                                   Authcolors
+//                                                                       .whiteColor,
+//                                                             );
+//                                                           } else {
+//                                                             widget.controller
+//                                                                 .removeFromCart(
+//                                                                     product.id);
+//                                                             Get.snackbar(
+//                                                               "Removed",
+
+//                                                               "Item removed from cart",
+
+//                                                               snackPosition:
+//                                                                   SnackPosition
+//                                                                       .BOTTOM,
+//                                                               backgroundColor:
+//                                                                   widget
+//                                                                       .colorb, //AppColors
+//                                                               //  .bottomNavigationBarColorLgS,
+//                                                               colorText:
+//                                                                   Authcolors
+//                                                                       .whiteColor,
+//                                                             );
+//                                                           }
+//                                                         },
+//                                                         child:
+//                                                             AnimatedContainer(
+//                                                           duration: Duration(
+//                                                               milliseconds:
+//                                                                   100),
+//                                                           curve:
+//                                                               Curves.easeInOut,
+//                                                           height:
+//                                                               height * 0.03.sp,
+//                                                           width:
+//                                                               width * 0.13.sp,
+//                                                           decoration:
+//                                                               BoxDecoration(
+//                                                             color: isInCart
+//                                                                 ? Colors
+//                                                                     .amberAccent //  AppColors
+//                                                                 //     .bottomNavigationBarColorLgS
+//                                                                 : widget.colorb,
+//                                                             borderRadius:
+//                                                                 BorderRadius
+//                                                                     .circular(
+//                                                                         30.sp),
+//                                                             border: Border.all(
+//                                                               color: Authcolors
+//                                                                   .whiteColor,
+//                                                             ),
+//                                                           ),
+//                                                           child: Center(
+//                                                             child: Text(
+//                                                               isInCart
+//                                                                   ? "Add+"
+//                                                                   : "Add",
+//                                                               style: TextStyle(
+//                                                                 fontSize: 15.sp,
+//                                                                 fontWeight:
+//                                                                     FontWeight
+//                                                                         .bold,
+//                                                                 color: Authcolors
+//                                                                     .whiteColor,
+//                                                               ),
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                       );
+//                                                     }),
+//                                                   ],
+//                                                 ),
+//                                               ],
+//                                             ),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               ),
+//                               Padding(
+//                                 padding: const EdgeInsets.all(8.0),
+//                                 child: Align(
+//                                     alignment: Alignment.topRight,
+//                                     child: Obx(() {
+//                                       bool isFav = widget.controller
+//                                           .isFavourite(widget
+//                                               .controller.products[index].id);
+//                                       return GestureDetector(
+//                                           onTap: () {
+//                                             widget.controller.toogleFavourite(
+//                                                 widget.controller
+//                                                     .products[index].id);
+
+//                                             Get.snackbar(
+//                                               isFav
+//                                                   ? "Removed from favourites"
+//                                                   : " Added to Favourite",
+//                                               isFav
+//                                                   ? "Item Removed from favourites"
+//                                                   : " Item Added to Favourite",
+//                                               snackPosition:
+//                                                   SnackPosition.BOTTOM,
+//                                               backgroundColor: AppColors
+//                                                   .bottomNavigationBarColorLgS,
+//                                               colorText: Authcolors.whiteColor,
+//                                             );
+//                                           },
+//                                           child: Icon(
+//                                             isFav
+//                                                 ? Icons.favorite
+//                                                 : Icons.favorite_border,
+//                                             color: isFav
+//                                                 ? Colors.red
+//                                                 : Authcolors.borederColor,
+//                                             size: 30.sp,
+//                                           ));
+//                                     })),
+//                               ),
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 );
+//               });
+//         }));
+//   }
+// }

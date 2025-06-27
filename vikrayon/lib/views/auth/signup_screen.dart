@@ -15,7 +15,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final SignupControler signupControler = Get.put(SignupControler());
-  final _fromKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   // @override
   // void initState() {
@@ -27,7 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
   //   final prefs = await SharedPreferences.getInstance();
   //   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   //   if (isLoggedIn) {
-  //     Get.offAll(() => MainScreen());
+  //     Get.toAll(() => MainScreen());
   //   }
   // }
   @override
@@ -37,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: Authcolors.backgrounColor,
       body: Form(
-        key: _fromKey,
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -79,8 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
-                      !RegExp(r"^(?=.*[A-Z])[a-zA-Z0-9._]{3,15}$")
-                          .hasMatch(value)) {
+                      !RegExp(r"^[a-zA-Z\s]+$").hasMatch(value)) {
                     return "Please enter a valid name(only alphabets and spaces)";
                   }
                   return null;
@@ -88,7 +87,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintStyle: TextStyle(
                   color: Authcolors.whiteColor,
                   fontSize: width * 0.050,
-                ),
+                ), readOnly: false,
               ),
 
               SizedBox(
@@ -115,7 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintStyle: TextStyle(
                   color: Authcolors.whiteColor,
                   fontSize: width * 0.050,
-                ),
+                ), readOnly: false,
               ),
 
               SizedBox(
@@ -160,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintStyle: TextStyle(
                     color: Authcolors.whiteColor,
                     fontSize: width * 0.050,
-                  ),
+                  ), readOnly: false,
                 ),
               ),
               SizedBox(
@@ -203,7 +202,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintStyle: TextStyle(
                     color: Authcolors.whiteColor,
                     fontSize: width * 0.045,
-                  ),
+                  ), readOnly: false,
                 ),
               ),
               SizedBox(
@@ -229,7 +228,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 hintStyle: TextStyle(
                   color: Authcolors.whiteColor,
                   fontSize: width * 0.035,
-                ),
+                ), readOnly: false,
               ),
               // sign in text
               Column(
@@ -256,13 +255,17 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: height * 0.015,
               ),
               // signup button
-              SudmitButton(
+              Obx(
+                () => SudmitButton(
                   onPressed: () {
-                    if (_fromKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       signupControler.signup();
                     }
                   },
-                  text: "Sign Up"),
+                  text: "Sign Up",
+                  isLoading: signupControler.isLoading.value,
+                ),
+              ),
               SizedBox(
                 height: height * 0.015,
               ),

@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-
-import 'package:vikrayon/controllers/product_model.dart';
-import 'package:vikrayon/controllers/widget_controller.dart';
+import 'package:vikrayon/controllers/product_controller.dart';
+import 'package:vikrayon/models/product_model.dart';
 import 'package:vikrayon/utils/colors.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
   const ProductDetailsPage({
     super.key,
     required this.product,
   });
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +76,10 @@ class ProductDetailsPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                buildCarosel(controller, product, height),
+                buildCarosel(controller, product , height),
                 buildDotIndicator(controller, product),
-                buildProductInfo(product, quantity),
-                buildBottomBar(controller, product),
+                buildProductInfo(product , quantity),
+                buildBottomBar(controller, product ),
               ],
             ),
           );
@@ -116,7 +116,7 @@ class ProductDetailsPage extends StatelessWidget {
   }
 
   Widget buildCarosel(
-      ProductController controller, Product product, double height) {
+      ProductController controller, ProductModel product, double height) {
     return CarouselSlider(
       options: CarouselOptions(
         height: height * 0.3,
@@ -142,7 +142,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget buildDotIndicator(ProductController controller, Product product) {
+  Widget buildDotIndicator(ProductController controller, ProductModel product) {
     return Obx(() => Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [product.image, ...product.relatedImages]
@@ -165,7 +165,7 @@ class ProductDetailsPage extends StatelessWidget {
         ));
   }
 
-  Widget buildProductInfo(Product product, RxInt quantity) {
+  Widget buildProductInfo(ProductModel product, RxInt quantity) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -242,7 +242,7 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget buildBottomBar(ProductController controller, Product product) {
+  Widget buildBottomBar(ProductController controller, ProductModel product) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -268,7 +268,7 @@ class ProductDetailsPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (!isInCart) {
-                      controller.addToCart(product);
+                      controller.addToCart(product  );
                       Get.snackbar("Added", "Item added to cart",
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.green);
@@ -292,3 +292,5 @@ class ProductDetailsPage extends StatelessWidget {
     );
   }
 }
+
+

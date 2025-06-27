@@ -16,14 +16,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-final ForgotPasswordController controler =
+  final ForgotPasswordController controler =
       Get.find<ForgotPasswordController>();
   final ProfileController profileController = Get.put(ProfileController());
 
-  void gSignOut() async {
+  Future<void> gSignOut() async {
     try {
       await profileController.logout();
-      Get.off(() => LoginScreen());
+      Get.to(() => LoginScreen());
     } catch (e) {
       Get.snackbar("Error", "Logout failed: $e",
           snackPosition: SnackPosition.BOTTOM,
@@ -68,17 +68,17 @@ final ForgotPasswordController controler =
             children: [
               Obx(() {
                 final userImageUrl = profileController.userImage.value;
-                final profilePath = profileController.profilepicpath.value;
+                print("in profile screen: $userImageUrl");
                 final isGoogleImage = userImageUrl.startsWith('http');
-                final hasLocalImage =
-                    profilePath.isNotEmpty && File(profilePath).existsSync();
 
                 ImageProvider imageProvider;
 
-                if (hasLocalImage) {
-                  imageProvider = FileImage(File(profilePath));
+                if (profileController.hasLocalImage.value) {
+                  imageProvider =
+                      FileImage(File(profileController.userImage.value));
                 } else if (isGoogleImage) {
-                  imageProvider = NetworkImage(userImageUrl);
+                  imageProvider =
+                      NetworkImage(profileController.userImage.value);
                 } else {
                   imageProvider = const AssetImage(
                     'assets/icons/vonc_io_main-removebg-preview edited (Small).png',
@@ -110,40 +110,45 @@ final ForgotPasswordController controler =
                 );
               }),
               SizedBox(width: height * 0.02),
-              Obx(() => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        profileController.userName.value.isNotEmpty
-                            ? profileController.userName.value
-                            : "@AdminVikrayON",
-                        style: TextStyle(
-                            color: Authcolors.whiteColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp),
-                      ),
-                      Text(
-                        profileController.userEmail.value.isNotEmpty
-                            ? profileController.userEmail.value
-                            : "Admin@VikrayON.com",
-                        style: TextStyle(
-                            color: Authcolors.whiteColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.sp),
-                      ),
-                    ],
+              Obx(() => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          profileController.userName.value.isNotEmpty
+                              ? profileController.userName.value
+                              : "@AdminVikrayON",
+                          style: TextStyle(
+                              color: Authcolors.whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp),
+                        ),
+                        Text(
+                          profileController.userEmail.value.isNotEmpty
+                              ? profileController.userEmail.value
+                              : "Admin@VikrayON.com",
+                          style: TextStyle(
+                              color: Authcolors.whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp),
+                        ),
+                      ],
+                    ),
                   )),
             ],
           ),
           SizedBox(height: 20.sp),
-          buildMenuItem(
-              icon: Icons.language, title: "Language Settings", onTap: () {}),
+          // buildMenuItem(
+          //     icon: Icons.language, title: "Language Settings", onTap: () {}),
           SizedBox(height: height * 0.01),
           buildMenuItem(
             icon: Icons.person,
             title: "Edit Profile",
             onTap: () => Get.to(() => EditProfileScreen()),
           ),
+          SizedBox(height: height * 0.01),
+          buildMenuItem(icon: Icons.language, title: "Language", onTap: () {}),
           SizedBox(height: height * 0.01),
           buildMenuItem(
               icon: Icons.history, title: "Order History", onTap: () {}),

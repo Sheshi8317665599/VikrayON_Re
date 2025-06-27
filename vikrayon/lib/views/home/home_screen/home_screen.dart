@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -24,13 +25,20 @@ class _HomeScreenState extends State<HomeScreen> {
     // simulate network delay
     await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {});
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SectorFeild(
+      backgroundColor: AppColors.scaffoldBackground,
+      body: 
+      // SectorFeild(
+      //   sectorTag: "/Home",
+      // ),
+      SFeild(
         searchText: "Search",
         socialapplogo: "assets/icons/vonc wathsapp logo crop (Small).png",
         onPressedNotification: () {},
@@ -49,20 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
         livingEssentailsImages: UiHelper.livingEssentailsImages,
         fashionImages: UiHelper.fashionImages,
         cervcesImages: UiHelper.cervcesImages,
-        onBannerTap: (index) => Get.to(() => mainBannerindex(index)),
-        onCategoryTap: (index) => Get.to(() => categoryIconindex(index)),
-        onVonieTap: (index) => Get.to(() => vonieImageindex(0)),
-        onFoodTap: (index) => Get.to(() => foodImageindex(index)),
-        onFoodpageTap: (index) => Get.to(() => foodImageindex(0)),
-        onLivingTap: (index) => Get.to(() => livinggeneralsImageindex(index)),
-        onLivingpageTap: (index) => Get.to(() => livinggeneralsImageindex(0)),
-        onFashionTap: (index) => Get.to(() => fashionImageindex(index)),
-        onFashionpageTap: (index) => Get.to(() => fashionImageindex(0)),
-        onCervcesTap: (index) => Get.to(() => cervcesImageindex(index)),
-        onCervcespageTap: (index) => Get.to(() => cervcesImageindex(0)),
+        onBannerTap: (index) => Get.to(() => mainBannerindex( imageUrl: [], index: index)),
+        onCategoryTap: (index) => Get.to(() => categoryIconindex(imageUrl: [], index: index)),
+        onVonieTap: (index) => Get.to(() => vonieImageindex(imageUrl: [], index: 0)),
+        onFoodTap: (index) => Get.to(() => foodImageindex(imageUrl: [], index: index)),
+        onFoodpageTap: (index) => Get.to(() => foodImageindex(imageUrl: [], index: 0)),
+        onLivingTap: (index) => Get.to(() => livinggeneralsImageindex(imageUrl: [], index: index)),
+        onLivingpageTap: (index) => Get.to(() => livinggeneralsImageindex(imageUrl: [], index: 0)),
+        onFashionTap: (index) => Get.to(() => fashionImageindex(imageUrl: [], index: index)),
+        onFashionpageTap: (index) => Get.to(() => fashionImageindex(imageUrl: [], index: 0)),
+        onCervcesTap: (index) => Get.to(() => cervcesImageindex(imageUrl: [], index: index)),
+        onCervcespageTap: (index) => Get.to(() => cervcesImageindex(imageUrl: [], index: 0)),
       ),
-    );
+     );
   }
 }
 
 enum ViewType { grid, list }
+

@@ -1,31 +1,35 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vikrayon/controllers/auth_controller.dart';
+import 'package:vikrayon/api/api_client.dart';
 import 'package:vikrayon/models/product_model.dart';
 
 class ProductController extends GetxController {
-  var products = <ProductModel>[].obs;
-  var isLoading = true.obs;
-  var currentIndex = 0.obs;
-  var cartItems = <int, ProductModel>{}.obs;
-  var favourite = <int>{}.obs;
-
-  final Dio dio = AuthController.to.dio;
+  final String? sliderTag;
+  ProductController({this.sliderTag});
+  final RxList<ProductModel> products = <ProductModel>[].obs;
+  final RxBool isLoading = false.obs;
+  final RxInt currentIndex = 0.obs;
+  final RxMap<int, ProductModel> cartItems = <int, ProductModel>{}.obs;
+  final RxSet<int> favourite = <int>{}.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchProducts();
+    fetchProducts(sliderTag);
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts(String? sliderTag) async {
     try {
       isLoading.value = true;
-      final response = await dio.get('products');
 
+    
+      final response = await ApiClient.get('getProductsUrl',
+      queryParameters:
+         sliderTag != null ? {'slider_tag': sliderTag} : null);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         final List data = response.data;
+        print(data);
         products.value =
             data.map((json) => ProductModel.fromJson(json)).toList();
       } else {
@@ -42,28 +46,31 @@ class ProductController extends GetxController {
     }
   }
 
-  Future<void> fetchProductBYSliderTag(String sliderTag) async {
-    try {
-      isLoading.value = true;
-      final response = await dio.get('products?=$sliderTag');
+  // Future<void> fetchProductBYSliderTag(String sliderTag) async {
+  //   try {
+  //     isLoading.value = true;
+  //     final dio = await ApiClient.getDio();
+  //     final response = await dio.get(ApiClient.getProductsUrl,
+  //         queryParameters: {'slider_tag': sliderTag});
 
-      if (response.statusCode == 200) {
-        final List data = response.data;
-        products.value = data.map((json) => ProductModel.fromJson(json)).toList();
-       } else {
-          Get.snackbar('Error', 'Failed to load items');
-        }
-      } catch (e) {
-        Get.snackbar(
-            'Network Error', 'Failed to fetch products. Please try again later.',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.redAccent,
-            colorText: Colors.white);
-      } finally {
-        isLoading.value = false;
-      }
-    }
-  
+  //     if (response.statusCode == 200) {
+  //       final List data = response.data;
+  //       products.value =
+  //           data.map((json) => ProductModel.fromJson(json)).toList();
+  //     } else {
+  //       Get.snackbar('Error', 'Failed to load items');
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar(
+  //         'Network Error', 'Failed to fetch products. Please try again later.',
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.redAccent,
+  //         colorText: Colors.white);
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
   void loadProductDetails(ProductModel product) {
     isLoading.value = true;
     Future.delayed(const Duration(seconds: 2), () {
@@ -100,7 +107,7 @@ class ProductController extends GetxController {
 
   void clearfavourite() => favourite.clear();
 }
-// how to use example 
+// how to use example
 // Pgp(
 //   sliderTag: 'exclusive_offer',
 //   colorb: Colors.orange,

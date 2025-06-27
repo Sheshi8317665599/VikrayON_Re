@@ -1,14 +1,15 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:vikrayon/controllers/location_controller.dart';
+import 'package:vikrayon/controllers/sector_controller.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
 
 enum ViewType { grid, list }
 
-class SectorFeild extends StatefulWidget {
+class SFeild extends StatefulWidget {
   final String socialapplogo;
   final String searchText;
   final VoidCallback? onPressedNotification;
@@ -38,7 +39,7 @@ class SectorFeild extends StatefulWidget {
   final Function(int)? onFashionpageTap;
   final Function(int)? onCervcesTap;
   final Function(int)? onCervcespageTap;
-  const SectorFeild({
+  const SFeild({
     super.key,
     required this.searchText,
     required this.socialapplogo,
@@ -72,10 +73,10 @@ class SectorFeild extends StatefulWidget {
   });
 
   @override
-  State<SectorFeild> createState() => _SectorFeildState();
+  State<SFeild> createState() => _SFeildState();
 }
 
-class _SectorFeildState extends State<SectorFeild> {
+class _SFeildState extends State<SFeild> {
   int _crossAxisCount = 2;
 
   double _aspectRatio = 1.5;
@@ -183,7 +184,7 @@ class _SectorFeildState extends State<SectorFeild> {
                                   image: AssetImage(
                                     widget.mainBanners[index],
                                   ),
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fill,
                                 ))),
                       );
                     },
@@ -596,7 +597,7 @@ class _SectorFeildState extends State<SectorFeild> {
                       (index) => InkWell(
                         onTap: () => widget.onCervcesTap?.call(index),
                         child: Container(
-                          height: 150,
+                          height: height * 0.150,
                           width: width - 50,
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
@@ -629,5 +630,653 @@ class _SectorFeildState extends State<SectorFeild> {
         ),
       ),
     );
+  }
+}
+
+class SectorFeild extends StatefulWidget {
+// final List<Color> categoryColors;
+  final String sectorTag;
+  const SectorFeild({super.key, required this.sectorTag});
+
+  @override
+  State<SectorFeild> createState() => _SectorFeildState();
+}
+
+class _SectorFeildState extends State<SectorFeild> {
+  // void initProductController(String sliderTag) {
+  //   if (!Get.isRegistered<ProductController>(tag: sliderTag)) {
+  //     Get.lazyPut(() => ProductController(sliderTag: sliderTag),
+  //         tag: sliderTag);
+  //   }
+  // }
+  void initSectorController(String sectorTag) {
+    Get.lazyPut(() => SectorController(sectorTag: sectorTag), tag: sectorTag);
+  }
+
+  int _crossAxisCount = 2;
+
+  double _aspectRatio = 1.5;
+
+  ViewType _viewType = ViewType.grid;
+
+  @override
+  Widget build(BuildContext context) {
+    initSectorController(widget.sectorTag);
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    final controller = Get.find<SectorController>(tag: widget.sectorTag);
+
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (controller.sectorModel.value == null) {
+        return const Center(
+            child: Text(
+          'Network Error',
+          style: TextStyle(color: Colors.white),
+        ));
+      }
+
+      final sectordata = controller.sectorModel.value!;
+      return Scaffold(
+        backgroundColor: AppColors.scaffoldBackground,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(0),
+              gradient: AppColors.appBarColorMS,
+            ),
+          ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image(
+                  image: NetworkImage(sectordata.imageLogo),
+                  height: 100.sp,
+                  width: 100.sp),
+              SizedBox(width: 1.sp),
+              Expanded(
+                child: Container(
+                  height: height * 0.045,
+                  width: width * 0.55,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade900.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: SearchBar(
+                    backgroundColor:
+                        WidgetStateProperty.all(Colors.transparent),
+                    elevation: WidgetStateProperty.all(0),
+                    side: WidgetStateProperty.all(BorderSide(
+                        color: sectordata.colorsearchBorder, width: 2)),
+                    leading: Icon(
+                      Icons.search,
+                      color: sectordata.colorsearchIcon,
+                      size: 20,
+                    ),
+                    hintText: sectordata.searchText,
+                    hintStyle: WidgetStateProperty.all(TextStyle(
+                        color: Authcolors.whiteColor, fontSize: 12.sp)),
+                    textStyle: WidgetStateProperty.all(
+                      TextStyle(
+                        color: Authcolors.whiteColor,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 2),
+              InkWell(
+                onTap: controller.onPressedNotification,
+                child: Icon(
+                  Icons.notifications_none,
+                  size: 30.sp,
+                  color: Authcolors.whiteColor,
+                ),
+              ),
+              const SizedBox(width: 2),
+              InkWell(
+                onTap: controller.onPressedSocaialapp,
+                child: SizedBox(
+                  height: 20.sp,
+                  width: 20.sp,
+                  child: Image.asset(
+                    sectordata.socialapplogo,
+                    height: 20.sp,
+                    width: 20.sp,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await controller.onRefresh();
+          },
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  height: 50.sp,
+                  width: width,
+                  color: Colors.grey.shade900,
+                  child:
+                      Image.asset('assets/gifs/Animation - 1749729591457.gif'),
+                ),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: height * 0.05,
+                      width: width,
+                      child: LocationInfoWidget(),
+                    ),
+                    SizedBox(
+                      height: height * 0.18,
+                      child: CarouselSlider(
+                          items: List.generate(
+                            sectordata.mainBanners.length,
+                            (index) {
+                              return InkWell(
+                                onTap: () => controller.onBannerSelected(index),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            sectordata.mainBanners[index],
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ))),
+                              );
+                            },
+                          ),
+                          options: CarouselOptions(
+                            height: height * 0.75,
+                            aspectRatio: _aspectRatio,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                          )),
+                    ),
+                    const SizedBox(height: 1),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            //  "Categories",
+                            sectordata.titleCt,
+                            style: TextStyle(
+                              color: Authcolors.whiteColor,
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_viewType == ViewType.list) {
+                                _crossAxisCount = 2;
+                                _aspectRatio = 1.5;
+                                _viewType = ViewType.grid;
+                              } else {
+                                _crossAxisCount = 1;
+                                _aspectRatio = 5;
+                                _viewType = ViewType.list;
+                              }
+                            });
+                          },
+                          icon: _viewType == ViewType.grid
+                              ? SizedBox(
+                                  width: 30.sp,
+                                  height: 30.sp,
+                                  child: Image.asset(
+                                    "assets/icons/cateogrie_icon-removebg-preview (Small).png",
+                                    fit: BoxFit.fill,
+                                  ))
+                              : const Icon(Icons.list,
+                                  color: Authcolors.whiteColor, size: 40),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      height: height * 0.3,
+                      child: Stack(
+                        children: [
+                          _viewType == ViewType.grid
+                              ? Stack(
+                                  children: [
+                                    GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: //UiHelper.categoryIcons.length,
+                                          sectordata.categoryIcons.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: _crossAxisCount,
+                                        childAspectRatio: _aspectRatio,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return Stack(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: () => controller
+                                                    .onCategorySelected(index),
+                                                child: Center(
+                                                  child: Container(
+                                                    height: height * 0.75,
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            sectordata
+                                                                    .categoryIcons[
+                                                                index]),
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                      border: Border.all(
+                                                        width: 3,
+                                                        color: sectordata
+                                                                .categoryColor[
+                                                            index],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Text(
+                                                  sectordata
+                                                      .categoryTitle[index],
+                                                  style: TextStyle(
+                                                    color:
+                                                        Authcolors.whiteColor,
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                    Center(
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    AppColors.transperent,
+                                                radius: 50,
+                                                child: IconButton(
+                                                    icon: Image(
+                                                        image: NetworkImage(
+                                                            sectordata
+                                                                    .vonieImages[
+                                                                0])),
+                                                    onPressed: () => controller
+                                                        .onvoniesetected(0)),
+                                              ),
+                                            )))
+                                  ],
+                                )
+                              : Stack(
+                                  children: [
+                                    ListView.builder(
+                                      itemCount:
+                                          sectordata.categoryIcons.length,
+                                      itemBuilder: (context, index) {
+                                        return Stack(children: [
+                                          Stack(
+                                            children: [
+                                              InkWell(
+                                                onTap: () => controller
+                                                    .onCategorySelected(index),
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  child: Container(
+                                                    height: height * 0.90,
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            sectordata
+                                                                    .categoryIcons[
+                                                                index]),
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Text(
+                                              sectordata.categoryTitle[index],
+                                              style: TextStyle(
+                                                color: Authcolors.whiteColor,
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ]);
+                                      },
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: CircleAvatar(
+                                        backgroundColor: AppColors.transperent,
+                                        radius: 40,
+                                        child: IconButton(
+                                          icon: Image.asset(
+                                              sectordata.vonieImages[0]),
+                                          onPressed: () =>
+                                              controller.onvoniesetected(0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ],
+                      ),
+                    ),
+                    // foods offers
+                    const SizedBox(height: 1),
+                    SizedBox(
+                      height: 20,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          // UiHelper.fieldsName[0],
+                          sectordata.categoryTitle[0],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Row(
+                            children: List.generate(
+                              sectordata.foodvendorbanner.length,
+                              (index) => InkWell(
+                                onTap: () =>
+                                    controller.onFoodVendorSelected(index),
+                                child: Container(
+                                  height: 150,
+                                  width: width - 50,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          sectordata.foodvendorbanner[index]
+                                          //UiHelper.fiImages[index]
+                                          ),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () => // foodImageindex(0),
+                                  controller.onFoodVendorSelected(0),
+                              icon: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Livin generals offers
+                    const SizedBox(height: 1),
+                    SizedBox(
+                      height: 20,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          sectordata.categoryTitle[1],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Row(
+                            children: List.generate(
+                              sectordata.livinggeneralsvendorbanner.length,
+                              (index) => InkWell(
+                                onTap: () => controller
+                                    .onLivingGeneralVendorSelected(index),
+                                child: Container(
+                                  height: 150,
+                                  width: width - 50,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(sectordata
+                                          .livinggeneralsvendorbanner[index]),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () =>
+                                  controller.onLivingGeneralVendorSelected(0),
+                              icon: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // fashion offers
+                    const SizedBox(height: 1),
+                    SizedBox(
+                      height: 20,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          //UiHelper.fieldsName[2],
+                          sectordata.categoryTitle[2],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Row(
+                            children: List.generate(
+                              sectordata.fashionvendorbanner.length,
+                              // widget.imagefs.length,
+                              (index) => InkWell(
+                                onTap: () =>
+                                    controller.onFashionVendorSelected(index),
+                                child: Container(
+                                  height: 150,
+                                  width: width - 50,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          // UiHelper.foodImages[index],
+                                          sectordata
+                                              .fashionvendorbanner[index]),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () =>
+                                  controller.onFashionVendorSelected(0),
+                              icon: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Cervces offers
+                    const SizedBox(height: 1),
+                    SizedBox(
+                      height: 20,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          sectordata.categoryTitle[3],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 1),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Row(
+                            children: List.generate(
+                              sectordata.cervcesvendorbanner.length,
+                              (index) => InkWell(
+                                onTap: () =>
+                                    controller.oncervcesVendorSelected(index),
+                                child: Container(
+                                  height: 150,
+                                  width: width - 50,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        sectordata.cervcesvendorbanner[index],
+                                      ),
+                                      fit: BoxFit.fill,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              onPressed: () =>
+                                  controller.oncervcesVendorSelected(0),
+                              icon: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

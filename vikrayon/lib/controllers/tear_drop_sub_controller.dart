@@ -1,16 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vikrayon/controllers/auth_controller.dart';
+import 'package:vikrayon/api/api_client.dart';
 import 'package:vikrayon/models/tear_sub_model.dart';
 
 class TearDropController extends GetxController {
-  final String subcategoryTag;
-  TearDropController({required this.subcategoryTag});
+  final String? subcategoryTag;
+  TearDropController({ this.subcategoryTag});
   var tearDropProduct = <TearDropProduct>[].obs;
   var isLoading = true.obs;
 
-  final Dio dio = AuthController.to.dio;
 
   @override
   void onInit() {
@@ -20,9 +18,9 @@ class TearDropController extends GetxController {
 
   Future<void> fetchTearDropItems() async {
     try {
-      isLoading.value = true;
-      final response = await dio.get('/subcategory', queryParameters: {
-        "tag": subcategoryTag,
+      isLoading.value = true; 
+      final response = await ApiClient.get('getTearDropUrl', queryParameters: {
+        "tag": subcategoryTag!,
       });
       
       if (response.statusCode == 200) {
@@ -54,3 +52,15 @@ class TearDropController extends GetxController {
     }
   }
 }
+
+// class SubCategoryController extends GetxController {
+//   final String? subcategoryTag;
+//   SubCategoryController({ this.subcategoryTag});
+// @override
+//   void onInit() {
+//     super.onInit();
+//     fetchSubCategoryItems();
+//   }
+
+
+// }

@@ -11,7 +11,6 @@ class LivingGeneralsMainScreen extends StatefulWidget {
   State<LivingGeneralsMainScreen> createState() =>
       _LivingGeneralsMainScreenState();
 }
-
 class _LivingGeneralsMainScreenState extends State<LivingGeneralsMainScreen> {
 
 

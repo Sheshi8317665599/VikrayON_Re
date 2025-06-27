@@ -4,32 +4,44 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:get/get.dart' hide FormData, MultipartFile;
+import 'package:get/get.dart' hide FormData, MultipartFile, Response;
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timer_count_down/timer_controller.dart';
+import 'package:vikrayon/api/api_client.dart';
 import 'package:vikrayon/main_screen.dart';
 import 'package:vikrayon/splash_screens/Main_splashscreen.dart';
 import 'package:vikrayon/views/auth/login_screen.dart';
 import 'package:vikrayon/views/auth/user_conformation_screen.dart';
 
 class AuthController extends GetxController {
-
-
-  static AuthController get to => Get.find();
   var isLoggedIn = false.obs;
 
-  final Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://vikrayon.com',
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 5),
-    contentType: 'application/json',
-    responseType: ResponseType.json,
-  ));
+  // final Dio dio = Dio(BaseOptions(
+  //   baseUrl: 'https://3185-43-230-212-140.ngrok-free.app/auth',
+  //   connectTimeout: const Duration(seconds: 5),
+  //   receiveTimeout: const Duration(seconds: 5),
+  //   contentType: 'application/json',
+  //   responseType: ResponseType.json,
+  // ));
+
+  Future<void> checkAuthStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isUserCreated = prefs.getBool('isUserCreated') ?? false;
+    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final email = prefs.getString('userEmail') ?? '';
+    final token = prefs.getString('token') ?? '';
+    if (isUserCreated && isLoggedIn && email.isNotEmpty && token.isNotEmpty) {
+      saveLoginSession(email, token);
+    }
+  }
+
   Future<void> saveSignupSession(String email) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isUserCreated', true);
     await prefs.setString('userEmail', email);
+    isLoggedIn.value = false;
   }
 
   Future<void> saveLoginSession(String email, String token) async {
@@ -51,24 +63,40 @@ class AuthController extends GetxController {
 
   Future<String> getIntialRoute() async {
     final prefs = await SharedPreferences.getInstance();
-    final isUserCreated = prefs.getBool('isUserCreated') ?? false;
-    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    final email = prefs.getString('userEmail') ?? '';
-    final token = prefs.getString('token') ?? '';
+    try {
+      final isUserCreated = prefs.getBool('isUserCreated') ?? false;
+      final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+      final email = prefs.getString('userEmail') ?? '';
+      final token = prefs.getString('token') ?? '';
 
-    if (!isUserCreated) return 'signup';
-    if (isLoggedIn && email.isNotEmpty && token.isNotEmpty) return 'main';
-    return 'login';
+      if (!isUserCreated) return 'login';
+      if (isLoggedIn && email.isNotEmpty && token.isNotEmpty) {
+        return 'main';
+      }
+      return 'login';
+    } catch (e) {
+      print("Error in getIntialRoute: $e");
+      return 'login';
+    }
   }
 
   // google signin function
-  var userName = ''.obs;
-
+  RxString userName = ''.obs;
+  RxString userPassword = ''.obs;
   RxString userEmail = ''.obs;
   RxString userphonenumber = ''.obs;
   RxString userImage = ''.obs;
   RxBool isGoogleUser = false.obs;
   RxString profilepicpath = ''.obs;
+  RxString userDob = ''.obs;
+
+  RxString userGender = ''.obs;
+
+  RxString userArea = ''.obs;
+  RxString userCity = ''.obs;
+  RxString userState = ''.obs;
+  RxString userCountry = ''.obs;
+  RxString userPincode = ''.obs;
 
   // normal signin function
 
@@ -86,18 +114,16 @@ class AuthController extends GetxController {
     userEmail.value = email;
     userImage.value = '';
     userphonenumber.value = phonenumber;
-
-    Get.off(() => MainScreen());
   }
   // Google Sign In
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes:
+     [
       'email',
       'https://www.googleapis.com/auth/userinfo.profile',
     ],
   );
-  Future<void> googleSignIn() async {
+  Future<void> googleSignIn() async{
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
@@ -108,26 +134,31 @@ class AuthController extends GetxController {
       }
 
       // final photoUrl = googleUser.photoUrl ?? '';
-      await fetchGoogleProfile(googleUser);
-      // final prefs = await SharedPreferences.getInstance();
-      // await prefs.setString('userName', googleUser.displayName ?? '');
-      // await prefs.setString('userEmail', googleUser.email);
-      // await prefs.setString('userphonenumber', '');
-      // await prefs.setString('userImage', googleUser.photoUrl ?? '');
-      // await prefs.setBool('isLoggedIn', true);
-      // await prefs.setBool('isGoogleUser', true);
-      // await prefs.setBool('isUserCreated', true);
-      // await prefs.setString('userType', 'google');
+      // final GoogleSignInAuthentication googleAuth =
+      //     await googleUser.authentication;
 
-      // // update RX variables
-      // userName.value = googleUser.displayName ?? '';
-      // userEmail.value = googleUser.email;
-      // userphonenumber.value = '';
-      // userImage.value = googleUser.photoUrl ?? '';
-      Get.off(() => MainScreen());
+      // final String? idToken = googleAuth.idToken;
+
+      // if (idToken == null) {
+      //   Get.snackbar("Error", "Google Sign-In failed!",
+      //       snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+      //   return;
+      // }
+
+      // final response = await ApiClient.post(
+      //     'googleSignIn', {'idToken': idToken, 'type': 'google'});
+
+      // if (response.statusCode == 200) {
+      //   final data = response.data;
+      //   final String jwtToken = data['jwtToken'];
+      //   await ApiClient.updateToken(jwtToken);
+      // }
+
+      await fetchGoogleProfile(googleUser);
+      Get.to(() => MainScreen());
     } catch (error) {
       Get.snackbar("Error", "Google Sign-In failed!",
-          snackPosition: SnackPosition.BOTTOM);
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     }
   }
 
@@ -144,7 +175,7 @@ class AuthController extends GetxController {
 
       // if (googleUser == null) {
       //   await prefs.clear();
-      //   Get.off(() => LoginScreen());
+      //   Get.to(() => LoginScreen());
       //   Get.snackbar("Error", "Google Sign-In failed!",
       //       snackPosition: SnackPosition.BOTTOM);
       //   return;
@@ -163,10 +194,10 @@ class AuthController extends GetxController {
       await prefs.setString('userImage', userImage.value);
     } catch (e) {
       await prefs.clear();
+      Get.to(() => LoginScreen());
       Get.snackbar("Error", "Google profile fetch failed: $e",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: const Color(0xff5ce1e6));
-      Get.off(() => LoginScreen());
     }
   }
 
@@ -199,17 +230,22 @@ class AuthController extends GetxController {
     profilepicpath.value = '';
     isGoogleUser.value = false;
 
-    Get.off(() => LoginScreen());
+    Get.to(() => LoginScreen());
   }
   // Login function
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
-      final response = await dio.post(
-        '/login',
-        data: {'email': email, 'password': password},
+      final response = await ApiClient.post(
+        'login',
+        {'email': email, 'password': password},
       );
-      return response.data;
+
+      final data = response.data;
+      if (data['jwtToken'] != null) {
+        await ApiClient.updateToken(data['jwtToken']);
+      }
+      return data;
     } on DioException catch (e) {
       return {
         "message": e.response?.data['message'] ?? "Login failed!",
@@ -223,14 +259,15 @@ class AuthController extends GetxController {
   Future<Map<String, dynamic>> signup(String name, String email,
       String password, String confirmPassword, String phoneNumber) async {
     try {
-      final response = await dio.post(
-        '/register?role=user',
-        data: {
+      final response = await ApiClient.post(
+        'register',
+        {
           'name': name,
           'email': email,
           'password': password,
           'confirmPassword': confirmPassword,
-          'phoneNumber': phoneNumber
+          'phoneNumber': phoneNumber,
+          'role': 'user'
         },
       );
       if (response.data is String) {
@@ -252,9 +289,9 @@ class AuthController extends GetxController {
 
   Future<Map<String, dynamic>> confirmOtp(String email, String otp) async {
     try {
-      final response = await dio.post(
-        '/confirm-otp',
-        data: {'email': email, 'otp': otp},
+      final response = await ApiClient.post(
+        'confirmOtp',
+        {'email': email, 'otp': otp},
       );
 
       dynamic data = response.data;
@@ -295,9 +332,9 @@ class AuthController extends GetxController {
   Future<Map<String, dynamic>> resendOtp(String email,
       {String type = "User_Confirmation"}) async {
     try {
-      final response = await dio.post(
-        '/resend-otp',
-        data: {'email': email, 'type': type},
+      final response = await ApiClient.post(
+        'resendOtp',
+        {'email': email, 'type': type},
       );
       return response.data;
     } on DioException catch (e) {
@@ -313,9 +350,9 @@ class AuthController extends GetxController {
   Future<Map<String, dynamic>> resetPassword(
       String email, String otp, String newPassword) async {
     try {
-      final response = await dio.post(
-        '/reset-password',
-        data: {'email': email, 'otp': otp, 'newPassword': newPassword},
+      final response = await ApiClient.post(
+        'resetPassword',
+        {'email': email, 'otp': otp, 'newPassword': newPassword},
       );
       return response.data;
     } on DioException catch (e) {
@@ -329,8 +366,8 @@ class AuthController extends GetxController {
   // fetch user profile from api
   Future<Map<String, dynamic>> getUserProfile() async {
     try {
-      final response = await dio.get(
-        '/profile',
+      final response = await ApiClient.get(
+        'getUserProfile',
       );
       return response.data;
     } on DioException catch (e) {
@@ -342,8 +379,19 @@ class AuthController extends GetxController {
   }
 }
 
+// hide email
+
+String hideEmail(String email) {
+  // Hide the first part of the email
+  int atIndex = email.indexOf('@');
+  if (atIndex > 2) {
+    return '*' * (atIndex + 2) + email.substring(atIndex - 2);
+  }
+  return email; // Return as is if not enough characters
+}
+
+// Login Controller
 class LoginControler extends GetxController {
-  final AuthController authService = Get.find<AuthController>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController otpController = TextEditingController();
@@ -358,7 +406,7 @@ class LoginControler extends GetxController {
     isPasswordVisible.value = !isPasswordVisible.value;
   }
 
-  Future<void> login() async {
+  Future<bool> login() async {
     String email = emailController.value.text.trim();
     String password = passwordController.text.trim();
 
@@ -366,29 +414,46 @@ class LoginControler extends GetxController {
       Get.snackbar("Error", "Please enter both email and pasword",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
-      return;
+      return false;
     }
     isLoading(true);
     try {
-      final response = await authService.login(email, password);
-      print("Login API response: $response");
-      if (response.containsKey('jwtToken')) {
-        Get.offAll(() => MainScreen());
+      // print(
+      //     'Api URL: ${ApiClient.baseUrl + (ApiClient.endpoints['login'] ?? 'No_Endpoint')}');
+      final response = await ApiClient.post(
+        'login',
+        {'email': email, 'password': password},
+        //   options: Options(
+        //     sendTimeout: Duration(seconds: 5),
+        //     receiveTimeout: Duration(seconds: 5),
+        //   ),
+        // )
+        // .timeout(const Duration(seconds: 5);
+      );
+
+      final data = response.data;
+      print(data);
+      if (data.containsKey('jwtToken')) {
+        await ApiClient.updateToken(data['jwtToken']);
+        return true;
       } else {
-        Get.snackbar("Login Falied", response['message'] ?? "Unknown error",
+        Get.snackbar("Login Falied", data['message'] ?? "Login failed!",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
+        return false;
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      print("Error: $e");
+      Get.snackbar("Error", "An error occured",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+      return false;
     } finally {
       isLoading(false);
     }
   }
 
-  Future<void> sendResentOtp({bool isForgot_Password = false}) async {
+  Future<void> sendResentOtp({bool IsForgot_Password = false}) async {
     String email = forgotEmailController.value.text.trim();
     if (email.isEmpty) {
       Get.snackbar("Error", "Please enter your email",
@@ -398,20 +463,31 @@ class LoginControler extends GetxController {
     }
     isLoading(true);
     try {
-      final response = await authService.resendOtp(email,
-          type: isForgot_Password ? 'forgot_password' : 'user_confirmation');
-      if (response['status'] == 200) {
-        Get.snackbar(
-            "Success", response['message'] ?? "OTP resent successfully",
+      final response = await ApiClient.post(
+        'resendOtp',
+        {
+          'email': email,
+          'type': IsForgot_Password ? 'forgot_password' : 'user_confirmation'
+        },
+        //   options: Options(
+        //     sendTimeout: Duration(seconds: 5),
+        //     receiveTimeout: Duration(seconds: 5),
+        //   ),
+        // )
+        // .timeout(const Duration(seconds: 5)
+      );
+      final data = response.data;
+      if (data['status'] == 200) {
+        Get.snackbar("Success", data['message'] ?? "OTP resent successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       } else {
-        Get.snackbar("Error", response['message'] ?? "Failed to resend OTP",
+        Get.snackbar("Error", data['message'] ?? "Failed to resend OTP",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
@@ -438,18 +514,20 @@ class LoginControler extends GetxController {
     }
     isLoading(true);
     try {
-      final response = await authService.resetPassword(email, otp, newPassword);
-      if (response['status'] == 200) {
-        Get.snackbar("Success", response['message'] ?? "Unknown error",
+      final response = await ApiClient.post('resetPasswordUrl',
+          {'email': email, 'otp': otp, 'password': newPassword});
+      final data = response.data;
+      if (data['status'] == 200) {
+        Get.snackbar("Success", data['message'] ?? "Unknown error",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       } else {
-        Get.snackbar("Error", response['message'] ?? "Unknown error",
+        Get.snackbar("Error", data['message'] ?? "Unknown error",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
@@ -459,7 +537,6 @@ class LoginControler extends GetxController {
 }
 
 class SignupControler extends GetxController {
-  final AuthController authService = Get.find<AuthController>();
   TextEditingController namecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passswordcontroller = TextEditingController();
@@ -474,13 +551,19 @@ class SignupControler extends GetxController {
   }
 
   Future<void> signup() async {
+    print("signup method called");
     isLoading(true);
 
-    if (namecontroller.text.isEmpty ||
-        emailcontroller.text.isEmpty ||
-        passswordcontroller.text.isEmpty ||
-        confirmpasswordcontroller.text.isEmpty ||
-        phonenumbercontroller.text.isEmpty) {
+    final name = namecontroller.text.trim();
+    final email = emailcontroller.text.trim();
+    final password = passswordcontroller.text.trim();
+    final confirmPassword = confirmpasswordcontroller.text.trim();
+    final phoneNumber = phonenumbercontroller.text.trim();
+    if (name.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty ||
+        phoneNumber.isEmpty) {
       Get.snackbar("Error", "All fields are required",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
@@ -505,32 +588,37 @@ class SignupControler extends GetxController {
         isLoading(false);
         return;
       }
-      final response = await authService.signup(
-          namecontroller.text.trim(),
-          emailcontroller.text.trim(),
-          passswordcontroller.text,
-          confirmpasswordcontroller.text,
-          phonenumber);
-      print("Signup API response: $response");
 
-      if (response['status'] == 'success') {
-        final email = emailcontroller.text.trim();
+      final response = await ApiClient.post('register', {
+        'name': name,
+        'email': email,
+        'password': password,
+        'confirmPassword': confirmPassword,
+        'phoneNumber': phonenumber,
+        'role': 'user',
+      }); //authService.signup(
+
+      final data = response.data;
+      print(response.statusCode);
+      if (response.statusCode == 200) {
         //response.containsKey('jwtToken')) {
-
-        final userConformationControler = Get.put(UserConformationControler());
-        userConformationControler.setEmail(email);
-        Get.offAll(() => UserConformationScreen(), arguments: {
-          'email': email,
-        });
+        print("it's working");
+        Get.to(() => UserConformationScreen(), arguments: {'email': email});
+        Get.snackbar("Success", data['message'] ?? "Unknown error",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Color(0xff5ce1e6));
+        isLoading(true);
+        return;
       } else {
-        Get.snackbar("Error", response['message'] ?? "Signup failed!",
+        Get.snackbar("Error", data['message'] ?? "Signup failed!",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
+      return;
     } finally {
       isLoading(false);
     }
@@ -538,34 +626,36 @@ class SignupControler extends GetxController {
 }
 
 class ForgotPasswordController extends GetxController {
-  final AuthController authService = Get.find<AuthController>();
-
   TextEditingController emailControllers = TextEditingController();
   TextEditingController otpController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
   RxBool isLoading = false.obs;
-  RxBool isPasswordVisible = false.obs;
+  RxBool isNewPasswordVisible = false.obs;
+  RxBool isConfirmPasswordVisible = false.obs;
 
   RxBool canResendOtp = false.obs;
   RxInt otpCountdown = 30.obs;
   Timer? countdownTimer;
 
-  void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
+  void clearAllFeilds() {
+    emailControllers.clear();
+    otpController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
   }
 
   void startOtpCountdown({int seconds = 30}) {
-    otpCountdown.value = seconds;
-    canResendOtp.value = false;
-    countdownTimer?.cancel();
+    otpCountdown.value = seconds; // Reset countdown to 60 seconds
+    canResendOtp.value = false; // Disable resend button
+    countdownTimer?.cancel(); // Cancel any existing timer
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (otpCountdown.value > 0) {
-        otpCountdown.value--;
+        otpCountdown.value--; // Decrement countdown
       } else {
-        timer.cancel();
-        canResendOtp.value = true;
+        timer.cancel(); // Stop the timer when countdown reaches 0
+        canResendOtp.value = true; // Enable resend buttonl
       }
     });
   }
@@ -581,30 +671,33 @@ class ForgotPasswordController extends GetxController {
 
     isLoading.value = true;
     try {
-      final response =
-          await authService.resendOtp(email, type: 'forgot_password');
-      if (response['status'] == 200 || response['status'] == 'success') {
-        Get.snackbar("Success", response['message'] ?? "OTP sent to email",
+      final response = await ApiClient.post(
+          'forgotPassword', {'email': email, 'type': 'forgot_password'});
+      final data = response.data;
+      if (data['status'] == 200 || data['status'] == 'success') {
+        Get.snackbar("Success", data['message'] ?? "OTP sent to email",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
         startOtpCountdown();
-        Get.to(() => OtpScreen());
+        clearAllFeilds();
+        Get.to(() => OtpScreen(), arguments: {'email': email});
       } else {
-        Get.snackbar("Error", response['message'] ?? "Failed to send OTP",
+        Get.snackbar("Error", data['message'] ?? "Failed to send OTP",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occurred: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
       isLoading.value = false;
     }
+    //  Get.to(() => OtpScreen(), arguments: {'email': email});
   }
 
   Future<void> resendForgotOtp() async {
-    final email = emailControllers.text.trim();
+    final email = Get.arguments['email'];
     if (email.isEmpty) {
       Get.snackbar("Error", "Email is empty",
           snackPosition: SnackPosition.BOTTOM,
@@ -614,20 +707,21 @@ class ForgotPasswordController extends GetxController {
 
     isLoading.value = true;
     try {
-      final response =
-          await authService.resendOtp(email, type: 'forgot_password');
-      if (response['status'] == 200 || response['status'] == 'success') {
+      final response = await ApiClient.post(
+          'resendOtp', {'email': email, 'type': 'forgot_password'});
+      final data = response.data;
+      if (data['status'] == 200 || data['status'] == 'success') {
         Get.snackbar("Success", "OTP resent successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
         startOtpCountdown();
       } else {
-        Get.snackbar("Error", response['message'] ?? "Failed to resend OTP",
+        Get.snackbar("Error", data['message'] ?? "Failed to resend OTP",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occurred: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
@@ -637,11 +731,10 @@ class ForgotPasswordController extends GetxController {
 
   Future<void> resetPassword() async {
     final email = emailControllers.text.trim();
-    final otp = otpController.text.trim();
     final newPassword = newPasswordController.text.trim();
     final confirmPassword = confirmPasswordController.text.trim();
 
-    if (otp.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
+    if (email.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
       Get.snackbar("Error", "Please fill in all fields",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
@@ -657,22 +750,61 @@ class ForgotPasswordController extends GetxController {
 
     isLoading.value = true;
     try {
-      final response = await authService.resetPassword(email, otp, newPassword);
-      if (response['status'] == 200 || response['status'] == 'success') {
-        Get.snackbar(
-            "Success", response['message'] ?? "Password reset successful",
+      final response = await ApiClient.post('resetPassword', {
+        'email': emailControllers.text,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword
+      });
+      final data = response.data;
+      if (response.statusCode == 200 || data['status'] == 'success') {
+        Get.snackbar("Success", data['message'] ?? "Password reset successful",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
-        Future.delayed(Duration(seconds: 2), () {
-          Get.offAll(() => LoginScreen());
-        });
+
+        await Future.delayed(
+          Duration(seconds: 2),
+        );
+        Get.to(() => LoginScreen());
       } else {
-        Get.snackbar("Error", response['message'] ?? "Password reset failed",
+        Get.snackbar("Error", data['message'] ?? "Password reset failed",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occurred: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xff5ce1e6));
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> verifyOtp(String email) async {
+    if (otpController.text.trim().length != 6) {
+      Get.snackbar("Error", "Invalid OTP",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Color(0xff5ce1e6));
+      return;
+    }
+    isLoading.value = true;
+    try {
+      final response = await ApiClient.post(
+          'verifyOtp', {'email': email, 'otp': otpController.text.trim()});
+      final data = response.data;
+      if (response.statusCode == 200 || data['status'] == 'success') {
+        Get.snackbar("Success", data['message'] ?? "OTP verified successfully",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Color(0xff5ce1e6));
+
+        Get.to(() => ResetPassword(),
+            arguments: {'email': email, 'otp': otpController.text.trim()});
+      } else {
+        Get.snackbar("Error", data['message'] ?? "Failed to verify OTP",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Color(0xff5ce1e6));
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
@@ -693,11 +825,9 @@ class ForgotPasswordController extends GetxController {
 
 class UserConformationControler extends GetxController {
   late String email;
-  CountdownController countdownController = CountdownController();
-  TextEditingController textEditingController = TextEditingController();
-  final AuthController authService = Get.find<AuthController>();
-  TextEditingController emailotpcontroller = TextEditingController();
-  var messageOtp = ''.obs;
+  final CountdownController countdownController = CountdownController();
+  final TextEditingController emailotpcontroller = TextEditingController();
+  // RxString messageOtp = ''.obs;
   RxBool canResendOtp = false.obs;
   RxInt otpCountdown = 30.obs; // Countdown timer for OTP
   RxBool isLoading = false.obs;
@@ -710,9 +840,11 @@ class UserConformationControler extends GetxController {
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (otpCountdown.value > 0) {
         otpCountdown.value--; // Decrement countdown
+        update();
       } else {
         timer.cancel(); // Stop the timer when countdown reaches 0
-        canResendOtp.value = true; // Enable resend button
+        canResendOtp.value = true; // Enable resend buttonl
+        update();
       }
     });
   }
@@ -721,10 +853,12 @@ class UserConformationControler extends GetxController {
   Future<void> resendOtp({String type = "User_Confirmation"}) async {
     isLoading(true);
     try {
-      final response = await authService.resendOtp(email);
-      print("Resend OTP API response: $response");
+      final response = await ApiClient.post('resendOtp',
+          {'email': email, 'type': type}); // Call the API to resendOtp(email);
 
-      if (response['status'] == 'success') {
+      final data = response.data;
+
+      if (data['status'] == 'success') {
         Get.snackbar("Success", "OTP resent successfully",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
@@ -732,12 +866,12 @@ class UserConformationControler extends GetxController {
         canResendOtp.value = false; // Disable resend button
         startOtpCountdown(); // Start countdown timer
       } else {
-        Get.snackbar("Error", response['message'] ?? "Failed to resend OTP",
+        Get.snackbar("Error", data['message'] ?? "Failed to resend OTP",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
       }
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     } finally {
@@ -746,10 +880,10 @@ class UserConformationControler extends GetxController {
   }
   // Conform otp function
 
-  void setEmail(String email) {
-    this.email = email;
-    print("Email set  in controller : $email");
-  }
+  // void setEmail(String email) {
+  //   this.email = email;
+  //   print("Email set  in controller : $email");
+  // }
 
   Future<void> confirmOtp() async {
     final otp =
@@ -767,13 +901,15 @@ class UserConformationControler extends GetxController {
     isLoading.value = true;
 
     try {
-      print("confirming Otp for : $email and OTP: $otp");
-      final response = await authService.confirmOtp(email, otp);
+      final response = await ApiClient.post('confirmOtp', {
+        'email': email,
+        'otp': otp,
+      });
 
-      print("Conform Otp Api response: $response");
+      final data = response.data;
 
-      final status = response['status']?.toString().toLowerCase() ?? "";
-      final message = response['message']?.toString().toLowerCase() ?? "";
+      final status = data['status']?.toString().toLowerCase() ?? "";
+      final message = data['message']?.toString().toLowerCase() ?? "";
 
       if ((status == 'success' ||
               status == '200' ||
@@ -782,15 +918,16 @@ class UserConformationControler extends GetxController {
           (message.contains("otp") && message.contains("confirm")*/
           ) {
         print("if working");
-        Get.offAll(() => MainScreen());
+        Get.to(() => LoginScreen());
       } else {
         Get.snackbar("success", message,
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Color(0xff5ce1e6));
         print("else working, $message");
       }
+      print("token: ${data['jwtToken']}");
     } catch (e) {
-      Get.snackbar("Error", "An error occured: ${e.toString()}",
+      Get.snackbar("Error", "Server issue",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Color(0xff5ce1e6));
     }
@@ -805,245 +942,480 @@ class UserConformationControler extends GetxController {
     startOtpCountdown(); // Start countdown timer when controller is initialized
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    countdownTimer?.cancel(); // Cancel the timer when the controller is closed
-    emailotpcontroller.dispose();
-  }
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   countdownTimer?.cancel(); // Cancel the timer when the controller is closed
+  //   emailotpcontroller.dispose();
+  // }
 }
 
 // i have to implemeny if user login sucessfully one time then user will be navigate to home screen
 
 // profile controlller
 
+// adjust path if needed
+
 class ProfileController extends GetxController {
-  AuthController authController = AuthController();
-  late SharedPreferences prefs;
+  final AuthController authController =
+      Get.find<AuthController>(); // Get instance of AuthController>
+//  final LocationController locationController = Get.put(LocationController());
   final ImagePicker _imagePicker = ImagePicker();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // user data observable
+  final Rx<File?> _pickedImageFile = Rx<File?>(null);
+  File? get pickedImageFile => _pickedImageFile.value;
   RxString userName = ''.obs;
   RxString userEmail = ''.obs;
+  RxString userPassword = ''.obs;
   RxString userPhoneNumber = ''.obs;
-  RxString userImage = ''.obs; // Google image URL or from backend
-  RxString profilepicpath = ''.obs; // Local image path
+  RxString userDob = ''.obs;
+  RxString userImage = ''.obs;
+  RxString profilepicpath = ''.obs;
+  RxString userGender = ''.obs;
 
+  // State observalable
+  RxBool isPasswordVisible = false.obs;
+  RxBool hasLocalImage = false.obs;
   RxBool isGoogleUser = false.obs;
   RxBool isUploading = false.obs;
+  RxBool isOtpSent = false.obs;
+  RxInt otpCountdown = 0.obs;
+  RxBool isOtpVerified =
+      false.obs; // 0: not verified, 1: verified, 2: resend otp
 
-  late Dio _dio;
+  // add adress controller
+
+  RxString userArea = ''.obs;
+  RxString userCity = ''.obs;
+  RxString userState = ''.obs;
+  RxString userCountry = ''.obs;
+  RxString userPincode = ''.obs;
+  RxString userAddress = ''.obs;
+
+// Form controller
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  //TextEditingController addressController = TextEditingController();
+
+  Timer? otpCountdownTimer;
+  @override
+  void onInit() {
+    super.onInit();
+    initializedControllers();
+    _loadUserdata();
+
+    // ever(locationController.userArea,
+    //     (value) => userArea.value = value.toString());
+    // ever(locationController.userCity,
+    //     (value) => userCity.value = value.toString());
+    // ever(locationController.userState,
+    //     (value) => userState.value = value.toString());
+    // ever(locationController.userCountry,
+    //     (value) => userCountry.value = value.toString());
+    // ever(locationController.userPincode,
+    //     (value) => userPincode.value = value.toString());
+  }
+
+  @override
+  void onClose() {
+    otpCountdownTimer?.cancel();
+    disposeControllers();
+    super.onClose();
+  }
+
+  void initializedControllers() {
+    nameController = TextEditingController();
+    // emailController = TextEditingController();
+    //  passwordController = TextEditingController();
+    // confirmPasswordController = TextEditingController();
+    phoneController = TextEditingController();
+    dobController = TextEditingController();
+    // addressController = TextEditingController();
+  }
+
+  void disposeControllers() {
+    nameController.dispose();
+    //  emailController.dispose();
+    //  passwordController.dispose();
+    // confirmPasswordController.dispose();
+    phoneController.dispose();
+    dobController.dispose();
+    //  addressController.dispose();
+  }
 
   @override
   void onReady() {
     super.onReady();
-    _initPrefs().then((_) => _initializedController());
+    _initController();
   }
 
-  Future<void> _initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
+  Future<void> _initController() async {
+    await _loadUserdata();
+    await fetchUserProfile();
   }
 
-  Future<void> _initializedController() async {
-    prefs = await SharedPreferences.getInstance();
-    _dio = Dio(
-      BaseOptions(
-        baseUrl:
-            'https://yourbackend.api', // <-- replace with your backend base URL
-        connectTimeout: const Duration(
-            seconds: 5), // <-- replace with your backend base URL5000,
-        receiveTimeout: const Duration(
-            seconds: 5), // <-- replace with your backend base URL5000,
-
-        headers: {'Authorization': 'Bearer ${prefs.getString('token')}'},
-      ),
-    );
-
-    await _loadStoredProfileData();
+  Future<void> checkLocalProfileImageExists() async {
+    final path = profilepicpath.value;
+    if (path.isNotEmpty) {
+      final file = File(path);
+      hasLocalImage.value = await file.exists();
+    } else {
+      hasLocalImage.value = false;
+    }
   }
 
-  /// Load saved profile data from local storage
-  Future<void> _loadStoredProfileData() async {
-    final prefs = await SharedPreferences.getInstance();
-    profilepicpath.value = prefs.getString('profilepicpath') ?? '';
-    isGoogleUser.value = prefs.getBool('isGoogleUser') ?? false;
-    userEmail.value = prefs.getString('userEmail') ?? '';
-    userName.value = prefs.getString('userName') ?? '';
-    userPhoneNumber.value = prefs.getString('userPhoneNumber') ?? '';
-    userImage.value = prefs.getString('userImage') ?? '';
+  Future<void> _loadUserdata() async {
+    try {
+      await authController.loadUserData();
 
+      userName.value = authController.userName.value;
+      userEmail.value = authController.userEmail.value;
+      userPhoneNumber.value = authController.userphonenumber.value;
+      userImage.value = authController.userImage.value;
+      profilepicpath.value = authController.profilepicpath.value;
+      isGoogleUser.value = authController.isGoogleUser.value;
+      userDob.value = authController.userDob.value;
+
+// load location data if avaliable
+
+      // userArea.value = locationController.userArea.value;
+      // userCity.value = locationController.userCity.value;
+      // userState.value = locationController.userState.value;
+      // userCountry.value = locationController.userCountry.value;
+      // userPincode.value = locationController.userPincode.value;
+      // userAddress.value = locationController.userFullAddress.value;
+
+      nameController.text = userName.value;
+      //  emailController.text = userEmail.value;
+      phoneController.text = userPhoneNumber.value;
+      dobController.text = userDob.value;
+      await checkLocalProfileImageExists();
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load user data: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
+  }
+
+  Future<void> fetchUserProfile() async {
     if (isGoogleUser.value) {
-      final GoogleSignInAccount? googleUser =
-          await _googleSignIn.signInSilently();
+      await fetchGoogleProfile();
+    } else {
+      await _fetchUserProfileFromBackend();
+    }
+  }
+
+  Future<void> fetchGoogleProfile() async {
+    try {
+      final googleUser = await _googleSignIn.signInSilently();
       if (googleUser != null) {
         await authController.fetchGoogleProfile(googleUser);
+        await _loadUserdata();
       }
-    } else {
-      await _fetchUserProfileFromBackend(); // Fetch from backend for manual users
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to fetch Google profile: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     }
   }
 
-  /// Fetch user profile from backend for manual users
   Future<void> _fetchUserProfileFromBackend() async {
-    if (userEmail.value.isEmpty) {
-      // No user email stored, fallback
-      _loadManualUserProfileFromPrefs();
-      return;
-    }
-
     try {
-      final response = await _dio.get('/api/profile/${userEmail.value}');
+      final response = await ApiClient.get('getUserProfile');
+      print(response);
       if (response.statusCode == 200) {
         final data = response.data;
-        userName.value = data['name'] ?? 'Manual User';
-        userPhoneNumber.value = data['phoneNumber'] ?? 'N/A';
-        userImage.value = data['profileImageUrl'] ?? '';
-        profilepicpath.value =
-            ''; // clear local image because backend has image url
-        // Save to prefs for offline cache
+        userName.value = data['name'] ?? userName.value;
+        userEmail.value = data['email'] ?? userEmail.value;
+        userPhoneNumber.value = data['phoneNumber'] ?? userPhoneNumber.value;
+        userImage.value = data['profilePicture'] ?? userImage.value;
+        print('userImage: $userImage.value');
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('userName', userName.value);
         await prefs.setString('userEmail', userEmail.value);
-        await prefs.setString('userPhone', userPhoneNumber.value);
-        await prefs.setString('profilepicpath', '');
-      } else {
-        _loadManualUserProfileFromPrefs();
+        await prefs.setString('userPhoneNumber', userPhoneNumber.value);
+        await prefs.setString('userImage', userImage.value);
+
+        // update AuthController variables
+        authController.userName.value = userName.value;
+        authController.userEmail.value = userEmail.value;
+        authController.userphonenumber.value = userPhoneNumber.value;
+        authController.userImage.value = userImage.value;
       }
     } catch (e) {
-      print("Error fetching user profile from backend: $e");
-      _loadManualUserProfileFromPrefs();
+      Get.snackbar('Error', 'Failed to fetch user profile: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
     }
   }
 
-  /// Load manual profile data from SharedPreferences as fallback
-  void _loadManualUserProfileFromPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    userName.value = prefs.getString('userName') ?? 'Manual User';
-    userEmail.value = prefs.getString('userEmail') ?? 'manual@vikrayon.com';
-    userPhoneNumber.value = prefs.getString('userPhone') ?? 'N/A';
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      final pickedFile = await _imagePicker.pickImage(
+        source: source,
+      );
+
+      if (pickedFile != null) {
+        isUploading.value = true;
+        profilepicpath.value = pickedFile.path;
+        await checkLocalProfileImageExists();
+        final imageUrl = await _uploadProfileImage(File(pickedFile.path));
+        if (imageUrl.isNotEmpty) {
+          await _updateProfilewithImage(imageUrl);
+          Get.back();
+        }
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to pick image: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } finally {
+      isUploading.value = false;
+    }
   }
 
-  /// Pick image from camera or gallery
-  Future<void> pickImage(ImageSource source) async {
-    final pickedFile =
-        await _imagePicker.pickImage(source: source, imageQuality: 80);
-    if (pickedFile != null) {
+  Future<void> _updateProfilewithImage(String imageUrl) async {
+    try {
+      userImage.value = imageUrl;
+      profilepicpath.value = '';
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userImage', imageUrl);
+      await prefs.setString('profilepicpath', '');
+
+      // update AuthController variables
+      authController.userImage.value = imageUrl;
+      authController.profilepicpath.value = '';
+      update();
+
+      Get.snackbar('Success', 'Profile updated successfully',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
+  }
+
+  Future<String> _uploadProfileImage(File imageFile) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(imageFile.path,
+            filename: 'profile_${DateTime.now().microsecondsSinceEpoch}.jpg'),
+      });
+
+      final dio = await ApiClient.getDio();
+      final response = await dio.put(
+        ApiClient.endpoints['getUploadImage']!,
+        data: formData,
+      );
+      if (response.statusCode == 200 && response.data['imageUrl'] != null) {
+        return response.data['imageUrl'];
+      }
+      throw Exception('upload failed: ${response.statusCode}');
+    } catch (e) {
+      debugPrint('Image upload error: $e');
+      Get.snackbar('Error', 'Failed to upload profile image: $e',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+      rethrow;
+    }
+  }
+
+  Future<void> pickDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: userDob.value.isNotEmpty
+          ? DateTime.parse(userDob.value)
+          : DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      dobController.text = DateFormat('yyyy-MM-dd').format(picked);
+      userDob.value = dobController.text;
+    }
+  }
+
+  Future<void> updatedProfileInfo({
+    required String name,
+    required String email,
+    required String password,
+    required String confirmPassword,
+    required String phonenumber,
+    required String dob,
+    required String profilepicpath,
+    required String gender,
+    // required String adress,
+  }) async {
+    try {
+      final response = await ApiClient.get('getUserProfile', queryParams: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'confirmPassword': confirmPassword,
+        'phoneNumber': phonenumber,
+        'dateOfBirth': dob,
+        'profilePicture': profilepicpath,
+        'gender': gender,
+      });
+
+      if (response.statusCode == 200) {
+        userName.value = name;
+        userEmail.value = email;
+        userPassword.value = password;
+        userPhoneNumber.value = phonenumber;
+        userDob.value = dob;
+        userImage.value = profilepicpath;
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userName', name);
+        await prefs.setString('userEmail', email);
+        await prefs.setString('userPassword', password);
+        await prefs.setString('userPhoneNumber', phonenumber);
+        await prefs.setString('userDob', dob);
+        await prefs.setString('profilepicpath', profilepicpath);
+        await prefs.setString('userImage', profilepicpath);
+
+        // if (response.statusCode == 200) {
+        //   locationController.userArea.value = userArea.value;
+        //   locationController.userCity.value = userCity.value;
+        //   locationController.userState.value = userState.value;
+        //   locationController.userCountry.value = userCountry.value;
+        //   locationController.userPincode.value = userPincode.value;
+        //   //     locationController.userFullAddress.value = adress;
+        // }
+
+        Get.snackbar('Success', 'Profile updated successfully',
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
+  }
+
+  void startOtpCountdown({int seconds = 30}) {
+    otpCountdown.value = seconds;
+    isOtpSent.value = false;
+    otpCountdownTimer?.cancel();
+    otpCountdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (otpCountdown.value > 0) {
+        otpCountdown.value--;
+      } else {
+        timer.cancel();
+        isOtpSent.value = true;
+      }
+    });
+  }
+
+  Future<void> updateEp() async {
+    final uname = userName.value;
+    final phoneNumber = userPhoneNumber.value;
+    final dob = userDob.value;
+
+    try {
+      isUploading.value = true;
+      final response = await ApiClient.put('editProfile', {
+        "name": uname,
+        "phoneNumber": phoneNumber,
+        "dateOfBirth": dob,
+      });
+      print('Response status code : ${response.statusCode}');
+      print('Response data : ${response.data}');
+      print('uname : $uname');
+      print('phoneNumber : $phoneNumber');
+      print('dateOfBirth : $dob');
+      if (response.statusCode == 200) {
+        Get.snackbar('Success', 'Profile updated successfully',
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    } finally {
+      isUploading.value = false;
+    }
+  }
+
+  Future<void> verifyOtpAndUpdateProfile() async {
+    if (otpCountdown.value == 0 && isOtpSent.value) {
       isUploading.value = true;
       try {
-        final imageUrl =
-            await _uploadProfileImageToBackend(File(pickedFile.path));
-        if (imageUrl.isNotEmpty) {
-          await _updateUserProfileOnBackend(imageUrl);
-          userImage.value = imageUrl; // update with backend image url
-          profilepicpath.value =
-              ''; // clear local path since backend image is used
-
-          // Save updated info locally
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('profilepicpath', '');
-          await prefs.setString('userImage', imageUrl);
+        final otpResponse = await ApiClient.put('/auth/confirm-otp', {
+          "otp": isOtpSent.value,
+        });
+        if (otpResponse.statusCode == 200) {
+          final response = await ApiClient.put('/auth/edit-profile', {
+            "name": userImage.value,
+            "phoneNumber": userPhoneNumber.value,
+            "dateOfBirth": userDob.value,
+            "email": userEmail.value,
+            "profileImage": userImage.value,
+            "password": userPassword.value,
+          });
+          if (response.statusCode == 200) {
+            authController.userName.value = userName.value;
+            authController.userEmail.value = userEmail.value;
+            authController.userphonenumber.value = userPhoneNumber.value;
+            authController.userImage.value = userImage.value;
+            Get.snackbar("Success", "Profile updated successfully",
+                backgroundColor: Colors.green, colorText: Colors.white);
+          } else {
+            Get.snackbar("Error", "Failed to update profile",
+                backgroundColor: Colors.red, colorText: Colors.white);
+          }
+        } else {
+          Get.snackbar("Error", "Invalid OTP",
+              backgroundColor: Colors.red, colorText: Colors.white);
         }
       } catch (e) {
-        Get.snackbar('Upload Failed', 'Could not upload profile image: $e',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: const Color(0xff5ce1e6));
-      } finally {
-        isUploading.value = false;
-        Get.back();
+        Get.snackbar("Error", "Failed to update profile $e",
+            backgroundColor: Colors.red, colorText: Colors.white);
       }
     }
   }
 
-  /// Upload profile image file to backend, returns URL string
-  Future<String> _uploadProfileImageToBackend(File file) async {
-    final formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(file.path,
-          filename: file.path.split('/').last),
-    });
-    final response = await _dio
-        .post('/api/profile/upload-image/${userEmail.value}', data: formData);
-    if (response.statusCode == 200) {
-      return response.data.toString();
-    } else {
-      throw Exception('Failed to upload image');
-    }
-  }
-
-  /// Update user's profile image URL on backend
-  Future<void> _updateUserProfileOnBackend(String imageUrl) async {
-    final response = await _dio.put('/api/profile/${userEmail.value}', data: {
-      "name": userName.value,
-      "profileImageUrl": imageUrl,
-    });
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update profile on backend');
-    }
-  }
-
-  // /// Fetch profile data for Google sign-in
-  // Future<void> _fetchGoogleProfile(GoogleSignInAccount googleUser) async {
-  //   final prefs = await SharedPreferences.getInstance();
-
-  //   try {
-  //     final bool isGoogleUser = prefs.getBool('isGoogleUser') ?? false;
-
-  //     if (!isGoogleUser) return;
-
-  //     final GoogleSignInAccount? googleUser =
-  //         await _googleSignIn.signInSilently();
-
-  //     if (googleUser == null) {
-  //       await prefs.clear();
-  //       Get.off(() => LoginScreen());
-  //       Get.snackbar("Error", "Google Sign-In failed!",
-  //           snackPosition: SnackPosition.BOTTOM);
-  //       return;
-  //     }
-
-  //     userName.value = googleUser.displayName ?? 'Google User';
-  //     userEmail.value = googleUser.email;
-  //     userPhoneNumber.value = '';
-  //     userImage.value = googleUser.photoUrl ?? '';
-  //     profilepicpath.value = '';
-
-  //     // Save Google user info locally
-  //     await prefs.setString('userName', userName.value);
-  //     await prefs.setString('userEmail', userEmail.value);
-  //     await prefs.setBool('isGoogleUser', true);
-  //     await prefs.setString('userImage', userImage.value);
-  //   } catch (e) {
-  //     await prefs.clear();
-  //     Get.snackbar("Error", "Google profile fetch failed: $e",
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: const Color(0xff5ce1e6));
-  //     Get.off(() => LoginScreen());
-  //   }
-  // }
-
-  /// Logout and clear all data
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (isGoogleUser.value) {
-      try {
-        await _googleSignIn.signOut();
-      } catch (e) {
-        Get.snackbar('Error', 'Google sign-out failed: $e',
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: const Color(0xff5ce1e6));
-      }
-    }
-
-    await prefs.clear();
-
+  void _clearLocalData() {
     userName.value = '';
     userEmail.value = '';
+    userPassword.value = '';
     userPhoneNumber.value = '';
+    userDob.value = '';
     userImage.value = '';
     profilepicpath.value = '';
     isGoogleUser.value = false;
+  }
 
-    Get.offAll(() => LoginScreen());
+  String getFormattedDob() {
+    if (userDob.value.isNotEmpty) return 'Not Set';
+    try {
+      final date = DateTime.parse(userDob.value);
+      return DateFormat('MMMM d, yyyy').format(date);
+    } catch (e) {
+      return userDob.value;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      if (isGoogleUser.value) {
+        await authController.googleSignOut();
+      } else {
+        await authController.logout();
+      }
+
+      _clearLocalData();
+      Get.to(() => LoginScreen());
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to logout',
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red);
+    }
   }
 }
 
@@ -1054,4 +1426,6 @@ class AuthService extends GetxController {
   final UserConformationControler userConformationControler =
       Get.put(UserConformationControler());
   final ProfileController profileControler = Get.put(ProfileController());
+  final ForgotPasswordController forgotPasswordController =
+      Get.put(ForgotPasswordController());
 }

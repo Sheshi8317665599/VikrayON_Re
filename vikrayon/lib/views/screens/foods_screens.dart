@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:vikrayon/ui_helper.dart';
 import 'package:vikrayon/utils/colors.dart';
 import 'package:vikrayon/views/home/widgets/category_feild.dart';
-
 import 'package:vikrayon/views/screens/voni_e_screens.dart';
 
 class FoodsScreens extends StatefulWidget {
@@ -14,7 +13,7 @@ class FoodsScreens extends StatefulWidget {
 }
 
 class _FoodsScreensState extends State<FoodsScreens> {
-  bool _isLoading = true;
+ // bool _isLoading = true;
 
   @override
   void initState() {
@@ -26,7 +25,7 @@ class _FoodsScreensState extends State<FoodsScreens> {
     // simulate network delay
     await Future.delayed(const Duration(seconds: 1));
     setState(() {
-      _isLoading = false;
+   //   _isLoading = false;
     });
   }
 
@@ -55,14 +54,14 @@ class _FoodsScreensState extends State<FoodsScreens> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onCategoryTap: (int index) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => lgsCategoryIcon(index),
+                builder: (context) => lgsCategoryIcon(imageUrl: [], index: index),
               ));
         },
         onVonieTap: (int index) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:vikrayon/controllers/widget_controller.dart';
+import 'package:vikrayon/controllers/product_controller.dart';
 import 'package:vikrayon/utils/colors.dart';
 
 class CartItem extends StatefulWidget {
@@ -34,14 +34,13 @@ class _CartItemState extends State<CartItem> {
             );
           }
 
-         _initializeQuantites(cartItems);
-         final double totalPrice = _calculateTotal(cartItems); 
+          _initializeQuantites(cartItems);
+          final double totalPrice = _calculateTotal(cartItems);
           return Column(
             children: [
               Expanded(
                 child: _buildCartList(cartItems),
               ),
-              _buildCartTotal(cartItems),
               _buildBottomCheckoutScetion(cartItems.length, totalPrice),
               _buildCheckoutButton(),
             ],
@@ -82,8 +81,8 @@ class _CartItemState extends State<CartItem> {
     double total = 0.0;
     for (var item in cartItems) {
       final quantity = itemQuantities[item.id.toString()]!;
-     final discount = item.price * (1 - item.discount / 100);
-      total += discount * quantity;
+      final discount = item.price * (1 - item.discount / 100);
+      total += discount * quantity.value;
     }
     return total;
   }
@@ -94,58 +93,68 @@ class _CartItemState extends State<CartItem> {
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text(cartItems[index].name),
-            subtitle: Text('\$${cartItems[index].price.toStringAsFixed(2)}'),
-            trailing: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                    'Quantity: ${itemQuantities[cartItems[index].id.toString()]!.value}'),
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  onPressed: () {
-                    itemQuantities[cartItems[index].id.toString()]!.value -=
-                        0.5;
-                  },
+          child: Row(
+            children: [
+              Image.network(cartItems[index].image, height: 50.h),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(cartItems[index].name,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text('\$${cartItems[index].price.toStringAsFixed(2)}'),
+                  ],
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    itemQuantities[cartItems[index].id.toString()]!.value +=
-                        0.5;
-                  },
-                ),
-              ],
-            ),
+              ),
+              Obx(() => Text(
+                    'Qty: ${itemQuantities[cartItems[index].id.toString()]!.value}',
+                    style: const TextStyle(fontSize: 16),
+                  )),
+              IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () {
+                  final key = cartItems[index].id.toString();
+                  if (itemQuantities[key]!.value > 0.5) {
+                    itemQuantities[key]!.value -= 0.5;
+                  }
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  final key = cartItems[index].id.toString();
+                  itemQuantities[key]!.value += 0.5;
+                },
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _buildCartTotal(List<dynamic> cartItems) {
-    final total = _calculateTotal(cartItems);
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Text('Total Items: ${cartItems.length}'),
-          Text(
-            'Total Price (After discount): \$${total.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildCartTotal(List<dynamic> cartItems) {
+  //   final total = _calculateTotal(cartItems);
+  //   return Padding(
+  //     padding: const EdgeInsets.all(16.0),
+  //     child: Column(
+  //       children: [
+  //         Text('Total Items: ${cartItems.length}'),
+  //         Text(
+  //           'Total Price (After discount): \$${total.toStringAsFixed(2)}',
+  //           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildBottomCheckoutScetion(int ItemCount, double totalPrice) {
+  Widget _buildBottomCheckoutScetion(int itemCount, double totalPrice) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          Text('Total Items: $ItemCount'),
+          Text('Total Items: $itemCount'),
           Text(
             'Total Price (After discount): \$${totalPrice.toStringAsFixed(2)}',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

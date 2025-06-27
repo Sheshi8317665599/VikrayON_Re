@@ -13,16 +13,16 @@ class UserConformationScreen extends StatefulWidget {
 }
 
 class _UserConformationScreenState extends State<UserConformationScreen> {
-  final UserConformationControler userConformationControler =
-      Get.find<UserConformationControler>();
+  late final UserConformationControler userConformationControler;
+  @override
+  void initState() {
+    super.initState();
+    userConformationControler = Get.put(UserConformationControler());
+    final args = Get.arguments as Map<String, dynamic>?;
 
-  String hideEmail(String email) {
-    // Hide the first part of the email
-    int atIndex = email.indexOf('@');
-    if (atIndex > 2) {
-      return '*' * (atIndex + 2) + email.substring(atIndex - 2);
+    if (args != null && args.containsKey('email')) {
+      userConformationControler.email = args['email'];
     }
-    return email; // Return as is if not enough characters
   }
 
   @override
@@ -66,6 +66,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                     style: TextStyle(
                         color: Authcolors.whiteColor, fontSize: width * 0.04),
                   ),
+
                   SizedBox(
                     height: height * 0.02,
                   ),
@@ -102,6 +103,7 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
                       color: Authcolors.whiteColor,
                       fontSize: width * 0.050,
                     ),
+                    readOnly: false,
                   ),
                   Obx(() {
                     if (userConformationControler.canResendOtp.value) {
@@ -175,11 +177,14 @@ class _UserConformationScreenState extends State<UserConformationScreen> {
 
                   // conformed button
 
-                  SudmitButton(
-                    text: "Conform",
-                    onPressed: () {
-                      userConformationControler.confirmOtp();
-                    },
+                  Obx(
+                    () => SudmitButton(
+                      text: "Conform",
+                      onPressed: () {
+                        userConformationControler.confirmOtp();
+                      },
+                      isLoading: userConformationControler.isLoading.value,
+                    ),
                   ),
                 ],
               ),
